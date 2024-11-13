@@ -18,13 +18,13 @@ using System.Reflection;
     "xt\\")]
 [assembly: System.Reflection.AssemblyMetadata("dcpbinpath", "C:\\Users\\charl\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\8.2.0\\tools\\e" +
     "xt\\bin\\")]
-[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.AppHost")]
+[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.AppHost")]
 [assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", "C:\\Users\\charl\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\8.2.0\\tools\\Aspire.Da" +
     "shboard.exe")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("ARBiblioteket.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a78959bbfc07cf0ad15ba440f806e6fb1c884805")]
 [assembly: System.Reflection.AssemblyProductAttribute("ARBiblioteket.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ARBiblioteket.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -2914,11 +2914,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.AppHost\\ARBiblioteket.AppHost.csproj",
+      "projectUniqueName": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.AppHost\\ARBiblioteket.AppHost.csproj",
       "projectName": "ARBiblioteket.AppHost",
-      "projectPath": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.AppHost\\ARBiblioteket.AppHost.csproj",
+      "projectPath": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.AppHost\\ARBiblioteket.AppHost.csproj",
       "packagesPath": "C:\\Users\\charl\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.AppHost\\obj\\",
+      "outputPath": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.AppHost\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

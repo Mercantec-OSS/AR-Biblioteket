@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "tusZyvu4rUIDv8DutU+ZvdLMPSUWOwld/PMezYv1RYg=",
+  "Hash": "rtmjBuzpI/g/8PTOaujAEuShqvk95RzImmocrCMx4mE=",
   "Source": "ARBiblioteket.Web",
   "BasePath": "_content/ARBiblioteket.Web",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "ARBiblioteket.Web\\wwwroot",
       "Source": "ARBiblioteket.Web",
-      "ContentRoot": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\wwwroot\\",
       "BasePath": "_content/ARBiblioteket.Web",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ARBiblioteket.Web.styles.css",
+      "Identity": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ARBiblioteket.Web.styles.css",
       "SourceId": "ARBiblioteket.Web",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/ARBiblioteket.Web",
       "RelativePath": "ARBiblioteket.Web.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ARBiblioteket.Web.styles.css"
+      "OriginalItemSpec": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ARBiblioteket.Web.styles.css"
     },
     {
-      "Identity": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ARBiblioteket.Web.bundle.scp.css",
+      "Identity": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ARBiblioteket.Web.bundle.scp.css",
       "SourceId": "ARBiblioteket.Web",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/ARBiblioteket.Web",
       "RelativePath": "ARBiblioteket.Web.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ARBiblioteket.Web.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ARBiblioteket.Web.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\wwwroot\\app.css",
+      "Identity": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\wwwroot\\app.css",
       "SourceId": "ARBiblioteket.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\wwwroot\\",
       "BasePath": "_content/ARBiblioteket.Web",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot\\app.css"
     },
     {
-      "Identity": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\wwwroot\\bootstrap\\bootstrap.min.css",
       "SourceId": "ARBiblioteket.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\wwwroot\\",
       "BasePath": "_content/ARBiblioteket.Web",
       "RelativePath": "bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "ARBiblioteket.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\wwwroot\\",
       "BasePath": "_content/ARBiblioteket.Web",
       "RelativePath": "bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -112,10 +112,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\wwwroot\\favicon.png",
+      "Identity": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\wwwroot\\favicon.png",
       "SourceId": "ARBiblioteket.Web",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.Web\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\wwwroot\\",
       "BasePath": "_content/ARBiblioteket.Web",
       "RelativePath": "favicon.png",
       "AssetKind": "All",

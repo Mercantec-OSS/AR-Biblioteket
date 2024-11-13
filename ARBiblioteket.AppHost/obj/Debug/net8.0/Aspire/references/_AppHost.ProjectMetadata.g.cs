@@ -8,5 +8,5 @@ namespace Projects;
 public class ARBiblioteket_AppHost
 {
     private ARBiblioteket_AppHost() { }
-    public static string ProjectPath => """C:\Users\charl\source\repos\ARBiblioteket\ARBiblioteket.AppHost""";
+    public static string ProjectPath => """C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.AppHost""";
 }

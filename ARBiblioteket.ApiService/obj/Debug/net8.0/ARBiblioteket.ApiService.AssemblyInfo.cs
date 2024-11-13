@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ARBiblioteket.ApiService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a78959bbfc07cf0ad15ba440f806e6fb1c884805")]
 [assembly: System.Reflection.AssemblyProductAttribute("ARBiblioteket.ApiService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ARBiblioteket.ApiService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

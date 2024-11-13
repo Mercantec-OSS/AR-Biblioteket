@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HLco/lH4mVo=",
+  "dgSpecHash": "aRSf/tSKiUI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\charl\\source\\repos\\ARBiblioteket\\ARBiblioteket.AppHost\\ARBiblioteket.AppHost.csproj",
+  "projectFilePath": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.AppHost\\ARBiblioteket.AppHost.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\charl\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\8.2.0\\aspire.dashboard.sdk.win-x64.8.2.0.nupkg.sha512",
     "C:\\Users\\charl\\.nuget\\packages\\aspire.hosting\\8.2.0\\aspire.hosting.8.2.0.nupkg.sha512",

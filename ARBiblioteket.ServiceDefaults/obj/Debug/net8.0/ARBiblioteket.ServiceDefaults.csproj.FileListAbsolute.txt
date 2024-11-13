@@ -10,3 +10,16 @@ C:\Users\charl\source\repos\ARBiblioteket\ARBiblioteket.ServiceDefaults\obj\Debu
 C:\Users\charl\source\repos\ARBiblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\refint\ARBiblioteket.ServiceDefaults.dll
 C:\Users\charl\source\repos\ARBiblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\ARBiblioteket.ServiceDefaults.pdb
 C:\Users\charl\source\repos\ARBiblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\ref\ARBiblioteket.ServiceDefaults.dll
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\bin\Debug\net8.0\ARBiblioteket.ServiceDefaults.deps.json
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\bin\Debug\net8.0\ARBiblioteket.ServiceDefaults.dll
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\bin\Debug\net8.0\ARBiblioteket.ServiceDefaults.pdb
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\ARBiblioteket.ServiceDefaults.csproj.AssemblyReference.cache
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\ARBiblioteket.ServiceDefaults.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\ARBiblioteket.ServiceDefaults.AssemblyInfoInputs.cache
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\ARBiblioteket.ServiceDefaults.AssemblyInfo.cs
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\ARBiblioteket.ServiceDefaults.csproj.CoreCompileInputs.cache
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\ARBiblioteket.ServiceDefaults.sourcelink.json
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\ARBiblioteket.ServiceDefaults.dll
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\refint\ARBiblioteket.ServiceDefaults.dll
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\ARBiblioteket.ServiceDefaults.pdb
+C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.ServiceDefaults\obj\Debug\net8.0\ref\ARBiblioteket.ServiceDefaults.dll

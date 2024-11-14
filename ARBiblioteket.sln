@@ -1,0 +1,48 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARBiblioteket.AppHost", "ARBiblioteket.AppHost\ARBiblioteket.AppHost.csproj", "{787006DF-A0FC-48FD-9CE4-5945C04F64A3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARBiblioteket.ServiceDefaults", "ARBiblioteket.ServiceDefaults\ARBiblioteket.ServiceDefaults.csproj", "{2F2CF043-A8AE-4C41-99A4-E03E22CAD198}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARBiblioteket.ApiService", "ARBiblioteket.ApiService\ARBiblioteket.ApiService.csproj", "{FC548F4D-9A9C-4841-BFE6-02EAE8A0698A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARBiblioteket.Web", "ARBiblioteket.Web\ARBiblioteket.Web.csproj", "{F8773865-83EF-469F-B250-FE4B258090E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARBiblioteket.DomainModels", "ARBiblioteket.DomainModels\ARBiblioteket.DomainModels.csproj", "{E53318BD-7C5F-45D0-9A48-10CF176B01E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{787006DF-A0FC-48FD-9CE4-5945C04F64A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{787006DF-A0FC-48FD-9CE4-5945C04F64A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{787006DF-A0FC-48FD-9CE4-5945C04F64A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{787006DF-A0FC-48FD-9CE4-5945C04F64A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F2CF043-A8AE-4C41-99A4-E03E22CAD198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F2CF043-A8AE-4C41-99A4-E03E22CAD198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F2CF043-A8AE-4C41-99A4-E03E22CAD198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F2CF043-A8AE-4C41-99A4-E03E22CAD198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC548F4D-9A9C-4841-BFE6-02EAE8A0698A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC548F4D-9A9C-4841-BFE6-02EAE8A0698A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC548F4D-9A9C-4841-BFE6-02EAE8A0698A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC548F4D-9A9C-4841-BFE6-02EAE8A0698A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8773865-83EF-469F-B250-FE4B258090E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8773865-83EF-469F-B250-FE4B258090E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8773865-83EF-469F-B250-FE4B258090E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8773865-83EF-469F-B250-FE4B258090E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E53318BD-7C5F-45D0-9A48-10CF176B01E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E53318BD-7C5F-45D0-9A48-10CF176B01E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E53318BD-7C5F-45D0-9A48-10CF176B01E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E53318BD-7C5F-45D0-9A48-10CF176B01E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {094FD525-9420-4429-8974-CCC73A5797DD}
+	EndGlobalSection
+EndGlobal

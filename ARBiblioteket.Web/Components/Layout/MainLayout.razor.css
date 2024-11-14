@@ -94,3 +94,22 @@ main {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.navbar {
+    background-color: #003366;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+}
+
+    .navbar .title {
+        font-weight: bold;
+    }
+
+    .navbar nav a {
+        color: white;
+        margin-left: 1rem;
+        text-decoration: none;
+    }

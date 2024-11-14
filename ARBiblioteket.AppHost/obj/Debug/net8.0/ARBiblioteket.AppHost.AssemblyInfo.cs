@@ -12,19 +12,19 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("be42e6a3-b9ee-461f-85ae-0e15abc63fd9")]
-[assembly: System.Reflection.AssemblyMetadata("dcpclipath", "C:\\Users\\charl\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\8.2.0\\tools\\d" +
+[assembly: System.Reflection.AssemblyMetadata("dcpclipath", "C:\\Users\\ricob\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\8.2.0\\tools\\d" +
     "cp.exe")]
-[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", "C:\\Users\\charl\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\8.2.0\\tools\\e" +
+[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", "C:\\Users\\ricob\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\8.2.0\\tools\\e" +
     "xt\\")]
-[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", "C:\\Users\\charl\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\8.2.0\\tools\\e" +
+[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", "C:\\Users\\ricob\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\8.2.0\\tools\\e" +
     "xt\\bin\\")]
-[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.AppHost")]
-[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", "C:\\Users\\charl\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\8.2.0\\tools\\Aspire.Da" +
+[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "C:\\Users\\ricob\\OneDrive\\Dokumenter\\GitHub\\AR-Biblioteket\\ARBiblioteket.AppHost")]
+[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", "C:\\Users\\ricob\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\8.2.0\\tools\\Aspire.Da" +
     "shboard.exe")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("ARBiblioteket.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a78959bbfc07cf0ad15ba440f806e6fb1c884805")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+469c35a62f9bdc7dd4769b0918ec1610c7a887e8")]
 [assembly: System.Reflection.AssemblyProductAttribute("ARBiblioteket.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ARBiblioteket.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

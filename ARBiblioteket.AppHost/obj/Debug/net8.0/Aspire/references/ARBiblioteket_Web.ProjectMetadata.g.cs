@@ -7,5 +7,5 @@ namespace Projects;
 [global::System.Diagnostics.DebuggerDisplay("Type = {GetType().Name,nq}, ProjectPath = {ProjectPath}")]
 public class ARBiblioteket_Web : global::Aspire.Hosting.IProjectMetadata
 {
-    public string ProjectPath => """C:\Users\charl\Desktop\AR-Biblioteket\ARBiblioteket.Web\ARBiblioteket.Web.csproj""";
+    public string ProjectPath => """C:\Users\ricob\OneDrive\Dokumenter\GitHub\AR-Biblioteket\ARBiblioteket.Web\ARBiblioteket.Web.csproj""";
 }

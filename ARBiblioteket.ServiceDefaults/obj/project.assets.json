@@ -2186,23 +2186,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\charl\\.nuget\\packages\\": {},
+    "C:\\Users\\ricob\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.ServiceDefaults\\ARBiblioteket.ServiceDefaults.csproj",
+      "projectUniqueName": "C:\\Users\\ricob\\OneDrive\\Dokumenter\\GitHub\\AR-Biblioteket\\ARBiblioteket.ServiceDefaults\\ARBiblioteket.ServiceDefaults.csproj",
       "projectName": "ARBiblioteket.ServiceDefaults",
-      "projectPath": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.ServiceDefaults\\ARBiblioteket.ServiceDefaults.csproj",
-      "packagesPath": "C:\\Users\\charl\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.ServiceDefaults\\obj\\",
+      "projectPath": "C:\\Users\\ricob\\OneDrive\\Dokumenter\\GitHub\\AR-Biblioteket\\ARBiblioteket.ServiceDefaults\\ARBiblioteket.ServiceDefaults.csproj",
+      "packagesPath": "C:\\Users\\ricob\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ricob\\OneDrive\\Dokumenter\\GitHub\\AR-Biblioteket\\ARBiblioteket.ServiceDefaults\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\charl\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ricob\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2283,7 +2283,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

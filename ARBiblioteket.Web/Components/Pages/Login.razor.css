@@ -1,0 +1,50 @@
+﻿body {
+}
+
+.login-box {
+    background-color: #b0b0b0;
+    border-radius: 10px;
+    padding-left: 1rem;
+    color: #0E38AB;
+}
+
+.login-box p:first-child {
+    text-align: center;
+    font-weight: bold;
+}
+
+.user-box {
+    padding-bottom: 2rem;
+}
+
+.user-box input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #0E38AB;
+    outline: none;
+    color: black;
+}
+
+.login-box button{
+    margin-bottom: 1rem;
+    background-color: #0E38AB;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    height: 2.5rem;
+    width: 6rem;
+    font-weight: bold;
+}
+
+.login-box p:last-child {
+    color: black;
+}
+
+.login-box a {
+    color: #0E38AB;
+    text-decoration: none;
+}
+
+    .login-box a:hover {
+        color: white;
+    }

@@ -1,6 +1,27 @@
-@page "/login"
-<link href="HomePage.css" rel="stylesheet" />
+﻿@page "/login"
 
 <PageTitle>Login</PageTitle>
 
-<h1>Hello World!</h1>
+<div class="login-box">
+	<p>Login</p>
+	<form>
+		<div class="user-box">
+			<label>Email</label>
+			<input />
+		</div>
+		<div class="user-box">
+			<label>Password</label>
+			<input />
+		</div>
+		<div class="user-box">
+			<label>Access Key</label>
+			<input />
+		</div>
+		<button>Submit</button>
+	</form>
+	<p>Har du ikke en konto?<a href="">Sign up!</a></p>
+</div>
+
+@code {
+
+}

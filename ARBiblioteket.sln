@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARBiblioteket.ApiService", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARBiblioteket.Web", "ARBiblioteket.Web\ARBiblioteket.Web.csproj", "{F8773865-83EF-469F-B250-FE4B258090E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARBiblioteket.DomainModels", "ARBiblioteket.DomainModels\ARBiblioteket.DomainModels.csproj", "{E53318BD-7C5F-45D0-9A48-10CF176B01E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARBiblioteket.DomainModels", "ARBiblioteket.DomainModels\ARBiblioteket.DomainModels.csproj", "{E53318BD-7C5F-45D0-9A48-10CF176B01E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

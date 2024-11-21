@@ -9,6 +9,7 @@ builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
+builder.Services.AddScoped<IModelService, ModelService>();
 
 var app = builder.Build();
 

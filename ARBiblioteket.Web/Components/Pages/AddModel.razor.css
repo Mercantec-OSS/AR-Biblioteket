@@ -1,0 +1,60 @@
+﻿body {
+}
+
+.container {
+    background-color: #b0b0b0;
+    border-radius: 10px;
+    padding: 2rem;
+    color: #0E38AB;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 2rem;
+    max-width: 60rem;
+}
+
+.container p:first-child {
+    text-align: center;
+}
+
+.container .section:last-child {
+    padding-bottom: 0;
+}
+
+.section {
+    padding-bottom: 1.5rem;
+}
+
+.section label {
+    border: none;
+    padding: 1px 0;
+}
+
+.section input {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #0E38AB;
+}
+
+.section textarea {
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid #0E38AB;
+}
+
+.section select {
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid #0E38AB;
+    color: #0E38AB;
+}
+
+.section button {
+    background-color: #0E38AB;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    width: 6rem;
+    font-weight: bold;
+    height: 2.5rem;
+}

@@ -10,4 +10,8 @@
     <ProjectReference Include="..\ARBiblioteket.ServiceDefaults\ARBiblioteket.ServiceDefaults.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\LocalImages\Placeholder.png" />
+  </ItemGroup>
+
 </Project>

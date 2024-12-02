@@ -12,31 +12,31 @@
     max-width: 60rem;
 }
 
-.container p:first-child {
-    text-align: center;
-}
+    .container p:first-child {
+        text-align: center;
+    }
 
-.container .section:nth-child(4),
-.container .section:nth-child(5){
-    color: black;
-}
+    .container .section:nth-child(4),
+    .container .section:nth-child(5) {
+        color: black;
+    }
 
 .section {
     padding-bottom: 1.5rem;
 }
 
-.section label {
-    border: none;
-    padding: 1px 0;
-    color:#0E38AB;
-    width: 100%;
-}
+    .section label {
+        border: none;
+        padding: 1px 0;
+        color: #0E38AB;
+        width: 100%;
+    }
 
-.section input {
-    width: 100%;
-    background-color: transparent;
-    border: none;
-}
+    .section input {
+        width: 100%;
+        background-color: transparent;
+        border: none;
+    }
 
 input[type=text] {
     border-bottom: 1px solid #0E38AB;

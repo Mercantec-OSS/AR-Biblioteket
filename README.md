@@ -1,4 +1,3 @@
-hej
 **Projektbeskrivelse: Interaktivt AR Hjemmesidebibliotek**
 
 **Projektmål:**  

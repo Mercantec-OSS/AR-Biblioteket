@@ -4,22 +4,14 @@ namespace ARBiblioteket.ApiService.Services
 {
     public class ApplicationDbContext : DbContext
     {
-        private readonly IConfiguration _configuration;
-
-        public ApplicationDbContext(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Model> Models { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            optionsBuilder.UseMySql(
-                _configuration.GetConnectionString("DefaultConnection"),
-                new MySqlServerVersion(new Version(8, 0, 40))
-            );
+            // Configure your model here if needed
         }
     }
 }

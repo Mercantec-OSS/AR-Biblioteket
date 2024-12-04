@@ -9,9 +9,19 @@
                 Username = userCreateDto.Username,
                 Password = userCreateDto.Password,
                 Email = userCreateDto.Email,
-                Department = userCreateDto.Department,
+                Department = userCreateDto.Department
             };
             return user;
+        }
+        
+        public UserLoginDto MapUserToUserLoginDto(User user)
+        {
+            var userDto = new UserLoginDto
+            {
+                Id = user.Id,
+                Email = user.Email
+            };
+            return userDto;
         }
     }
 }

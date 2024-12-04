@@ -52,12 +52,12 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<UserLoginDto>> Login(string email, string password)
     {
-        var userLoginDto = await _DbContext.Users.Where(e => e.Email == email).FirstOrDefaultAsync(p => p.Password == password);
-        if (userLoginDto == null)
+        var user = await _DbContext.Users.Where(e => e.Email == email).FirstOrDefaultAsync(p => p.Password == password);
+        if (user == null)
         {
             return NotFound();
         }
-        return Ok(userLoginDto);
+        return Ok(_userMapping.MapUserToUserLoginDto(user));
     }
     //Edit user by ID
     [HttpPut("{id}")]

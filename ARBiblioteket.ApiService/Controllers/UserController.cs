@@ -48,7 +48,7 @@ public class UserController : ControllerBase
             return BadRequest($"Failed to register {ex.Message}");
         }
     }
-    //Login user
+    //Login user 
     [HttpPost("login")]
     public async Task<ActionResult<UserLoginDto>> Login(string email, string password)
     {

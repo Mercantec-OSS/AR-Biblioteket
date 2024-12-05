@@ -28,7 +28,7 @@ public class UserController : ControllerBase
     {
         return Ok(await _DbContext.Users.ToListAsync());
     }
-    //Register user 
+    //Register user
     [HttpPost("register")]
     public async Task<ActionResult<User>> Register(UserCreateDto userDto)
     {
@@ -48,7 +48,7 @@ public class UserController : ControllerBase
             return BadRequest($"Failed to register {ex.Message}");
         }
     }
-    //Login user 
+    //Login user
     [HttpPost("login")]
     public async Task<ActionResult<UserLoginDto>> Login(string email, string password)
     {

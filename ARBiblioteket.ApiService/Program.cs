@@ -14,10 +14,16 @@ builder.Services.AddSwaggerGen(c =>
 builder.AddServiceDefaults();
 builder.Services.AddProblemDetails();
 
-// Register UserMapping service
+// Register Services
 builder.Services.AddScoped<UserMapping>();
-// Register ModelMapping service
 builder.Services.AddScoped<ModelMapping>();
+builder.Services.AddScoped<ApiService>();
+
+// Register HttpClient
+builder.Services.AddHttpClient<ApiService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7572/");
+});
 
 // Register ApplicationDbContext with MySQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

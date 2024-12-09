@@ -1,0 +1,79 @@
+﻿body {
+}
+
+.container {
+    background-color: #b0b0b0;
+    border-radius: 10px;
+    padding: 2rem;
+    color: #0E38AB;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 1.5rem;
+    max-width: 60rem;
+}
+
+    .container p:first-child {
+        text-align: center;
+    }
+
+    .container .section:nth-child(4),
+    .container .section:nth-child(5) {
+        color: black;
+    }
+
+.section {
+    padding-bottom: 1.5rem;
+}
+
+    .section label {
+        border: none;
+        padding: 1px 0;
+        color: #0E38AB;
+        width: 100%;
+    }
+
+    .section input {
+        width: 100%;
+        background-color: transparent;
+        border: none;
+    }
+
+input[type=text] {
+    border-bottom: 1px solid #0E38AB;
+}
+
+select {
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid #0E38AB;
+    color: black;
+}
+
+textarea {
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid #0E38AB;
+}
+
+input[type=file]::file-selector-button {
+    background-color: white;
+    color: #0E38AB;
+    border: none;
+    border-radius: 10px;
+    width: auto;
+    min-width: 6rem;
+    font-weight: bold;
+    height: 2.5rem;
+    align-content: center;
+}
+
+button {
+    background-color: #0E38AB;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    width: auto;
+    min-width: 6rem;
+    font-weight: bold;
+    height: 2.5rem;
+}

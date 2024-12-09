@@ -12,6 +12,7 @@
 
 .login-box p:first-child {
     text-align: center;
+    font-weight: bold;
     padding-top: 8px;
 }
 
@@ -26,10 +27,9 @@
     outline: none;
     color: black;
     width: 100%;
-    
 }
 
-.login-box button{
+.login-box button {
     margin-bottom: 1rem;
     background-color: #0E38AB;
     color: white;
@@ -42,19 +42,19 @@
 
 .login-box p:last-child {
     color: black;
-    padding-bottom: 8px;
+    padding-bottom: 1rem;
 }
 
 .login-box a {
     color: #0E38AB;
     text-decoration: none;
+    padding-bottom: 1rem;
     font-weight: bold;
 }
 
     .login-box a:hover {
         color: white;
     }
-
 
 @media (min-width: 768px) {
     .login-box {

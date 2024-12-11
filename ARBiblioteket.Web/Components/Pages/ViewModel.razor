@@ -1,15 +1,48 @@
-﻿@page "/model"
+﻿@page "/model/{Id:int}"
+@using ARBiblioteket.ApiService.Services
+@using ARBiblioteket.ApiService
+@inject ApiService ApiService
 
 <PageTitle>AR Biblioteket - ModelViewer</PageTitle>
 
-<div class="model-container">
-    <div class="model-name">MODEL NAME</div>
-    <div class="model-image">
-        <img src="LocalImages/Placeholder.png" alt="Model Image" />
+@if (model == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="model-container">
+        <div class="model-name">@model.Title</div>
+        
+        <model-viewer
+            src="@model.ThreeDFile"
+            alt="@model.Title"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            camera-controls
+            shadow-intensity="1"
+            auto-rotate
+            camera-orbit="45deg 55deg 2.5m"
+            poster="@model.ImageFile">
+        </model-viewer>
+
+        <div class="model-description">
+            <p><strong>Education:</strong> @model.Education</p>
+            <p><strong>Description:</strong> @model.Description</p>
+            <p><strong>Uploaded:</strong> @model.Uploaded.ToString("dd/MM/yyyy")</p>
+            <p><strong>Last Edited:</strong> @model.LastEdited.ToString("dd/MM/yyyy")</p>
+        </div>
     </div>
-    <div class="model-description">CATEGORY AND DESCRIPTION</div>
-</div>
+}
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
 
+    private Model? model;
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await ApiService.GetModelAsync(Id);
+    }
 }

@@ -1,34 +1,40 @@
 ﻿body {
-    margin: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: #f8fafc;
     min-height: 100vh;
+    margin: 0;
+    --s: 82px;
+    --c1: #b2b2b2;
+    --c2: #ffffff;
+    --c3: #d9d9d9;
+    --_g: var(--c3) 0 120deg, #0000 0;
+    background: 
+        conic-gradient(from -60deg at 50% calc(100%/3), var(--_g)),
+        conic-gradient(from 120deg at 50% calc(200%/3), var(--_g)),
+        conic-gradient(from 60deg at calc(200%/3), var(--c3) 60deg, var(--c2) 0 120deg, #0000 0),
+        conic-gradient(from 180deg at calc(100%/3), var(--c1) 60deg, var(--_g)),
+        linear-gradient(90deg, var(--c1) calc(100%/6), var(--c2) 0 50%, var(--c1) 0 calc(500%/6), var(--c2) 0);
+    background-size: calc(1.732 * var(--s)) var(--s);
 }
 
 .container {
     display: flex;
-    flex-direction: column;
-    max-width: 100%;
-    margin: 0;
-    padding: 1rem;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    max-width: 1200px;
 }
 
 .sidebar {
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    margin-right: 2rem;
+    width: 250px;
     border: 1px solid rgba(229, 233, 239, 0.7);
 }
 
-.filter-section {
-    padding: 1.25rem;
-    border-bottom: 1px solid rgba(229, 233, 239, 0.7);
-}
-
 .filter-section h3 {
-    margin: 0 0 1rem 0;
     color: #1e293b;
+    margin: 0 0 1rem 0;
     font-size: 1rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -36,7 +42,7 @@
 }
 
 .content {
-    width: 100%;
+    flex: 1;
 }
 
 .model-list {
@@ -69,17 +75,15 @@
     transition: background-color 0.2s ease;
 }
 
-.model-link:hover, .model-link:active {
+.model-link:hover {
     background-color: #f8fafc;
 }
 
 .model-title {
-    font-size: 1rem;
     font-weight: 500;
 }
 
 .arrow-icon {
-    color: #64748b;
     font-size: 1.25rem;
 }
 
@@ -110,111 +114,22 @@
     100% { transform: rotate(360deg); }
 }
 
-/* Desktop styles */
-@media (min-width: 768px) {
-    .container {
-        flex-direction: row;
-        gap: 2rem;
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 2rem;
-    }
-
-    .sidebar {
-        flex: 0 0 280px;
-        margin-bottom: 0;
-    }
-
-    .filter-section {
-        padding: 1.5rem;
-    }
-
-    .model-link {
-        padding: 1.25rem 1.5rem;
-    }
-
-    .model-title {
-        font-size: 1.05rem;
-    }
-
-    /* Only show hover effects on desktop */
-    .model-link:hover .arrow-icon {
-        transform: translateX(4px);
-        color: #2563eb;
-    }
-
-    .arrow-icon {
-        transition: all 0.2s ease;
-    }
-}
-
-.filter-content {
-    padding: 0.5rem 0;
-}
-
-.filter-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.filter-item {
-    margin: 0.25rem 0;
-    padding: 0.375rem 0;
-}
-
-.filter-item label {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    cursor: pointer;
-    color: #475569;
-    font-size: 0.95rem;
-    transition: color 0.2s ease;
-}
-
-.filter-item label:hover {
-    color: #1e293b;
-}
-
-.filter-item input[type="checkbox"] {
-    cursor: pointer;
-    width: 1.125rem;
-    height: 1.125rem;
-    border: 2px solid #cbd5e1;
-    border-radius: 4px;
-    appearance: none;
-    -webkit-appearance: none;
-    position: relative;
-    transition: all 0.2s ease;
-}
-
-.filter-item input[type="checkbox"]:checked {
-    background-color: #2563eb;
-    border-color: #2563eb;
-}
-
-.filter-item input[type="checkbox"]:checked::after {
-    content: "✓";
-    position: absolute;
-    color: white;
-    font-size: 0.75rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.filter-item input[type="checkbox"]:hover {
-    border-color: #94a3b8;
-}
-
 .coming-soon {
     color: #94a3b8;
     font-size: 0.875rem;
     font-style: italic;
     text-align: center;
-    margin: 0.75rem 0;
-    padding: 0.5rem;
-    background-color: #f1f5f9;
-    border-radius: 6px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
 }

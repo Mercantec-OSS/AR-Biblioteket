@@ -3,31 +3,37 @@
 <PageTitle>AR Biblioteket - Sign up</PageTitle>
 
 <div class="login-box">
-	<p>Sign up</p>
 	<form>
+		<h2>Sign up</h2>
 		<div class="user-box">
-			<label>Name:</label>
-			<input type="text" name="" required />
+			<input required type="text">
+			<label>Name</label>
 		</div>
 		<div class="user-box">
-			<label>Email:</label>
-			<input required="" name="" type="text" />
+			<input required type="email">
+			<label>Email</label>
 		</div>
 		<div class="user-box">
-			<label>Password:</label>
-			<input required="" name="" type="password" />
+			<input required type="password">
+			<label>Password</label>
 		</div>
 		<div class="user-box">
-			<label>Afdeling:</label>
-			<input type="text" name="" required />
+			<input required type="text">
+			<label>Afdeling</label>
 		</div>
 		<div class="user-box">
-			<label>Access Key:</label>
-			<input required="" name="" type="text" />
+			<input required type="text">
+			<label>Access Key</label>
 		</div>
-		<button>Submit</button>
+		<button>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			Submit
+		</button>
 	</form>
-	<p>Har du en konto? <a href="/login">Login her!</a></p>
+	<p>Har du en konto? <a href="/login" class="signup-link">Login her!</a></p>
 </div>
 
 @code {

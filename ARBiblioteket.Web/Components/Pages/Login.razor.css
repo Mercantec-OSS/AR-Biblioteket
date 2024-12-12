@@ -11,10 +11,9 @@
     transform: translate(-50%, -50%);
     width: 440px;
     padding: 48px;
-    background: rgba(255, 255, 255, 0.98);
+    background: #ffffff;
     box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.12);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(229, 233, 239, 0.7);
     border-radius: 24px;
 }
 
@@ -211,6 +210,27 @@
     
     .login-box h2 {
         font-size: 1.75rem;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 380px) {
+    .login-box {
+        padding: 24px 16px;
+    }
+    
+    .login-box h2 {
+        font-size: 1.5rem;
+        margin-bottom: 24px;
+    }
+    
+    .login-box .user-box {
+        margin-bottom: 24px;
+    }
+    
+    .login-box .user-box input {
+        padding: 12px;
+        font-size: 0.875rem;
     }
 }
 

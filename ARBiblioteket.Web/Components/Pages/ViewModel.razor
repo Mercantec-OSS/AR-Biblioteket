@@ -3,11 +3,11 @@
 @using ARBiblioteket.ApiService
 @inject ApiService ApiService
 
-<PageTitle>AR Biblioteket - ModelViewer</PageTitle>
+<PageTitle>AR Biblioteket - Model Visning</PageTitle>
 
 @if (model == null)
 {
-    <p>Loading...</p>
+    <p>Indlæser...</p>
 }
 else
 {
@@ -27,10 +27,10 @@ else
         </model-viewer>
 
         <div class="model-description">
-            <p><strong>Education:</strong> @model.Education</p>
-            <p><strong>Description:</strong> @model.Description</p>
-            <p><strong>Uploaded:</strong> @model.Uploaded.ToString("dd/MM/yyyy")</p>
-            <p><strong>Last Edited:</strong> @model.LastEdited.ToString("dd/MM/yyyy")</p>
+            <p><strong>Uddannelse:</strong> @model.Education</p>
+            <p><strong>Beskrivelse:</strong> @model.Description</p>
+            <p><strong>Uploadet:</strong> @model.Uploaded.ToString("dd/MM/yyyy")</p>
+            <p><strong>Sidst Redigeret:</strong> @model.LastEdited.ToString("dd/MM/yyyy")</p>
         </div>
     </div>
 }

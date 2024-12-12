@@ -188,3 +188,22 @@ body {
         max-width: 1400px;
     }
 }
+
+/* Small mobile devices */
+@media (max-width: 380px) {
+    .container {
+        padding: 0.75rem;
+    }
+    
+    .sidebar {
+        padding: 1rem;
+    }
+    
+    .model-link {
+        padding: 0.75rem;
+    }
+    
+    .model-title {
+        font-size: 0.875rem;
+    }
+}

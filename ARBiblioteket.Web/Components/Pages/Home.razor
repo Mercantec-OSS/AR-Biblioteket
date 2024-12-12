@@ -7,20 +7,31 @@
 
 <div class="container">
     <div class="sidebar">
-        <div class="filter-title">Filters that need to be incorporated</div>
+        <div class="filter-section">
+            <h3>Filter Models</h3>
+            <div class="filter-content">
+                <p class="coming-soon">Coming Soon!</p>
+            </div>
+        </div>
     </div>
     <div class="content">
-        @if (models == null)
+        @if (allModels == null)
         {
-            <p>Loading...</p>
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Loading models...</p>
+            </div>
         }
         else
         {
             <ul class="model-list">
-                @foreach (var model in models)
+                @foreach (var model in allModels)
                 {
-                    <li>
-                        <a href="/model/@model.Id">@model.Title</a>
+                    <li class="model-item">
+                        <a href="/model/@model.Id" class="model-link">
+                            <span class="model-title">@model.Title</span>
+                            <span class="arrow-icon">→</span>
+                        </a>
                     </li>
                 }
             </ul>
@@ -29,10 +40,10 @@
 </div>
 
 @code {
-    private List<Model>? models;
+    private List<Model>? allModels;
 
     protected override async Task OnInitializedAsync()
     {
-        models = await ApiService.GetAllModelsAsync();
+        allModels = await ApiService.GetAllModelsAsync();
     }
 }

@@ -1,4 +1,6 @@
 using ARBiblioteket.ApiService.Services;
+using ARBiblioteket.ApiService.Models;
+using ARBiblioteket.ApiService.Mapping;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,26 +32,15 @@ public class ModelController : ControllerBase
     }
     //Create model
     [HttpPost]
-    public async Task<ActionResult<Model>> CreateModel(ModelCreateDto modelDto)
+    public async Task<IActionResult> Post([FromBody] Model model)
     {
-        if (modelDto == null)
-            return BadRequest();
-
-        try
-        {
-            var model = _modelMapping.MapCreateModelDtoToModel(modelDto);
-            _DbContext.Models.Add(model);
-            await _DbContext.SaveChangesAsync();
-            return Ok(model);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        _DbContext.Models.Add(model);
+        _DbContext.SaveChanges();
+        return Ok(model);
     }
     //Edit model by ID
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateModel(int id, ModelUpdateDto modelUpdateDto)
+    public async Task<IActionResult> UpdateModel([FromRoute] int id, [FromBody] Model model)
     {
         var result = await _DbContext.Models.FindAsync(id);
         if (result == null)
@@ -57,28 +48,20 @@ public class ModelController : ControllerBase
             return NotFound();
         }
 
-        result.Title = modelUpdateDto.Title ?? throw new ArgumentException(nameof(modelUpdateDto.Title));
-        result.Description = modelUpdateDto.Description ?? throw new ArgumentException(nameof(modelUpdateDto.Description));
-        result.Education = modelUpdateDto.Education ?? throw new ArgumentException(nameof(modelUpdateDto.Education));
-        result.ThreeDFile = modelUpdateDto.ThreeDFile ?? throw new ArgumentException(nameof(modelUpdateDto.ThreeDFile));
-        result.ImageFile = modelUpdateDto.ImageFile ?? throw new ArgumentException(nameof(modelUpdateDto.ImageFile));
-        result.LastEdited = DateOnly.FromDateTime(DateTime.UtcNow);
+        // Update fields manually
+        result.Title = model.Title;
+        result.Description = model.Description;
+        result.Education = model.Education;
+        result.ThreeDFile = model.ThreeDFile;
+        result.ImageFile = model.ImageFile;
+        result.UploaderId = model.UploaderId;
+        result.Uploaded = model.Uploaded;
+        result.LastEdited = model.LastEdited;
 
-        _DbContext.Entry(result).State = EntityState.Modified;
+        _DbContext.Models.Update(result);
+        await _DbContext.SaveChangesAsync();
 
-        try
-        {
-            await _DbContext.SaveChangesAsync();
-            return Ok(result);
-        }
-        catch
-        {
-            if (!_DbContext.Models.Any(m => m.Id == id))
-            {
-                return NotFound();
-            }
-            throw;
-        }
+        return Ok(result);
     }
     //Delete user by ID
     [HttpDelete("{id}")]

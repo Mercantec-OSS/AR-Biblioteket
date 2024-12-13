@@ -1,4 +1,7 @@
 using ARBiblioteket.ApiService.Services;
+using ARBiblioteket.ApiService.Models;
+using ARBiblioteket.ApiService.Mapping;
+using ARBiblioteket.ApiService.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

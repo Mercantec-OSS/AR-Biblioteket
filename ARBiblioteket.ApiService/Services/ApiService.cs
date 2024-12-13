@@ -1,5 +1,8 @@
 using System.Net.Http.Json;
 using ARBiblioteket.ApiService.Services;
+using ARBiblioteket.ApiService.Models;
+using ARBiblioteket.ApiService.Dto;
+using ARBiblioteket.ApiService.Mapping;
 
 namespace ARBiblioteket.ApiService.Services
 {

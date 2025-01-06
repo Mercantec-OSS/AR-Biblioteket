@@ -1,6 +1,8 @@
 using ARBiblioteket.ApiService.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using ARBiblioteket.ApiService.Dto;
+using ARBiblioteket.ApiService.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 

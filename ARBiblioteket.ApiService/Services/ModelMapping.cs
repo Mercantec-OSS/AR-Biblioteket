@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
 using ARBiblioteket.ApiService.Dto;
 using ARBiblioteket.ApiService.Models;
 

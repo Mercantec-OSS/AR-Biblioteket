@@ -1,7 +1,9 @@
 ﻿@page "/model/{Id:int}"
+@using ARBiblioteket.ApiService.Models
 @using ARBiblioteket.ApiService.Services
 @using ARBiblioteket.ApiService
 @inject ApiService ApiService
+@using ARBiblioteket.ApiService.Mapping
 
 <PageTitle>AR Biblioteket - ModelViewer</PageTitle>
 
@@ -39,7 +41,7 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    private Model? model;
+    private Model model;
 
     protected override async Task OnInitializedAsync()
     {

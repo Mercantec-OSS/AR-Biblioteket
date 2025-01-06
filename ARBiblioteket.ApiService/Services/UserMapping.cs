@@ -1,4 +1,7 @@
-﻿namespace ARBiblioteket.ApiService.Services
+﻿using ARBiblioteket.ApiService.Dto;
+using ARBiblioteket.ApiService.Models;
+
+namespace ARBiblioteket.ApiService.Mapping
 {
     public class UserMapping
     {
@@ -25,3 +28,4 @@
         }
     }
 }
+

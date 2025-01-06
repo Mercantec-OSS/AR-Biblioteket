@@ -1,4 +1,7 @@
 using ARBiblioteket.ApiService.Services;
+using ARBiblioteket.ApiService.Models;
+using ARBiblioteket.ApiService.Mapping;
+using ARBiblioteket.ApiService.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,18 +33,18 @@ public class UserController : ControllerBase
     }
     //Register user
     [HttpPost("register")]
-    public async Task<ActionResult<User>> Register(UserCreateDto userDto)
+    public async Task<ActionResult<User>> Register([FromBody] User user)
     {
-        if (userDto == null)
+        if (user == null)
         {
             return BadRequest("User data is required.");
         }
 
         try
         {
-            _DbContext.Users.Add(_userMapping.MapCreateUserDtoToUser(userDto));
+            _DbContext.Users.Add(user);
             await _DbContext.SaveChangesAsync();
-            return Ok(userDto);
+            return Ok(user);
         }
         catch (Exception ex)
         {
@@ -57,37 +60,29 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(_userMapping.MapUserToUserLoginDto(user));
+        return Ok((user));
     }
     //Edit user by ID
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUser(int id, UserCreateDto userCreateDto)
+    public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] User user)
     {
         var result = await _DbContext.Users.FindAsync(id);
         if (result== null)
         {
             return NotFound(); 
         }
-        
-        result.Email = userCreateDto.Email ?? throw new ArgumentException(nameof(userCreateDto.Email));
-        result.Password = userCreateDto.Password ?? throw new ArgumentException(nameof(userCreateDto.Password));
-        result.Username = userCreateDto.Username ?? throw new ArgumentException(nameof(userCreateDto.Username));
-        result.Department = userCreateDto.Department ?? throw new ArgumentException(nameof(userCreateDto.Department));
+
+        result.Email = user.Email;
+        result.Password = user.Password;
+        result.Username = user.Username;
+        result.Department = user.Department;
         
         _DbContext.Entry(result).State = EntityState.Modified;
 
-        try
-        {
-            await _DbContext.SaveChangesAsync();
-        }
-        catch
-        {
-            if (!_DbContext.Users.Any(u => u.Id == id))
-            {
-                return NotFound();
-            }
-        }
-        return Ok();
+        _DbContext.Users.Update(result);
+        await _DbContext.SaveChangesAsync();
+
+        return Ok(result);
     }
     //Delete user by ID
     [HttpDelete("{id}")]

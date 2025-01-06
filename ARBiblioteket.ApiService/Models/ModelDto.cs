@@ -1,4 +1,5 @@
-namespace ARBiblioteket.ApiService.Services
+
+namespace ARBiblioteket.ApiService.Dto
 {
     public class ModelCreateDto
     {

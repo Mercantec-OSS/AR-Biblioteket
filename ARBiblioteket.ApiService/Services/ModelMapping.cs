@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿
+using Microsoft.AspNetCore.Http.HttpResults;
+using ARBiblioteket.ApiService.Dto;
+using ARBiblioteket.ApiService.Models;
 
-namespace ARBiblioteket.ApiService.Services
+namespace ARBiblioteket.ApiService.Mapping
 {
     public class ModelMapping
     {

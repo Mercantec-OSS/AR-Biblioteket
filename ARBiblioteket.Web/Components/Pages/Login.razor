@@ -1,51 +1,29 @@
 ﻿@page "/login"
-@using ARBiblioteket.ApiService.Services
-@using ARBiblioteket.ApiService
-@inject ApiService ApiService
-@inject NavigationManager NavigationManager
 
-<PageTitle>AR Biblioteket - Login</PageTitle>
+<PageTitle>AR Biblioteket - Log Ind</PageTitle>
 
 <div class="login-box">
-    <p>Login</p>
-    <form @onsubmit="HandleLogin" method="post">
-        <div class="user-box">
-            <label>Email:</label>
-            <input @bind="Email" required type="text" />
-        </div>
-        <div class="user-box">
-            <label>Password:</label>
-            <input @bind="Password" required type="password" />
-        </div>
-        <button type="submit">Submit</button>
-    </form>
-    <p>Har du ikke en konto? <a href="/sign_up">Sign up!</a></p>
+	<form>
+		<h2>Log Ind</h2>
+		<div class="user-box">
+			<input required type="text">
+			<label>E-mail</label>
+		</div>
+		<div class="user-box">
+			<input required type="password">
+			<label>Adgangskode</label>
+		</div>
+		<button>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			Log Ind
+		</button>
+	</form>
+	<p>Har du ikke en konto? <a href="/sign_up" class="signup-link">Opret konto her!</a></p>
 </div>
 
 @code {
-    public string Email { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
 
-    private async Task HandleLogin()
-    {
-        try
-        {
-            var loginResult = await ApiService.LoginAsync(Email, Password);
-            if (loginResult != null)
-            {
-                // Navigate to a protected page or display a success message
-                NavigationManager.NavigateTo("/");
-            }
-            else
-            {
-                // Handle login failure (e.g., display an error message)
-                Console.WriteLine("Invalid login credentials.");
-            }
-        }
-        catch (Exception ex)
-        {
-            // Handle exceptions (e.g., network issues)
-            Console.WriteLine($"Error: {ex.Message}");
-        }
-    }
 }

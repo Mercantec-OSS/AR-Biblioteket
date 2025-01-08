@@ -1,33 +1,39 @@
 ﻿@page "/sign_up"
 
-<PageTitle>AR Biblioteket - Sign up</PageTitle>
+<PageTitle>AR Biblioteket - Opret Konto</PageTitle>
 
 <div class="login-box">
-	<p>Sign up</p>
 	<form>
+		<h2>Opret Konto</h2>
 		<div class="user-box">
-			<label>Name:</label>
-			<input type="text" name="" required />
+			<input required type="text">
+			<label>Navn</label>
 		</div>
 		<div class="user-box">
-			<label>Email:</label>
-			<input required="" name="" type="text" />
+			<input required type="email">
+			<label>E-mail</label>
 		</div>
 		<div class="user-box">
-			<label>Password:</label>
-			<input required="" name="" type="password" />
+			<input required type="password">
+			<label>Adgangskode</label>
 		</div>
 		<div class="user-box">
-			<label>Afdeling:</label>
-			<input type="text" name="" required />
+			<input required type="text">
+			<label>Afdeling</label>
 		</div>
 		<div class="user-box">
-			<label>Access Key:</label>
-			<input required="" name="" type="text" />
+			<input required type="text">
+			<label>Adgangsnøgle</label>
 		</div>
-		<button>Submit</button>
+		<button>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			Opret Konto
+		</button>
 	</form>
-	<p>Har du en konto? <a href="/login">Login her!</a></p>
+	<p>Har du en konto? <a href="/login" class="signup-link">Log ind her!</a></p>
 </div>
 
 @code {

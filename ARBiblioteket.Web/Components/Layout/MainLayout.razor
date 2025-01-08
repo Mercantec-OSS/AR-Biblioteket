@@ -1,31 +1,27 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    @* <div class="sidebar">
-        <NavMenu />
-    </div> *@
-
     <main>
         <div class="navbar">
             <span class="title">AR Biblioteket</span>
             <nav>
-                <a href="/">Home</a>
+                <a href="/">Forside</a>
                 <a href="/add_model">Tilføj Model</a>
-                <a href="/edit_model">Redigere Model</a>
-                <a href="/login">Login</a>
-                <a href="/sign_up">Sign Up</a>
+                <a href="/edit_model">Rediger Model</a>
+                <a href="/login">Log Ind</a>
+                <a href="/sign_up">Opret Konto</a>
             </nav>
         </div>
 
-        <article class="content px-4">
+        <article class="content">
             @Body
         </article>
     </main>
 </div>
 
 <div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
+    Der er opstået en uventet fejl.
+    <a href="" class="reload">Genindlæs</a>
     <a class="dismiss">🗙</a>
 </div>
 

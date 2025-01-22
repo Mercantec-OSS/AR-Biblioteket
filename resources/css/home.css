@@ -1,0 +1,141 @@
+/* Base styles - Mobile First */
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 100%;
+    min-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.sidebar {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.filter-section h3 {
+    color: #1e293b;
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+}
+
+.content {
+    width: 100%;
+}
+
+.model-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+}
+
+.model-item {
+    border-bottom: 1px solid rgba(229, 233, 239, 0.7);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.model-item:hover {
+    background-color: #e9f5ff;
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+}
+
+.model-item:last-child {
+    border-bottom: none;
+}
+
+.model-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    color: #1e293b;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.model-link:hover {
+    background-color: #f0f0f0;
+}
+
+.model-title {
+    font-weight: 600;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #334155;
+}
+
+.arrow-icon {
+    font-size: 1.5rem;
+    color: #94a3b8;
+    margin-left: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.coming-soon {
+    color: #64748b;
+    font-size: 1rem;
+    font-style: italic;
+    text-align: center;
+    padding: 0.5rem;
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+    .container {
+        flex-direction: row;
+        padding: 2rem;
+        gap: 2rem;
+    }
+
+    .sidebar {
+        width: 300px;
+        margin-bottom: 0;
+        position: sticky;
+        top: 2rem;
+        height: fit-content;
+    }
+
+    .model-link:hover {
+        background-color: transparent;
+        transform: translateX(0);
+    }
+
+    .model-link:hover .arrow-icon {
+        transform: translateX(8px);
+        color: #64748b;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 90%; 
+        margin: 0 auto; 
+        padding: 1rem; 
+    }
+
+    .content {
+        margin-top: 1rem; 
+    }
+}

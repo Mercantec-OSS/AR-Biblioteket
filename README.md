@@ -1,26 +1,66 @@
-**Projektbeskrivelse: Interaktivt AR Hjemmesidebibliotek**
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-**Projektmål:**  
-Udvikling af en browserbaseret hjemmeside, hvor brugerne kan se og interagere med 3D-modeller af forskellige objekter. Disse modeller skal kunne ses som integrerede AR-elementer, så brugerne kan opleve dem i en virkelighedstro kontekst direkte via deres telefon. Platformen skal være let tilgængelig og mobilvenlig, og indholdet skal kunne tilgås uden behov for yderligere downloads.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-**Funktionaliteter:**
+## About Laravel
 
-1. **3D-model visning og interaktion:** Brugerne kan vælge en 3D-model fra en liste og interagere med den via animationer. Modellen vises i AR via browseren uden krav om app-download. Der skal gøres brug af model-viewer til at lave AR delen.
-   
-2. **Upload-funktion til modeller:** Brugere med login-rettigheder (eksempelvis undervisere) skal kunne uploade nye modeller direkte til hjemmesiden. Ved upload vises modellen automatisk i biblioteket.
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-3. **Animation og interaktivitet:** Alle modeller skal kunne afspille foruddefinerede animationer, som brugerne kan aktivere på hjemmesiden.
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-4. **Simpel brugergrænseflade:** Platformen skal have et brugervenligt interface uden behov for omfattende tekstbeskrivelser eller kategorisering. Grundlæggende navigation og modelvalg er tilstrækkeligt i denne første version.
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-5. **Mobil-først tilgang:** Da platformen primært tilgås via telefoner, udvikles designet med fokus på mobilvisning. Upload af 3D-modeller skal dog ske via en computer.
+## Learning Laravel
 
-6. **Database og login system:** En simpel login-funktion skal sikre, at kun godkendte brugere kan uploade modeller. Eksterne brugere kan frit se modellerne.
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-7. **Fremtidig udvikling:** Der ønskes en mulighed for fremtidig tilføjelse af blandt andet, en automatiseret filkonverteringsproces, der understøtter forskellige formater samt et system til filtrering og kategorisering af modeller.
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-**Tidsramme:**  
-Projektet forventes færdigt inden årets udgang, med en præsentation af en prototype i løbet af de kommende uger.
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-Projektet skal resultere i en fleksibel platform, hvor undervisere og studerende kan interagere med 3D-modeller i et virkelighedsnært format.
+## Laravel Sponsors
 
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+
+### Premium Partners
+
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
+
+## Contributing
+
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+
+## Code of Conduct
+
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

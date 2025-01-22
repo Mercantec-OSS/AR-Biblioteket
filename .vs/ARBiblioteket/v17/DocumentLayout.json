@@ -1,0 +1,142 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F8773865-83EF-469F-B250-FE4B258090E0}|ARBiblioteket.Web\\ARBiblioteket.Web.csproj|c:\\users\\charl\\desktop\\ar-biblioteket\\arbiblioteket.web\\components\\pages\\viewmodel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F8773865-83EF-469F-B250-FE4B258090E0}|ARBiblioteket.Web\\ARBiblioteket.Web.csproj|solutionrelative:arbiblioteket.web\\components\\pages\\viewmodel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FC548F4D-9A9C-4841-BFE6-02EAE8A0698A}|ARBiblioteket.ApiService\\ARBiblioteket.ApiService.csproj|c:\\users\\charl\\desktop\\ar-biblioteket\\arbiblioteket.apiservice\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FC548F4D-9A9C-4841-BFE6-02EAE8A0698A}|ARBiblioteket.ApiService\\ARBiblioteket.ApiService.csproj|solutionrelative:arbiblioteket.apiservice\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8773865-83EF-469F-B250-FE4B258090E0}|ARBiblioteket.Web\\ARBiblioteket.Web.csproj|c:\\users\\charl\\desktop\\ar-biblioteket\\arbiblioteket.web\\components\\pages\\editmodel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F8773865-83EF-469F-B250-FE4B258090E0}|ARBiblioteket.Web\\ARBiblioteket.Web.csproj|solutionrelative:arbiblioteket.web\\components\\pages\\editmodel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8773865-83EF-469F-B250-FE4B258090E0}|ARBiblioteket.Web\\ARBiblioteket.Web.csproj|c:\\users\\charl\\desktop\\ar-biblioteket\\arbiblioteket.web\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F8773865-83EF-469F-B250-FE4B258090E0}|ARBiblioteket.Web\\ARBiblioteket.Web.csproj|solutionrelative:arbiblioteket.web\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8773865-83EF-469F-B250-FE4B258090E0}|ARBiblioteket.Web\\ARBiblioteket.Web.csproj|c:\\users\\charl\\desktop\\ar-biblioteket\\arbiblioteket.web\\components\\pages\\addmodel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F8773865-83EF-469F-B250-FE4B258090E0}|ARBiblioteket.Web\\ARBiblioteket.Web.csproj|solutionrelative:arbiblioteket.web\\components\\pages\\addmodel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FC548F4D-9A9C-4841-BFE6-02EAE8A0698A}|ARBiblioteket.ApiService\\ARBiblioteket.ApiService.csproj|c:\\users\\charl\\desktop\\ar-biblioteket\\arbiblioteket.apiservice\\controllers\\modelcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FC548F4D-9A9C-4841-BFE6-02EAE8A0698A}|ARBiblioteket.ApiService\\ARBiblioteket.ApiService.csproj|solutionrelative:arbiblioteket.apiservice\\controllers\\modelcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FC548F4D-9A9C-4841-BFE6-02EAE8A0698A}|ARBiblioteket.ApiService\\ARBiblioteket.ApiService.csproj|c:\\users\\charl\\desktop\\ar-biblioteket\\arbiblioteket.apiservice\\models\\modeldto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FC548F4D-9A9C-4841-BFE6-02EAE8A0698A}|ARBiblioteket.ApiService\\ARBiblioteket.ApiService.csproj|solutionrelative:arbiblioteket.apiservice\\models\\modeldto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ApiService.cs",
+              "DocumentMoniker": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.ApiService\\Services\\ApiService.cs",
+              "RelativeDocumentMoniker": "ARBiblioteket.ApiService\\Services\\ApiService.cs",
+              "ToolTip": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.ApiService\\Services\\ApiService.cs",
+              "RelativeToolTip": "ARBiblioteket.ApiService\\Services\\ApiService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-17T07:26:43.128Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ViewModel.razor",
+              "DocumentMoniker": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\Components\\Pages\\ViewModel.razor",
+              "RelativeDocumentMoniker": "ARBiblioteket.Web\\Components\\Pages\\ViewModel.razor",
+              "ToolTip": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\Components\\Pages\\ViewModel.razor",
+              "RelativeToolTip": "ARBiblioteket.Web\\Components\\Pages\\ViewModel.razor",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAkwBsAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-01-17T07:16:32.974Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ModelController.cs",
+              "DocumentMoniker": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.ApiService\\Controllers\\ModelController.cs",
+              "RelativeDocumentMoniker": "ARBiblioteket.ApiService\\Controllers\\ModelController.cs",
+              "ToolTip": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.ApiService\\Controllers\\ModelController.cs",
+              "RelativeToolTip": "ARBiblioteket.ApiService\\Controllers\\ModelController.cs",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAgwGcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-16T08:05:27.714Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ModelDto.cs",
+              "DocumentMoniker": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.ApiService\\Models\\ModelDto.cs",
+              "RelativeDocumentMoniker": "ARBiblioteket.ApiService\\Models\\ModelDto.cs",
+              "ToolTip": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.ApiService\\Models\\ModelDto.cs",
+              "RelativeToolTip": "ARBiblioteket.ApiService\\Models\\ModelDto.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAUwA4AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-16T07:58:15.04Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "ARBiblioteket.Web\\Components\\Pages\\Home.razor",
+              "ToolTip": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "ARBiblioteket.Web\\Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-01-06T11:45:54.012Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AddModel.razor",
+              "DocumentMoniker": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\Components\\Pages\\AddModel.razor",
+              "RelativeDocumentMoniker": "ARBiblioteket.Web\\Components\\Pages\\AddModel.razor",
+              "ToolTip": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\Components\\Pages\\AddModel.razor",
+              "RelativeToolTip": "ARBiblioteket.Web\\Components\\Pages\\AddModel.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAF4AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-09T08:13:26.244Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "EditModel.razor",
+              "DocumentMoniker": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\Components\\Pages\\EditModel.razor",
+              "RelativeDocumentMoniker": "ARBiblioteket.Web\\Components\\Pages\\EditModel.razor",
+              "ToolTip": "C:\\Users\\charl\\Desktop\\AR-Biblioteket\\ARBiblioteket.Web\\Components\\Pages\\EditModel.razor",
+              "RelativeToolTip": "ARBiblioteket.Web\\Components\\Pages\\EditModel.razor",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAABIAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-09T08:13:24.445Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

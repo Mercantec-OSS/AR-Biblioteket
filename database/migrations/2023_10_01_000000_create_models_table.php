@@ -8,7 +8,7 @@ class CreateModelsTable extends Migration
 {
     public function up(): void
     {
-        Schema::create('models', function (Blueprint $table) {
+        Schema::create('vrmodels', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('education');

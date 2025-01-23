@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Model;
+use App\Models\VRModels;
 use Illuminate\Support\Facades\Storage;
 
 class ModelController extends Controller
@@ -11,7 +11,7 @@ class ModelController extends Controller
     // Get model by ID
     public function getModelByID($id)
     {
-        $model = Model::find($id);
+        $model = VRModels::find($id);
         if ($model) {
             return 'Model found: ' . $model->title;
         } else {
@@ -22,7 +22,7 @@ class ModelController extends Controller
     // Get all models
     public function getAllModels()
     {
-        $models = Model::all();
+        $models = VRModels::all();
         return 'Models: ' . $models->pluck('title')->implode(', ');
     }
 
@@ -41,7 +41,7 @@ class ModelController extends Controller
         $modelPath = $request->file('model')->store('models');
         $imagePath = $request->file('image')->store('images');
 
-        $model = new Model();
+        $model = new VRModels();
         $model->title = $request->input('title');
         $model->education = $request->input('education');
         $model->description = $request->input('description');
@@ -58,7 +58,7 @@ class ModelController extends Controller
     // Edit model by ID
     public function update(Request $request, $id)
     {
-        $model = Model::find($id);
+        $model = VRModels::find($id);
         if ($model) {
             $model->title = $request->input('title', $model->title);
             $model->education = $request->input('education', $model->education);
@@ -83,7 +83,7 @@ class ModelController extends Controller
     // Delete model by ID
     public function deleteModelByID($id)
     {
-        $model = Model::find($id);
+        $model = VRModels::find($id);
         if ($model) {
             // Delete associated files
             Storage::delete($model->model_path);

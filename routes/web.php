@@ -6,7 +6,8 @@ use App\Http\Controllers\ModelController;
 
 // Home route
 Route::get('/', function () {
-    return view('home');
+    $models = \App\Models\VRModels::all();
+    return view('home', ['models' => $models]);
 });
 
 // Add model page

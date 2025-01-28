@@ -29,8 +29,8 @@ class ModelController extends Controller
             'titleCreate' => 'required|string',
             'educationCreate' => 'required|string',
             'descriptionCreate' => 'required|string',
-            'modelCreate' => 'required|file',  
-            'imageCreate' => 'required|file|mimes:jpeg,png,jpg'
+            'modelCreate' => 'required|file|mimes:glb,gltf,bin,png,jpg,jpeg|max:40960',  // 40MB max
+            'imageCreate' => 'required|file|mimes:jpeg,png,jpg|max:5120' // 5MB max
         ]);
 
         try {

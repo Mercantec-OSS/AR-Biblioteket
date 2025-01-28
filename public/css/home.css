@@ -183,3 +183,28 @@ body {
 .filter-select option {
     padding: 0.5rem;
 }
+
+.model-title-link {
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+}
+
+.model-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.edit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    transition: color 0.3s ease;
+    text-decoration: none;
+}
+
+.edit-button:hover {
+    color: #334155;
+}

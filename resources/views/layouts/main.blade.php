@@ -24,7 +24,6 @@
                 <nav class="dropdown-menu">
                     <a href="/">Forside</a>
                     <a href="/add_model">Tilføj Model</a>
-                    <a href="/edit_model">Rediger Model</a>
                     <a href="/login">Log Ind</a>
                     <a href="/createUser">Opret Konto</a>
                 </nav>

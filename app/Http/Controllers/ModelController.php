@@ -82,25 +82,47 @@ class ModelController extends Controller
         $model = VRModels::find($id);
 
         if ($model) {
-            $model->title = $request->input('titleCreate', $model->title);
-            $model->education = $request->input('educationCreate', $model->education);
-            $model->description = $request->input('descriptionCreate', $model->description);
+            // Validate the request
+            $validationRules = [
+                'titleCreate' => 'required|string|max:255',
+                'educationCreate' => 'required|string',
+                'descriptionCreate' => 'required|string'
+            ];
 
-            // Handle file updates
+            // Add file validation rules only if files are being uploaded
             if ($request->hasFile('modelCreate')) {
-                Storage::delete($model->model_path); // Delete old file
-                $model->model_path = $request->file('modelCreate')->store('models');
+                $validationRules['modelCreate'] = 'file|mimes:glb|max:50000';
             }
             if ($request->hasFile('imageCreate')) {
-                Storage::delete($model->image_path); // Delete old file
-                $model->image_path = $request->file('imageCreate')->store('images');
+                $validationRules['imageCreate'] = 'file|mimes:jpeg,png,jpg|max:50000';
             }
 
-            $model->save();
-            return 'Model updated successfully';
-        } else {
-            return 'Model not found';
+            $request->validate($validationRules);
+
+            try {
+                $model->title = $request->input('titleCreate');
+                $model->education = $request->input('educationCreate');
+                $model->description = $request->input('descriptionCreate');
+
+                // Handle file updates
+                if ($request->hasFile('modelCreate')) {
+                    Storage::disk('public')->delete($model->model_path);
+                    $model->model_path = $request->file('modelCreate')->store('models', 'public');
+                }
+                if ($request->hasFile('imageCreate')) {
+                    Storage::disk('public')->delete($model->image_path);
+                    $model->image_path = $request->file('imageCreate')->store('images', 'public');
+                }
+
+                $model->save();
+                return redirect('/')->with('success', 'Model opdateret succesfuldt');
+            } catch (\Exception $e) {
+                \Log::error('Model update failed: ' . $e->getMessage());
+                return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
+            }
         }
+
+        return back()->with('error', 'Model ikke fundet');
     }
 
     // Delete model by ID
@@ -109,13 +131,12 @@ class ModelController extends Controller
         $model = VRModels::find($id);
         if ($model) {
             // Delete associated files
-            Storage::delete($model->model_path);
-            Storage::delete($model->image_path);
-
+            Storage::disk('public')->delete($model->model_path);
+            Storage::disk('public')->delete($model->image_path);
+            
             $model->delete();
-            return 'Model deleted successfully';
-        } else {
-            return 'Model not found';
+            return redirect('/')->with('success', 'Model slettet succesfuldt');
         }
+        return redirect('/')->with('error', 'Model ikke fundet');
     }
 }

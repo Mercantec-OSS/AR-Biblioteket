@@ -20,6 +20,12 @@ Route::get('/edit_model', function () {
     return view('edit_model');
 });
 
+// Edit model page
+Route::get('/edit_model/{id}', function ($id) {
+    $model = \App\Models\VRModels::find($id);
+    return view('edit_model', ['model' => $model]);
+});
+
 // User-related routes
 Route::view('createUser', 'createUser');
 Route::view('login', 'login');
@@ -32,7 +38,7 @@ Route::delete('/user/{id}', [UserController::class, 'deleteUserByID']);
 
 // Model-related routes
 Route::post('/add_model', [ModelController::class, 'store']);
-Route::post('/edit_model/{id}', [ModelController::class, 'update']);
+Route::put('/edit_model/{id}', [ModelController::class, 'update']);
 Route::get('/model/{id}', [ModelController::class, 'getModelByID']);
 Route::get('/models', [ModelController::class, 'getAllModels']);
 Route::delete('/model/{id}', [ModelController::class, 'deleteModelByID']);

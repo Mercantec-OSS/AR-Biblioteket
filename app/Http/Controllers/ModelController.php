@@ -25,12 +25,28 @@ class ModelController extends Controller
     // Create a new model
     public function store(Request $request)
     {
+        // Validate file types
         $request->validate([
-            'titleCreate' => 'required|string',
+            'modelCreate' => [
+                'required',
+                'file',
+                'mimes:glb',
+                'max:50000'
+            ],
+            'imageCreate' => [
+                'required',
+                'file',
+                'mimes:jpeg,png,jpg',
+                'max:50000'
+            ],
+            'titleCreate' => 'required|string|max:255',
             'educationCreate' => 'required|string',
-            'descriptionCreate' => 'required|string',
-            'modelCreate' => 'required|file|mimes:glb,gltf,bin,png,jpg,jpeg|max:40960',  // 40MB max
-            'imageCreate' => 'required|file|mimes:jpeg,png,jpg|max:5120' // 5MB max
+            'descriptionCreate' => 'required|string'
+        ], [
+            'modelCreate.mimes' => 'Modelfilen skal være i GLB-format',
+            'modelCreate.max' => 'Modelfilen må ikke være større end 50MB',
+            'imageCreate.mimes' => 'Billedfilen skal være i JPEG, PNG eller JPG format',
+            'imageCreate.max' => 'Billedfilen må ikke være større end 50MB',
         ]);
 
         try {
@@ -38,24 +54,25 @@ class ModelController extends Controller
             $modelPath = $request->file('modelCreate')->store('models', 'public');
             $imagePath = $request->file('imageCreate')->store('images', 'public');
 
-            // Create and save the model
+            // Create and save the model with correct timezone
             $model = new VRModels();
             $model->title = $request->input('titleCreate');
             $model->education = $request->input('educationCreate');
             $model->description = $request->input('descriptionCreate');
             $model->model_path = $modelPath;
             $model->image_path = $imagePath;
+            $model->created_at = now(); // Dette vil nu bruge den korrekte tidszone
             $model->user_id = 1; // Temporarily hardcoded - should come from authenticated user
 
             if ($model->save()) {
-                return redirect('/')->with('success', 'Model added successfully');
+                return redirect('/')->with('success', 'Model tilføjet succesfuldt');
             }
 
             return back()->with('error', 'Failed to add model');
         } catch (\Exception $e) {
             // Log the error for debugging
             \Log::error('Model creation failed: ' . $e->getMessage());
-            return back()->with('error', 'Error: ' . $e->getMessage());
+            return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
         }
     }
 

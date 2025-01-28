@@ -7,6 +7,16 @@
     <div class="form-container">
         <h1 class="page-title">Tilføj 3D Model</h1>
         
+        @if ($errors->any())
+            <div class="alert alert-error">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form class="model-form" method="post" enctype="multipart/form-data" action="/add_model">
             @csrf
             <div class="form-group">

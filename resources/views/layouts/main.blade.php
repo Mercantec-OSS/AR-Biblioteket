@@ -56,6 +56,43 @@
                 }
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const educationFilter = document.getElementById('educationFilter');
+            const modelItems = document.querySelectorAll('.model-item');
+
+            educationFilter.addEventListener('change', function() {
+                const selectedEducation = this.value;
+                let hasVisibleModels = false;
+
+                modelItems.forEach(item => {
+                    const educationSpan = item.querySelector('div[style*="color: #64748b"] span');
+                    
+                    if (!educationSpan) return;
+                    
+                    if (!selectedEducation || educationSpan.textContent.trim() === selectedEducation) {
+                        item.style.display = '';
+                        item.style.animation = 'fadeIn 0.5s ease-in-out forwards';
+                        hasVisibleModels = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                // Show "No models found" message if no models are visible
+                const noModelsMessage = document.querySelector('.no-models-message');
+                if (!hasVisibleModels) {
+                    if (!noModelsMessage) {
+                        const message = document.createElement('li');
+                        message.className = 'model-item no-models-message';
+                        message.innerHTML = '<div class="model-link"><span>Ingen modeller fundet</span></div>';
+                        document.querySelector('.model-list').appendChild(message);
+                    }
+                } else if (noModelsMessage) {
+                    noModelsMessage.remove();
+                }
+            });
+        });
     </script>
 </body>
 </html> 

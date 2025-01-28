@@ -38,13 +38,13 @@ class ModelController extends Controller
         ]);
 
         // Handle file uploads
-        $modelPath = $request->file('model')->store('models');
-        $imagePath = $request->file('image')->store('images');
+        $modelPath = $request->file('modelCreate')->store('models');
+        $imagePath = $request->file('imageCreate')->store('images');
 
         $model = new VRModels();
-        $model->title = $request->input('title');
-        $model->education = $request->input('education');
-        $model->description = $request->input('description');
+        $model->title = $request->input('titleCreate');
+        $model->education = $request->input('educationCreate');
+        $model->description = $request->input('descriptionCreate');
         $model->model_path = $modelPath;
         $model->image_path = $imagePath;
 

@@ -13,7 +13,6 @@
             src="{{ asset('storage/models/' . $model->model_path)}}"
             alt="{{ $model->title }}"
             autoplay 
-            availableAnimations
             ar
             ar-modes="webxr scene-viewer"
             camera-controls

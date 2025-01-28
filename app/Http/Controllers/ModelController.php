@@ -8,12 +8,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ModelController extends Controller
 {
-    // Get model by ID
+    // Get model by ID  
     public function getModelByID($id)
     {
-        $model = VRModels::find($id);
-        return $model ? 'Model found: ' . $model->title : 'Model not found';
+        $model = VRModels::findOrFail($id);
+        return view('viewmodel', compact('model'));
     }
+
+
 
     // Get all models
     public function getAllModels()

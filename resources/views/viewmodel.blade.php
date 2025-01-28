@@ -7,19 +7,18 @@
     <div class="model-container">
         <h2 class="model-title">{{ $model->title }}</h2>
 
-        <!-- Model Image -->
-        <img src="{{ asset('storage/images/' . $model->image_path) }}"
-             alt="{{ $model->title }}" 
-             class="model-image">
-
         <!-- 3D Model Viewer -->
         <model-viewer 
-            src="{{ asset('storage/models/' . $model->model_path) }}"
+            poster="{{ asset('storage/images/' . $model->image_path) }}"
+            src="{{ asset('storage/models/' . $model->model_path)}}"
             alt="{{ $model->title }}"
+            autoplay 
+            availableAnimations
             ar
-            ar-modes="webxr scene-viewer quick-look"
+            ar-modes="webxr scene-viewer"
             camera-controls
-            auto-rotate
+            touch-action="pan-y"
+            scale="0.2 0.2 0.2"
             shadow-intensity="1">
         </model-viewer>
 

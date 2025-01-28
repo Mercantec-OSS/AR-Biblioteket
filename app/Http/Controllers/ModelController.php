@@ -12,11 +12,7 @@ class ModelController extends Controller
     public function getModelByID($id)
     {
         $model = VRModels::find($id);
-        if ($model) {
-            return 'Model found: ' . $model->title;
-        } else {
-            return 'Model not found';
-        }
+        return $model ? 'Model found: ' . $model->title : 'Model not found';
     }
 
     // Get all models
@@ -30,28 +26,36 @@ class ModelController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string',
-            'education' => 'required|string',
-            'description' => 'required|string',
-            'model' => 'required|file|mimes:glb', 
-            'image' => 'required|file|mimes:jpeg,png,jpg'
+            'titleCreate' => 'required|string',
+            'educationCreate' => 'required|string',
+            'descriptionCreate' => 'required|string',
+            'modelCreate' => 'required|file',  
+            'imageCreate' => 'required|file|mimes:jpeg,png,jpg'
         ]);
 
-        // Handle file uploads
-        $modelPath = $request->file('modelCreate')->store('models');
-        $imagePath = $request->file('imageCreate')->store('images');
+        try {
+            // Store files in public storage
+            $modelPath = $request->file('modelCreate')->store('models', 'public');
+            $imagePath = $request->file('imageCreate')->store('images', 'public');
 
-        $model = new VRModels();
-        $model->title = $request->input('titleCreate');
-        $model->education = $request->input('educationCreate');
-        $model->description = $request->input('descriptionCreate');
-        $model->model_path = $modelPath;
-        $model->image_path = $imagePath;
+            // Create and save the model
+            $model = new VRModels();
+            $model->title = $request->input('titleCreate');
+            $model->education = $request->input('educationCreate');
+            $model->description = $request->input('descriptionCreate');
+            $model->model_path = $modelPath;
+            $model->image_path = $imagePath;
+            $model->user_id = 1; // Temporarily hardcoded - should come from authenticated user
 
-        if ($model->save()) {
-            return redirect('/')->with('message', 'Model added successfully');
-        } else {
-            return 'Model could not be created';
+            if ($model->save()) {
+                return redirect('/')->with('success', 'Model added successfully');
+            }
+
+            return back()->with('error', 'Failed to add model');
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Model creation failed: ' . $e->getMessage());
+            return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
 
@@ -59,21 +63,23 @@ class ModelController extends Controller
     public function update(Request $request, $id)
     {
         $model = VRModels::find($id);
-        if ($model) {
-            $model->title = $request->input('title', $model->title);
-            $model->education = $request->input('education', $model->education);
-            $model->description = $request->input('description', $model->description);
 
-            // Handle file updates if new files are uploaded
-            if ($request->hasFile('model')) {
-                $model->model_path = $request->file('model')->store('models');
+        if ($model) {
+            $model->title = $request->input('titleCreate', $model->title);
+            $model->education = $request->input('educationCreate', $model->education);
+            $model->description = $request->input('descriptionCreate', $model->description);
+
+            // Handle file updates
+            if ($request->hasFile('modelCreate')) {
+                Storage::delete($model->model_path); // Delete old file
+                $model->model_path = $request->file('modelCreate')->store('models');
             }
-            if ($request->hasFile('image')) {
-                $model->image_path = $request->file('image')->store('images');
+            if ($request->hasFile('imageCreate')) {
+                Storage::delete($model->image_path); // Delete old file
+                $model->image_path = $request->file('imageCreate')->store('images');
             }
 
             $model->save();
-
             return 'Model updated successfully';
         } else {
             return 'Model not found';

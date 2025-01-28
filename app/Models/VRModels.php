@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class VRModels extends Model
 {
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'vrmodels'; // Change from 'models' to match migration
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

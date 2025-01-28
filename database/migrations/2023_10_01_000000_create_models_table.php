@@ -24,6 +24,6 @@ class CreateModelsTable extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('models');
+        Schema::dropIfExists('vrmodels');
     }
 }

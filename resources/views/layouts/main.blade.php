@@ -9,6 +9,7 @@
     <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/forms.css') }}" rel="stylesheet">
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/viewmodel.css') }}" rel="stylesheet">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>

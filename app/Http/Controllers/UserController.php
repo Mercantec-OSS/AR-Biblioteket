@@ -89,4 +89,9 @@ class UserController extends Controller
             return 'User not found';
         }
     }
+
+    public function me()
+    {
+        return response()->json(auth()->user());
+    }
 }

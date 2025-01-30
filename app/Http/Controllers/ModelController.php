@@ -56,23 +56,24 @@ class ModelController extends Controller
             $modelPath = $request->file('modelCreate')->store('models', 'public');
             $imagePath = $request->file('imageCreate')->store('images', 'public');
 
-            // Create and save the model with correct timezone
+            // Create and save the model
             $model = new VRModels();
             $model->title = $request->input('titleCreate');
             $model->education = $request->input('educationCreate');
             $model->description = $request->input('descriptionCreate');
             $model->model_path = $modelPath;
             $model->image_path = $imagePath;
-            $model->created_at = now(); // Dette vil nu bruge den korrekte tidszone
-            $model->user_id = 1; // Temporarily hardcoded - should come from authenticated user
+            $model->created_at = now();
+            $model->user_id = 1; // Temporarily hardcoded
 
             if ($model->save()) {
-                return redirect('/')->with('success', 'Model tilføjet succesfuldt');
+                // Redirect to select base object page with model ID and path
+                return redirect()->route('select.base.object', [
+                    'modelId' => $model->id,
+                    'modelPath' => $modelPath
+                ]);
             }
-
-            return back()->with('error', 'Failed to add model');
         } catch (\Exception $e) {
-            // Log the error for debugging
             \Log::error('Model creation failed: ' . $e->getMessage());
             return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
         }
@@ -106,18 +107,33 @@ class ModelController extends Controller
                 $model->education = $request->input('educationCreate');
                 $model->description = $request->input('descriptionCreate');
 
-                // Handle file updates
+                // Check if a new 3D model was uploaded
+                $modelUpdated = false;
                 if ($request->hasFile('modelCreate')) {
                     Storage::disk('public')->delete($model->model_path);
                     $model->model_path = $request->file('modelCreate')->store('models', 'public');
+                    $modelUpdated = true;
                 }
+
+                // Handle image update
                 if ($request->hasFile('imageCreate')) {
                     Storage::disk('public')->delete($model->image_path);
                     $model->image_path = $request->file('imageCreate')->store('images', 'public');
                 }
 
                 $model->save();
+
+                // If 3D model was updated, redirect to select base object page
+                if ($modelUpdated) {
+                    return redirect()->route('select.base.object', [
+                        'modelId' => $model->id,
+                        'modelPath' => $model->model_path
+                    ]);
+                }
+
+                // Otherwise, redirect to home page
                 return redirect('/')->with('success', 'Model opdateret succesfuldt');
+
             } catch (\Exception $e) {
                 \Log::error('Model update failed: ' . $e->getMessage());
                 return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
@@ -140,5 +156,29 @@ class ModelController extends Controller
             return redirect('/')->with('success', 'Model slettet succesfuldt');
         }
         return redirect('/')->with('error', 'Model ikke fundet');
+    }
+
+    public function showSelectBaseObject($modelId)
+    {
+        $model = VRModels::findOrFail($modelId);
+        return view('select_base_object', [
+            'modelId' => $modelId,
+            'modelPath' => $model->model_path
+        ]);
+    }
+
+    public function completeModelUpload(Request $request, $modelId)
+    {
+        $model = VRModels::findOrFail($modelId);
+        
+        // Get the selected base object and remove "Action" from it
+        $baseObject = $request->input('baseObject');
+        $cleanBaseObject = str_replace('Action', '', $baseObject);
+        
+        // Save the cleaned base object name
+        $model->base_object = trim($cleanBaseObject);
+        $model->save();
+        
+        return redirect('/')->with('success', 'Model tilføjet succesfuldt');
     }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ModelController;
+use App\Http\Controllers\Api\VRModelsController;
 
 // Home route
 Route::get('/', function () {
@@ -42,3 +43,10 @@ Route::put('/edit_model/{id}', [ModelController::class, 'update']);
 Route::get('/model/{id}', [ModelController::class, 'getModelByID']);
 Route::get('/models', [ModelController::class, 'getAllModels']);
 Route::delete('/model/{id}', [ModelController::class, 'deleteModelByID']);
+Route::get('/select-base-object/{modelId}', [ModelController::class, 'showSelectBaseObject'])
+    ->name('select.base.object');
+Route::post('/complete-model/{modelId}', [ModelController::class, 'completeModelUpload'])
+    ->name('complete.model.upload');
+
+// API routes
+Route::get('/api/models', [VRModelsController::class, 'index']);

@@ -23,6 +23,10 @@
             <input required type="text" name="department" id="department" placeholder="">
             <label for="department">Afdeling</label>
         </div>
+        <div class="user-box">
+            <input required type="text" name="token" id="token" placeholder="">
+            <label for="token">Token</label>
+        </div>
         <button type="submit">
             <span></span>
             <span></span>

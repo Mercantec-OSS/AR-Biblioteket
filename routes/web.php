@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ModelController;
+use App\Http\Controllers\JWTAuthController;
+use App\Http\Middleware\JwtMiddleware;
 
 // Home route
 Route::get('/', function () {
@@ -20,7 +22,7 @@ Route::get('/edit_model', function () {
     return view('edit_model');
 });
 
-// Edit model page
+// Edit model with ID
 Route::get('/edit_model/{id}', function ($id) {
     $model = \App\Models\VRModels::find($id);
     return view('edit_model', ['model' => $model]);
@@ -30,19 +32,18 @@ Route::get('/edit_model/{id}', function ($id) {
 Route::view('createUser', 'createUser');
 Route::view('login', 'login');
 Route::post('createUser', [UserController::class, 'createUser']);
-//Route::post('login', [UserController::class, 'loginUser']);
-Route::get('/user/{id}', [UserController::class, 'getUserByID']);
-Route::get('/users', [UserController::class, 'getAllUsers']);
-Route::put('/user/{id}', [UserController::class, 'editUserByID']);
-Route::delete('/user/{id}', [UserController::class, 'deleteUserByID']);
+Route::post('login', [JWTAuthController::class, 'login']);
 
-// Model-related routes
+// Protected route
+Route::middleware([JwtMiddleware::class])->group(function () {
+    Route::get('/protected', function () {
+        return response()->json(['message' => 'You have accessed a protected route']);
+    });
+});
+
+// Other model-related routes
 Route::post('/add_model', [ModelController::class, 'store']);
 Route::put('/edit_model/{id}', [ModelController::class, 'update']);
 Route::get('/model/{id}', [ModelController::class, 'getModelByID']);
 Route::get('/models', [ModelController::class, 'getAllModels']);
 Route::delete('/model/{id}', [ModelController::class, 'deleteModelByID']);
-
-
-
-

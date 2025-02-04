@@ -28,6 +28,7 @@
                     <a href="/add_model">Tilføj Model</a>
                     <a href="/login">Log Ind</a>
                     <a href="/createUser">Opret Konto</a>
+                    <!-- Logout link dynamically added -->
                 </nav>
             </div>
 
@@ -42,6 +43,7 @@
             const dropdownToggle = document.querySelector('.dropdown-toggle');
             const dropdownMenu = document.querySelector('.dropdown-menu');
 
+            // Toggle dropdown menu on click
             dropdownToggle.addEventListener('click', function() {
                 dropdownMenu.classList.toggle('active');
                 const isExpanded = dropdownToggle.getAttribute('aria-expanded') === 'true' || false;
@@ -55,44 +57,66 @@
                     dropdownToggle.setAttribute('aria-expanded', 'false');
                 }
             });
-        });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const educationFilter = document.getElementById('educationFilter');
-            const modelItems = document.querySelectorAll('.model-item');
-
-            educationFilter.addEventListener('change', function() {
-                const selectedEducation = this.value;
-                let hasVisibleModels = false;
-
-                modelItems.forEach(item => {
-                    const educationSpan = item.querySelector('div[style*="color: #64748b"] span');
-                    
-                    if (!educationSpan) return;
-                    
-                    if (!selectedEducation || educationSpan.textContent.trim() === selectedEducation) {
-                        item.style.display = '';
-                        item.style.animation = 'fadeIn 0.5s ease-in-out forwards';
-                        hasVisibleModels = true;
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-
-                // Show "No models found" message if no models are visible
-                const noModelsMessage = document.querySelector('.no-models-message');
-                if (!hasVisibleModels) {
-                    if (!noModelsMessage) {
-                        const message = document.createElement('li');
-                        message.className = 'model-item no-models-message';
-                        message.innerHTML = '<div class="model-link"><span>Ingen modeller fundet</span></div>';
-                        document.querySelector('.model-list').appendChild(message);
-                    }
-                } else if (noModelsMessage) {
-                    noModelsMessage.remove();
-                }
+            // Handle logout logic
+            const logoutLink = document.createElement('a');
+            logoutLink.href = "#";
+            logoutLink.textContent = "Log Ud";
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('authToken'); // Clear token on logout
+                alert('You have been logged out.');
+                window.location.href = '/login'; // Redirect to login page
             });
+
+            dropdownMenu.appendChild(logoutLink);
         });
+
+        // Function to make authenticated API requests
+        async function makeAuthenticatedRequest(url, method = 'GET', body = null) {
+            const token = localStorage.getItem('authToken'); // Retrieve token
+
+            if (!token) {
+                alert('You must be logged in to access this feature.');
+                window.location.href = '/login';
+                return;
+            }
+
+            const headers = {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            };
+
+            const options = {
+                method,
+                headers,
+            };
+
+            if (body) {
+                options.body = JSON.stringify(body);
+            }
+
+            try {
+                const response = await fetch(url, options);
+                if (response.status === 401) {
+                    alert('Unauthorized! Please log in again.');
+                    localStorage.removeItem('authToken');
+                    window.location.href = '/login';
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error making authenticated request:', error);
+            }
+        }
+
+        // Example: Fetching a protected route
+        async function fetchProtectedRoute() {
+            const data = await makeAuthenticatedRequest('/protected');
+            console.log(data);
+        }
+
+        // Call this function wherever you need to fetch protected data
+        // fetchProtectedRoute();
     </script>
 </body>
-</html> 
+</html>

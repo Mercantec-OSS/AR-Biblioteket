@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\Cookie;
 
 class JWTAuthController extends Controller
 {
@@ -38,7 +39,31 @@ class JWTAuthController extends Controller
     // User login
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'emailLogin' => 'required|email',
+            'passwordLogin' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $credentials = [
+            'email' => $request->get('emailLogin'),
+            'password' => $request->get('passwordLogin')
+        ];
+
+        // Check if the user exists
+        $user = User::where('email', $credentials['email'])->first();
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Check if the password is correct
+        if (!Hash::check($credentials['password'], $user->password)) {
+            return response()->json(['error' => 'Invalid password'], 401);
+        }
 
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
@@ -49,9 +74,12 @@ class JWTAuthController extends Controller
             $user = auth()->user();
 
             // (optional) Attach the role to the token.
-            $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
+            //$token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
 
-            return response()->json(compact('token'));
+            // Store the token in a cookie
+            $cookie = Cookie::make('token', $token, config('jwt.ttl'), null, null, false, true);
+
+            return response()->json(compact('token'))->withCookie($cookie);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
         }

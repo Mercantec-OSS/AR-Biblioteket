@@ -32,10 +32,22 @@ Route::get('/edit_model/{id}', function ($id) {
 Route::view('createUser', 'createUser');
 Route::view('login', 'login');
 Route::post('createUser', [UserController::class, 'createUser']);
-Route::post('login', [JWTAuthController::class, 'login']);
 
-// Protected route
-Route::middleware([JwtMiddleware::class])->group(function () {
+// Move the API routes outside of the /api prefix for auth
+Route::post('login', [JWTAuthController::class, 'login']);
+Route::post('register', [JWTAuthController::class, 'register']);
+
+// Keep the protected API routes in the api group
+Route::group(['prefix' => 'api', 'middleware' => ['jwt.auth']], function () {
+    Route::post('logout', [JWTAuthController::class, 'logout']);
+    Route::get('user', [JWTAuthController::class, 'getUser']);
+});
+
+// Protected web routes
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('/add_model', function () {
+        return view('add_model');
+    });
     Route::get('/protected', function () {
         return response()->json(['message' => 'You have accessed a protected route']);
     });

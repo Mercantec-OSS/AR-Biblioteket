@@ -6,7 +6,7 @@
 <title>Login</title>
 <body>
 <div class="login-box">
-    <form action="/login" method="post">
+    <form method="POST" action="{{ url('/login') }}">
     @csrf
         <h2>Log Ind</h2>
         <div class="user-box">

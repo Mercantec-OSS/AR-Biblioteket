@@ -23,7 +23,7 @@ class JwtMiddleware
             // Check for a token in the request header or cookie
             $token = $request->bearerToken(); // Retrieves the "Authorization: Bearer" token
             if (!$token) {
-                $token = $request->cookie('token'); // Fallback to cookie if no header exists
+                $token = $request->cookie('jwt_token'); // Changed from 'token' to 'jwt_token'
             }
 
             if (!$token) {

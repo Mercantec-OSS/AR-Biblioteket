@@ -39,7 +39,6 @@ class JWTAuthController extends Controller
     // User login
     public function login(Request $request)
     {
-        // Validate the request
         $validator = Validator::make($request->all(), [
             'emailLogin' => 'required|email',
             'passwordLogin' => 'required|string|min:6',
@@ -54,32 +53,28 @@ class JWTAuthController extends Controller
             'password' => $request->get('passwordLogin')
         ];
 
-        // Check if the user exists
-        $user = User::where('email', $credentials['email'])->first();
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
-
-        // Check if the password is correct
-        if (!Hash::check($credentials['password'], $user->password)) {
-            return response()->json(['error' => 'Invalid password'], 401);
-        }
-
         try {
-            if (! $token = JWTAuth::attempt($credentials)) {
+            if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'Invalid credentials'], 401);
             }
 
-            // Get the authenticated user.
-            $user = auth()->user();
+            // Create a secure HTTP-only cookie
+            $cookie = cookie('jwt_token', $token, config('jwt.ttl'), null, null, true, true);
 
-            // (optional) Attach the role to the token.
-            //$token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
+            // Set the guard
+            auth('api')->setToken($token);
 
-            // Store the token in a cookie
-            $cookie = Cookie::make('token', $token, config('jwt.ttl'), null, null, false, true);
+            // For web forms, redirect after successful login
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status' => 'success',
+                    'user' => auth('api')->user()
+                ])->withCookie($cookie);
+            }
 
-            return response()->json(compact('token'))->withCookie($cookie);
+            // Redirect for web form submissions
+            return redirect('/')->withCookie($cookie);
+            
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
         }
@@ -102,8 +97,30 @@ class JWTAuthController extends Controller
     // User logout
     public function logout()
     {
-        JWTAuth::invalidate(JWTAuth::getToken());
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken());
+            
+            // Remove the cookie
+            $cookie = cookie()->forget('jwt_token');
+            
+            return response()->json(['message' => 'Successfully logged out'])
+                ->withCookie($cookie);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to logout'], 500);
+        }
+    }
 
-        return response()->json(['message' => 'Successfully logged out']);
+    public function isAuthenticated(Request $request)
+    {
+        try {
+            $token = $request->cookie('jwt_token');
+            if (!$token) {
+                return false;
+            }
+            JWTAuth::setToken($token);
+            return JWTAuth::check();
+        } catch (JWTException $e) {
+            return false;
+        }
     }
 }

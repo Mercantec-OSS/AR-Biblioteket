@@ -25,10 +25,14 @@
                 </button>
                 <nav class="dropdown-menu">
                     <a href="/">Forside</a>
-                    <a href="/add_model">Tilføj Model</a>
-                    <a href="/login">Log Ind</a>
-                    <a href="/createUser">Opret Konto</a>
-                    <!-- Logout link dynamically added -->
+                    @if(app(App\Http\Controllers\JWTAuthController::class)->isAuthenticated(request()))
+                        <a href="/add_model">Tilføj Model</a>
+                        <a href="#" class="logout-link">Log ud</a>
+                    @endauth
+                    @guest('api')
+                        <a href="/login">Log Ind</a>
+                        <a href="/createUser">Opret Konto</a>
+                    @endguest
                 </nav>
             </div>
 
@@ -58,55 +62,55 @@
                 }
             });
 
-            // Handle logout logic
-            const logoutLink = document.createElement('a');
-            logoutLink.href = "#";
-            logoutLink.textContent = "Log Ud";
-            logoutLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                localStorage.removeItem('authToken'); // Clear token on logout
-                alert('You have been logged out.');
-                window.location.href = '/login'; // Redirect to login page
-            });
-
-            dropdownMenu.appendChild(logoutLink);
+            // Handle logout
+            const logoutLink = document.querySelector('.logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    try {
+                        const response = await fetch('/api/logout', {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            window.location.href = '/login';
+                        }
+                    } catch (error) {
+                        console.error('Logout failed:', error);
+                    }
+                });
+            }
         });
 
-        // Function to make authenticated API requests
+        // Update the authenticated request function
         async function makeAuthenticatedRequest(url, method = 'GET', body = null) {
-            const token = localStorage.getItem('authToken'); // Retrieve token
-
-            if (!token) {
-                alert('You must be logged in to access this feature.');
-                window.location.href = '/login';
-                return;
-            }
-
-            const headers = {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            };
-
             const options = {
                 method,
-                headers,
+                credentials: 'same-origin', // Important for cookies
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
             };
 
             if (body) {
                 options.body = JSON.stringify(body);
             }
 
-            try {
-                const response = await fetch(url, options);
-                if (response.status === 401) {
-                    alert('Unauthorized! Please log in again.');
-                    localStorage.removeItem('authToken');
-                    window.location.href = '/login';
-                }
-                return await response.json();
-            } catch (error) {
-                console.error('Error making authenticated request:', error);
+            const response = await fetch(url, options);
+            
+            if (response.status === 401) {
+                window.location.href = '/login';
+                return;
             }
+            
+            return response.json();
         }
 
         // Example: Fetching a protected route

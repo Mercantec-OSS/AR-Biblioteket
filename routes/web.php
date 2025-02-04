@@ -30,7 +30,7 @@ Route::get('/edit_model/{id}', function ($id) {
 Route::view('createUser', 'createUser');
 Route::view('login', 'login');
 Route::post('createUser', [UserController::class, 'createUser']);
-Route::post('login', [UserController::class, 'loginUser']);
+//Route::post('login', [UserController::class, 'loginUser']);
 Route::get('/user/{id}', [UserController::class, 'getUserByID']);
 Route::get('/users', [UserController::class, 'getAllUsers']);
 Route::put('/user/{id}', [UserController::class, 'editUserByID']);
@@ -42,3 +42,7 @@ Route::put('/edit_model/{id}', [ModelController::class, 'update']);
 Route::get('/model/{id}', [ModelController::class, 'getModelByID']);
 Route::get('/models', [ModelController::class, 'getAllModels']);
 Route::delete('/model/{id}', [ModelController::class, 'deleteModelByID']);
+
+
+
+

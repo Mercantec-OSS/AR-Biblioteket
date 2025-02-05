@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="login-box">
-    <form action="" method="post">
+    <form action="{{ route('register') }}" method="post">
         @csrf
         <h2>Opret Konto</h2>
         <div class="user-box">

@@ -25,11 +25,13 @@
                 </button>
                 <nav class="dropdown-menu">
                     <a href="/">Forside</a>
-                    @if(app(App\Http\Controllers\JWTAuthController::class)->isAuthenticated(request()))
+
+                    @auth
                         <a href="/add_model">Tilføj Model</a>
-                        <a href="#" class="logout-link">Log ud</a>
+                        <a href="{{ route('api.logout') }}" class="logout-link">Log ud</a>
                     @endauth
-                    @guest('api')
+
+                    @guest
                         <a href="/login">Log Ind</a>
                         <a href="/createUser">Opret Konto</a>
                     @endguest
@@ -42,6 +44,7 @@
         </main>
     </div>
 
+    <!-- Optional: Handling the Dropdown Menu -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownToggle = document.querySelector('.dropdown-toggle');
@@ -61,66 +64,7 @@
                     dropdownToggle.setAttribute('aria-expanded', 'false');
                 }
             });
-
-            // Handle logout
-            const logoutLink = document.querySelector('.logout-link');
-            if (logoutLink) {
-                logoutLink.addEventListener('click', async function(e) {
-                    e.preventDefault();
-                    try {
-                        const response = await fetch('/api/logout', {
-                            method: 'POST',
-                            credentials: 'same-origin',
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
-                                'Accept': 'application/json'
-                            }
-                        });
-                        
-                        if (response.ok) {
-                            window.location.href = '/login';
-                        }
-                    } catch (error) {
-                        console.error('Logout failed:', error);
-                    }
-                });
-            }
         });
-
-        // Update the authenticated request function
-        async function makeAuthenticatedRequest(url, method = 'GET', body = null) {
-            const options = {
-                method,
-                credentials: 'same-origin', // Important for cookies
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            };
-
-            if (body) {
-                options.body = JSON.stringify(body);
-            }
-
-            const response = await fetch(url, options);
-            
-            if (response.status === 401) {
-                window.location.href = '/login';
-                return;
-            }
-            
-            return response.json();
-        }
-
-        // Example: Fetching a protected route
-        async function fetchProtectedRoute() {
-            const data = await makeAuthenticatedRequest('/protected');
-            console.log(data);
-        }
-
-        // Call this function wherever you need to fetch protected data
-        // fetchProtectedRoute();
     </script>
 </body>
 </html>

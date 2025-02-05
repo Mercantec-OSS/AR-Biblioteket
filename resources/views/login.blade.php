@@ -1,21 +1,21 @@
 @extends('layouts.main')
- 
+
 @section('title', 'Log Ind')
- 
+
 @section('content')
 <title>Login</title>
 <body>
 <div class="login-box">
-    <form method="POST" action="{{ url('/login') }}">
+    <form method="POST" action="{{ route('login') }}">
     @csrf
         <h2>Log Ind</h2>
         <div class="user-box">
-            <input required type="text" name="emailLogin" id="emailLogin" placeholder="">
-            <label for="emailLogin">Email</label>
+            <input required type="text" name="email" id="email" placeholder="">
+            <label for="email">Email</label>
         </div>
         <div class="user-box">
-            <input required type="password" name="passwordLogin" id="passwordLogin" placeholder="">
-            <label for="passwordLogin">Adgangskode</label>
+            <input required type="password" name="password" id="password" placeholder="">
+            <label for="password">Adgangskode</label>
         </div>
         <button type="submit">
             <span></span>

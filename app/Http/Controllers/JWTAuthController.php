@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
+
 
 class JWTAuthController extends Controller
 {
@@ -18,10 +20,11 @@ class JWTAuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6', // Removed the confirmed rule
+            'department' => 'required|string|max:255', // Department validation remains
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
@@ -29,69 +32,37 @@ class JWTAuthController extends Controller
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
+            'department' => $request->get('department'),
+            'loggedIn' => '0'
         ]);
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->json(compact('user','token'), 201);
+        return response()->json(compact('user', 'token'), 201);
     }
 
     // User login
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'emailLogin' => 'required|email',
-            'passwordLogin' => 'required|string|min:6',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        }
-
-        $credentials = [
-            'email' => $request->get('emailLogin'),
-            'password' => $request->get('passwordLogin')
-        ];
-
-        try {
-            if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'Invalid credentials'], 401);
-            }
-
-            // Create a secure HTTP-only cookie
-            $cookie = cookie('jwt_token', $token, config('jwt.ttl'), null, null, true, true);
-
-            // Set the guard
-            auth('api')->setToken($token);
-
-            // For web forms, redirect after successful login
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'status' => 'success',
-                    'user' => auth('api')->user()
-                ])->withCookie($cookie);
-            }
-
-            // Redirect for web form submissions
-            return redirect('/')->withCookie($cookie);
+        $credentials = $request->only('email', 'password');
+        
+        if (auth()->attempt($credentials)) {
+            $user = auth()->user();
             
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Could not create token'], 500);
-        }
-    }
+            // Generate the token
+            $token = JWTAuth::fromUser($user);
 
-    // Get authenticated user
-    public function getUser()
-    {
-        try {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['error' => 'User not found'], 404);
-            }
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Invalid token'], 400);
+            // Log the generated token and the JWT secret
+            Log::debug('Generated Token: ' . $token);  // Log the token
+            Log::debug('JWT_SECRET: ' . env('JWT_SECRET'));  // Log the secret being used
+
+            // Set token in a cookie and return the response
+            return response()->json(['message' => 'Login successful'])->cookie(
+                'jwt_token', $token, 60, null, null, true, true // Secure cookie
+            );
         }
 
-        return response()->json(compact('user'));
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
     // User logout
@@ -123,4 +94,46 @@ class JWTAuthController extends Controller
             return false;
         }
     }
+
+    public function getUser(Request $request)
+    {
+        try {
+            // Get the token from the request's cookie
+            $token = $request->cookie('jwt_token');
+            
+            if (!$token) {
+                return response()->json(['error' => 'No token provided'], 401);
+            }
+
+            // Set the token
+            JWTAuth::setToken($token);
+
+            // Authenticate the user
+            $user = JWTAuth::authenticate();
+
+            return response()->json(compact('user'));
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Invalid token'], 400);
+        }
+    }
+
+    public function refreshToken(Request $request)
+    {
+        try {
+            $token = $request->cookie('jwt_token');
+            
+            if (!$token) {
+                return response()->json(['error' => 'No token provided'], 401);
+            }
+
+            JWTAuth::setToken($token);
+            $newToken = JWTAuth::refresh();
+
+            // Optionally, you can also update the cookie with the new token
+            return response()->json(['token' => $newToken])->cookie('jwt_token', $newToken, 60, null, null, true, true);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Token refresh failed'], 500);
+        }
+    }
+
 }

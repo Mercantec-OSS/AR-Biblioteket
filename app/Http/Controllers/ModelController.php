@@ -9,10 +9,14 @@ use Illuminate\Support\Facades\Storage;
 class ModelController extends Controller
 {
     // Get model by ID  
-    public function getModelByID($id)
+    public function getModelByID($id, JWTAuthController $authController)
     {
         $model = VRModels::findOrFail($id);
-        return view('viewmodel', compact('model'));
+        $isAuthenticated = $authController->isAuthenticated(request());
+        return view('viewmodel', [
+            'model' => $model,
+            'isAuthenticated' => $isAuthenticated
+        ]);
     }
 
 
@@ -63,8 +67,8 @@ class ModelController extends Controller
             $model->description = $request->input('descriptionCreate');
             $model->model_path = $modelPath;
             $model->image_path = $imagePath;
-            $model->created_at = now(); // Dette vil nu bruge den korrekte tidszone
-            $model->user_id = 1; // Temporarily hardcoded - should come from authenticated user
+            $model->created_at = now();
+            $model->user_id = auth()->id(); // Get the authenticated user's ID
 
             if ($model->save()) {
                 return redirect('/')->with('success', 'Model tilføjet succesfuldt');

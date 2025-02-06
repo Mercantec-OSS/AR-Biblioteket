@@ -25,6 +25,9 @@ Route::get('/add_model', function (JWTAuthController $authController) {
     return view('add_model', ['isAuthenticated' => $isAuthenticated]);
 })->name('add_model');
 
+// Add model POST route
+Route::post('/add_model', [ModelController::class, 'store'])->name('add_model.store');
+
 // Edit model page
 Route::get('/edit_model', function (JWTAuthController $authController) {
     $isAuthenticated = $authController->isAuthenticated(request());
@@ -47,6 +50,8 @@ Route::get('/edit_model/{id}', function ($id, JWTAuthController $authController)
     ]);
 })->name('edit_model_with_id');
 
+// View single model route (public)
+Route::get('/model/{id}', [ModelController::class, 'getModelByID'])->name('model.view');
 
 // Keep the protected API routes in the api group
 Route::group(['prefix' => 'api', 'middleware' => ['jwt.auth']], function () {

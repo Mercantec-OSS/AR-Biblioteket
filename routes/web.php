@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ModelController;
 use App\Http\Controllers\JWTAuthController;
 use App\Http\Middleware\JwtMiddleware;
+use Illuminate\Http\Request;
 
 // Home route
 Route::get('/', function (JWTAuthController $authController) {
@@ -26,7 +27,13 @@ Route::get('/add_model', function (JWTAuthController $authController) {
 })->name('add_model');
 
 // Add model POST route
-Route::post('/add_model', [ModelController::class, 'store'])->name('add_model.store');
+Route::post('/add_model', function(Request $request, JWTAuthController $authController, ModelController $modelController) {
+    $isAuthenticated = $authController->isAuthenticated($request);
+    if (!$isAuthenticated) {
+        return redirect('/login')->withErrors(['message' => 'Unauthorized access. Please log in.']);
+    }
+    return $modelController->store($request);
+})->name('add_model.store');
 
 // Edit model page
 Route::get('/edit_model', function (JWTAuthController $authController) {
@@ -50,8 +57,26 @@ Route::get('/edit_model/{id}', function ($id, JWTAuthController $authController)
     ]);
 })->name('edit_model_with_id');
 
+// Edit model PUT route
+Route::put('/edit_model/{id}', function(Request $request, $id, JWTAuthController $authController, ModelController $modelController) {
+    $isAuthenticated = $authController->isAuthenticated($request);
+    if (!$isAuthenticated) {
+        return redirect('/login')->withErrors(['message' => 'Unauthorized access. Please log in.']);
+    }
+    return $modelController->update($request, $id);
+})->name('edit_model.update');
+
 // View single model route (public)
 Route::get('/model/{id}', [ModelController::class, 'getModelByID'])->name('model.view');
+
+// Delete model route
+Route::delete('/model/{id}', function(Request $request, $id, JWTAuthController $authController, ModelController $modelController) {
+    $isAuthenticated = $authController->isAuthenticated($request);
+    if (!$isAuthenticated) {
+        return redirect('/login')->withErrors(['message' => 'Unauthorized access. Please log in.']);
+    }
+    return $modelController->deleteModelByID($id);
+})->name('model.delete');
 
 // Keep the protected API routes in the api group
 Route::group(['prefix' => 'api', 'middleware' => ['jwt.auth']], function () {

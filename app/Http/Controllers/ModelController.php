@@ -48,11 +48,6 @@ class ModelController extends Controller
             'titleCreate' => 'required|string|max:255',
             'educationCreate' => 'required|string',
             'descriptionCreate' => 'required|string'
-        ], [
-            'modelCreate.mimes' => 'Modelfilen skal være i GLB-format',
-            'modelCreate.max' => 'Modelfilen må ikke være større end 50MB',
-            'imageCreate.mimes' => 'Billedfilen skal være i JPEG, PNG eller JPG format',
-            'imageCreate.max' => 'Billedfilen må ikke være større end 50MB',
         ]);
 
         try {
@@ -60,23 +55,21 @@ class ModelController extends Controller
             $modelPath = $request->file('modelCreate')->store('models', 'public');
             $imagePath = $request->file('imageCreate')->store('images', 'public');
 
-            // Create and save the model with correct timezone
+            // Create and save the model
             $model = new VRModels();
             $model->title = $request->input('titleCreate');
             $model->education = $request->input('educationCreate');
             $model->description = $request->input('descriptionCreate');
             $model->model_path = $modelPath;
             $model->image_path = $imagePath;
-            $model->created_at = now();
             $model->user_id = auth()->id(); // Get the authenticated user's ID
 
             if ($model->save()) {
                 return redirect('/')->with('success', 'Model tilføjet succesfuldt');
             }
 
-            return back()->with('error', 'Failed to add model');
+            return back()->with('error', 'Kunne ikke tilføje model');
         } catch (\Exception $e) {
-            // Log the error for debugging
             \Log::error('Model creation failed: ' . $e->getMessage());
             return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
         }

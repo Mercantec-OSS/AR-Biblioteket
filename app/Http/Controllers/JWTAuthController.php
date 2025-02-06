@@ -114,15 +114,16 @@ class JWTAuthController extends Controller
     {
         try {
             $token = $request->cookie('jwt_token');
-
             if (!$token) {
-                return false; // No token present
+                return false;
             }
-
+            
             JWTAuth::setToken($token);
-            return JWTAuth::check();
-        } catch (JWTException $e) {
-            return false; // Invalid or expired token
+            $user = JWTAuth::authenticate();
+            
+            return $user ? true : false;
+        } catch (\Exception $e) {
+            return false;
         }
     }
 

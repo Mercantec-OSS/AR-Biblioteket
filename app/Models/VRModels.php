@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class VRModels extends Model
 {
@@ -20,7 +21,6 @@ class VRModels extends Model
      */
     protected $fillable = [
         'title',
-        'education',
         'description',
         'user_id',
         'model_path',
@@ -38,5 +38,13 @@ class VRModels extends Model
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Define the many-to-many relationship with Education.
+     */
+    public function educations()
+    {
+        return $this->belongsToMany(Education::class, 'education_vrmodel', 'vrmodel_id', 'education_id');
     }
 }

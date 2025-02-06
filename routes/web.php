@@ -39,6 +39,7 @@ Route::delete('/user/{id}', [UserController::class, 'deleteUserByID']);
 
 // Model-related routes
 Route::post('/add_model', [ModelController::class, 'store']);
+Route::post('/models/store', [ModelController::class, 'store'])->name('models.store');
 Route::put('/edit_model/{id}', [ModelController::class, 'update']);
 Route::get('/model/{id}', [ModelController::class, 'getModelByID']);
 Route::get('/models', [ModelController::class, 'getAllModels']);

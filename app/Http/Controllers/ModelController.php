@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\VRModels;
+use App\Models\Education; // Import the Education model
 use Illuminate\Support\Facades\Storage;
 
 class ModelController extends Controller
@@ -15,8 +16,6 @@ class ModelController extends Controller
         return view('viewmodel', compact('model'));
     }
 
-
-
     // Get all models
     public function getAllModels()
     {
@@ -27,7 +26,7 @@ class ModelController extends Controller
     // Create a new model
     public function store(Request $request)
     {
-        // Validate file types
+        // Validate file types and other inputs
         $request->validate([
             'modelCreate' => [
                 'required',
@@ -42,7 +41,8 @@ class ModelController extends Controller
                 'max:50000'
             ],
             'titleCreate' => 'required|string|max:255',
-            'educationCreate' => 'required|string',
+            'educationCreate' => 'required|array', // Array of education IDs
+            'educationCreate.*' => 'exists:educations,id', // Validate each education ID
             'descriptionCreate' => 'required|string'
         ], [
             'modelCreate.mimes' => 'Modelfilen skal være i GLB-format',
@@ -59,7 +59,7 @@ class ModelController extends Controller
             // Create and save the model
             $model = new VRModels();
             $model->title = $request->input('titleCreate');
-            $model->education = $request->input('educationCreate');
+            $model->education = $request->input('educationCreate'); // This field will be handled via pivot table now
             $model->description = $request->input('descriptionCreate');
             $model->model_path = $modelPath;
             $model->image_path = $imagePath;
@@ -67,6 +67,9 @@ class ModelController extends Controller
             $model->user_id = 1; // Temporarily hardcoded
 
             if ($model->save()) {
+                // Attach the selected educations to the model
+                $model->educations()->attach($request->input('educationCreate'));
+
                 // Redirect to select base object page with model ID and path
                 return redirect()->route('select.base.object', [
                     'modelId' => $model->id,
@@ -88,7 +91,8 @@ class ModelController extends Controller
             // Validate the request
             $validationRules = [
                 'titleCreate' => 'required|string|max:255',
-                'educationCreate' => 'required|string',
+                'educationCreate' => 'required|array', // Array of education IDs
+                'educationCreate.*' => 'exists:educations,id', // Validate each education ID
                 'descriptionCreate' => 'required|string'
             ];
 
@@ -104,7 +108,7 @@ class ModelController extends Controller
 
             try {
                 $model->title = $request->input('titleCreate');
-                $model->education = $request->input('educationCreate');
+                $model->education = $request->input('educationCreate'); // Handle education changes via pivot
                 $model->description = $request->input('descriptionCreate');
 
                 // Check if a new 3D model was uploaded
@@ -122,6 +126,11 @@ class ModelController extends Controller
                 }
 
                 $model->save();
+
+                // Sync educations to the VR model (attach if new, remove old if any)
+                if ($request->has('educationCreate')) {
+                    $model->educations()->sync($request->input('educationCreate')); // Sync educations
+                }
 
                 // If 3D model was updated, redirect to select base object page
                 if ($modelUpdated) {

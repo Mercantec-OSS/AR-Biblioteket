@@ -11,7 +11,6 @@ class CreateModelsTable extends Migration
         Schema::create('vrmodels', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('education');
             $table->string('description');
             $table->foreignId('user_id')->constrainted(
                 table: 'users', indexName: 'user_id'

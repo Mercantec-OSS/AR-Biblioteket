@@ -19,7 +19,7 @@ Route::get('/', function (JWTAuthController $authController) {
     ]);
 })->name('home');
 
-Route::get('/add_model', function (JWTAuthController $authController) {
+Route::get('/add_model', [ModelController::class, 'showAddModelForm'])->name('add.model.form'), function (JWTAuthController $authController) {
     $isAuthenticated = $authController->isAuthenticated(request());
     if (!$isAuthenticated) {
         return redirect('/login')->withErrors(['message' => 'Unauthorized access. Please log in.']);

@@ -22,10 +22,22 @@ class JWTAuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
             'department' => 'required|string|max:255',
+            'token' => 'required|string'
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator->errors())->withInput();
+        }
+
+        // Read and verify the token
+        $adminTokenPath = config_path('admin_token.json');
+        if (!file_exists($adminTokenPath)) {
+            return back()->withErrors(['token' => 'System configuration error'])->withInput();
+        }
+
+        $adminToken = json_decode(file_get_contents($adminTokenPath), true);
+        if ($request->get('token') !== $adminToken['registration_token']) {
+            return back()->withErrors(['token' => 'Din token er forkert'])->withInput();
         }
 
         $user = User::create([

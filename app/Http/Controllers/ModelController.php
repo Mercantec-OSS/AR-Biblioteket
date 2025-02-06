@@ -10,10 +10,14 @@ use Illuminate\Support\Facades\Storage;
 class ModelController extends Controller
 {
     // Get model by ID  
-    public function getModelByID($id)
+    public function getModelByID($id, JWTAuthController $authController)
     {
         $model = VRModels::findOrFail($id);
-        return view('viewmodel', compact('model'));
+        $isAuthenticated = $authController->isAuthenticated(request());
+        return view('viewmodel', [
+            'model' => $model,
+            'isAuthenticated' => $isAuthenticated
+        ]);
     }
 
     // Get all models

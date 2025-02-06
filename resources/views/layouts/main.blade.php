@@ -25,9 +25,19 @@
                 </button>
                 <nav class="dropdown-menu">
                     <a href="/">Forside</a>
-                    <a href="/add_model">Tilføj Model</a>
-                    <a href="/login">Log Ind</a>
-                    <a href="/createUser">Opret Konto</a>
+
+                    @if ($isAuthenticated)
+                        <a href="/add_model">Tilføj Model</a>
+                        <div class="logout-container">
+                            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                                @csrf
+                                <a href="#" onclick="event.preventDefault(); this.closest('form').submit();">Log ud</a>
+                            </form>
+                        </div>
+                    @else
+                        <a href="/login">Log Ind</a>
+                        <a href="/createUser">Opret Konto</a>
+                    @endif
                 </nav>
             </div>
 
@@ -37,6 +47,7 @@
         </main>
     </div>
 
+    <!-- Optional: Handling the Dropdown Menu -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dropdownToggle = document.querySelector('.dropdown-toggle');
@@ -48,7 +59,6 @@
                 dropdownToggle.setAttribute('aria-expanded', !isExpanded);
             });
 
-            // Close the dropdown if clicked outside
             window.addEventListener('click', function(event) {
                 if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
                     dropdownMenu.classList.remove('active');
@@ -56,43 +66,6 @@
                 }
             });
         });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const educationFilter = document.getElementById('educationFilter');
-            const modelItems = document.querySelectorAll('.model-item');
-
-            educationFilter.addEventListener('change', function() {
-                const selectedEducation = this.value;
-                let hasVisibleModels = false;
-
-                modelItems.forEach(item => {
-                    const educationSpan = item.querySelector('div[style*="color: #64748b"] span');
-                    
-                    if (!educationSpan) return;
-                    
-                    if (!selectedEducation || educationSpan.textContent.trim() === selectedEducation) {
-                        item.style.display = '';
-                        item.style.animation = 'fadeIn 0.5s ease-in-out forwards';
-                        hasVisibleModels = true;
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-
-                // Show "No models found" message if no models are visible
-                const noModelsMessage = document.querySelector('.no-models-message');
-                if (!hasVisibleModels) {
-                    if (!noModelsMessage) {
-                        const message = document.createElement('li');
-                        message.className = 'model-item no-models-message';
-                        message.innerHTML = '<div class="model-link"><span>Ingen modeller fundet</span></div>';
-                        document.querySelector('.model-list').appendChild(message);
-                    }
-                } else if (noModelsMessage) {
-                    noModelsMessage.remove();
-                }
-            });
-        });
     </script>
 </body>
-</html> 
+</html>

@@ -38,6 +38,11 @@ main {
     margin-right: auto; 
 }
 
+.navbar .title a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
 .navbar nav {
     display: flex;
     justify-content: flex-end; 

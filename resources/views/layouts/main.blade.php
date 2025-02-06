@@ -16,7 +16,7 @@
     <div class="page">
         <main>
             <div class="navbar">
-                <span class="title">AR Biblioteket</span>
+                <span class="title"><a href="/">AR Biblioteket</a></span>
                 <button class="dropdown-toggle" aria-expanded="false">
                     <!-- Hamburger Icon -->
                     <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24">

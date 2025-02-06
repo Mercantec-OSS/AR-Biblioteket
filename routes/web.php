@@ -8,6 +8,7 @@ use App\Http\Controllers\JWTAuthController;
 use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Http\Request;
 
+
 // Home route
 Route::get('/', function (JWTAuthController $authController) {
     $models = VRModels::all();
@@ -93,3 +94,16 @@ Route::post('/register', [JWTAuthController::class, 'register'])->name('register
 
 // Logout route
 Route::post('/logout', [JWTAuthController::class, 'logout'])->name('logout');
+
+
+// Model-related routes
+Route::get('/models', [ModelController::class, 'getAllModels']);
+Route::delete('/model/{id}', [ModelController::class, 'deleteModelByID']);
+Route::get('/select-base-object/{modelId}', [ModelController::class, 'showSelectBaseObject'])
+    ->name('select.base.object');
+Route::post('/complete-model/{modelId}', [ModelController::class, 'completeModelUpload'])
+    ->name('complete.model.upload');
+
+// API routes
+Route::get('/api/models', [VRModelsController::class, 'index']);
+

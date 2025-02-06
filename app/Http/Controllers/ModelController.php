@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\VRModels;
+use App\Models\Education; // Import the Education model
 use Illuminate\Support\Facades\Storage;
 
 class ModelController extends Controller
@@ -19,8 +20,6 @@ class ModelController extends Controller
         ]);
     }
 
-
-
     // Get all models
     public function getAllModels()
     {
@@ -31,7 +30,7 @@ class ModelController extends Controller
     // Create a new model
     public function store(Request $request)
     {
-        // Validate file types
+        // Validate file types and other inputs
         $request->validate([
             'modelCreate' => [
                 'required',
@@ -46,7 +45,8 @@ class ModelController extends Controller
                 'max:50000'
             ],
             'titleCreate' => 'required|string|max:255',
-            'educationCreate' => 'required|string',
+            'educationCreate' => 'required|array', // Array of education IDs
+            'educationCreate.*' => 'exists:educations,id', // Validate each education ID
             'descriptionCreate' => 'required|string'
         ]);
 
@@ -58,17 +58,24 @@ class ModelController extends Controller
             // Create and save the model
             $model = new VRModels();
             $model->title = $request->input('titleCreate');
-            $model->education = $request->input('educationCreate');
+            $model->education = $request->input('educationCreate'); // This field will be handled via pivot table now
             $model->description = $request->input('descriptionCreate');
             $model->model_path = $modelPath;
             $model->image_path = $imagePath;
             $model->user_id = auth()->id(); // Get the authenticated user's ID
+            $model->created_at = now();
+
 
             if ($model->save()) {
-                return redirect('/')->with('success', 'Model tilføjet succesfuldt');
-            }
+                // Attach the selected educations to the model
+                $model->educations()->attach($request->input('educationCreate'));
 
-            return back()->with('error', 'Kunne ikke tilføje model');
+                // Redirect to select base object page with model ID and path
+                return redirect()->route('select.base.object', [
+                    'modelId' => $model->id,
+                    'modelPath' => $modelPath
+                ]);
+            }
         } catch (\Exception $e) {
             \Log::error('Model creation failed: ' . $e->getMessage());
             return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
@@ -84,7 +91,8 @@ class ModelController extends Controller
             // Validate the request
             $validationRules = [
                 'titleCreate' => 'required|string|max:255',
-                'educationCreate' => 'required|string',
+                'educationCreate' => 'required|array', // Array of education IDs
+                'educationCreate.*' => 'exists:educations,id', // Validate each education ID
                 'descriptionCreate' => 'required|string'
             ];
 
@@ -100,21 +108,41 @@ class ModelController extends Controller
 
             try {
                 $model->title = $request->input('titleCreate');
-                $model->education = $request->input('educationCreate');
+                $model->education = $request->input('educationCreate'); // Handle education changes via pivot
                 $model->description = $request->input('descriptionCreate');
 
-                // Handle file updates
+                // Check if a new 3D model was uploaded
+                $modelUpdated = false;
                 if ($request->hasFile('modelCreate')) {
                     Storage::disk('public')->delete($model->model_path);
                     $model->model_path = $request->file('modelCreate')->store('models', 'public');
+                    $modelUpdated = true;
                 }
+
+                // Handle image update
                 if ($request->hasFile('imageCreate')) {
                     Storage::disk('public')->delete($model->image_path);
                     $model->image_path = $request->file('imageCreate')->store('images', 'public');
                 }
 
                 $model->save();
+
+                // Sync educations to the VR model (attach if new, remove old if any)
+                if ($request->has('educationCreate')) {
+                    $model->educations()->sync($request->input('educationCreate')); // Sync educations
+                }
+
+                // If 3D model was updated, redirect to select base object page
+                if ($modelUpdated) {
+                    return redirect()->route('select.base.object', [
+                        'modelId' => $model->id,
+                        'modelPath' => $model->model_path
+                    ]);
+                }
+
+                // Otherwise, redirect to home page
                 return redirect('/')->with('success', 'Model opdateret succesfuldt');
+
             } catch (\Exception $e) {
                 \Log::error('Model update failed: ' . $e->getMessage());
                 return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
@@ -137,5 +165,29 @@ class ModelController extends Controller
             return redirect('/')->with('success', 'Model slettet succesfuldt');
         }
         return redirect('/')->with('error', 'Model ikke fundet');
+    }
+
+    public function showSelectBaseObject($modelId)
+    {
+        $model = VRModels::findOrFail($modelId);
+        return view('select_base_object', [
+            'modelId' => $modelId,
+            'modelPath' => $model->model_path
+        ]);
+    }
+
+    public function completeModelUpload(Request $request, $modelId)
+    {
+        $model = VRModels::findOrFail($modelId);
+        
+        // Get the selected base object and remove "Action" from it
+        $baseObject = $request->input('baseObject');
+        $cleanBaseObject = str_replace('Action', '', $baseObject);
+        
+        // Save the cleaned base object name
+        $model->base_object = trim($cleanBaseObject);
+        $model->save();
+        
+        return redirect('/')->with('success', 'Model tilføjet succesfuldt');
     }
 }

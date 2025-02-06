@@ -19,12 +19,16 @@ Route::get('/', function (JWTAuthController $authController) {
     ]);
 })->name('home');
 
-Route::get('/add_model', [ModelController::class, 'showAddModelForm'])->name('add.model.form'), function (JWTAuthController $authController) {
+Route::get('/add_model', function (JWTAuthController $authController) {
+    // Check if the user is authenticated
     $isAuthenticated = $authController->isAuthenticated(request());
+    
     if (!$isAuthenticated) {
         return redirect('/login')->withErrors(['message' => 'Unauthorized access. Please log in.']);
     }
-    return view('add_model', ['isAuthenticated' => $isAuthenticated]);
+
+    // Call the controller method to show the form
+    return app(ModelController::class)->showAddModelForm(); // This calls the method from the controller
 })->name('add_model');
 
 // Add model POST route

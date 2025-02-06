@@ -73,12 +73,40 @@ class JWTAuthController extends Controller
     public function logout()
     {
         try {
-            JWTAuth::invalidate(JWTAuth::getToken());
+            // Get the token from cookie
+            $token = request()->cookie('jwt_token');
+            
+            if ($token) {
+                // Set and invalidate the token
+                JWTAuth::setToken($token);
+                JWTAuth::invalidate(true); // Force token invalidation
+            }
+            
+            // Logout the user from session
             auth()->logout();
             
-            return redirect('/')->withCookie(Cookie::forget('jwt_token'));
+            // Create cookie instance with immediate expiration
+            $cookie = cookie()->forget('jwt_token');
+            
+            // Set cookie parameters for proper removal
+            $cookie->withExpired()
+                   ->withSecure(true)
+                   ->withHttpOnly(true)
+                   ->withSameSite('strict')
+                   ->withDomain(null)
+                   ->withPath('/');
+            
+            // Clear session
+            session()->flush();
+            
+            // Redirect with cookie removal
+            return redirect('/')
+                ->withCookie($cookie)
+                ->with('success', 'Du er nu logget ud');
+            
         } catch (\Exception $e) {
-            return redirect('/')->with('error', 'Could not log out');
+            \Log::error('Logout error: ' . $e->getMessage());
+            return redirect('/')->with('error', 'Der opstod en fejl under log ud');
         }
     }
 

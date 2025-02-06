@@ -10,10 +10,14 @@ use Illuminate\Support\Facades\Storage;
 class ModelController extends Controller
 {
     // Get model by ID  
-    public function getModelByID($id)
+    public function getModelByID($id, JWTAuthController $authController)
     {
         $model = VRModels::findOrFail($id);
-        return view('viewmodel', compact('model'));
+        $isAuthenticated = $authController->isAuthenticated(request());
+        return view('viewmodel', [
+            'model' => $model,
+            'isAuthenticated' => $isAuthenticated
+        ]);
     }
 
     // Get all models
@@ -44,11 +48,6 @@ class ModelController extends Controller
             'educationCreate' => 'required|array', // Array of education IDs
             'educationCreate.*' => 'exists:educations,id', // Validate each education ID
             'descriptionCreate' => 'required|string'
-        ], [
-            'modelCreate.mimes' => 'Modelfilen skal være i GLB-format',
-            'modelCreate.max' => 'Modelfilen må ikke være større end 50MB',
-            'imageCreate.mimes' => 'Billedfilen skal være i JPEG, PNG eller JPG format',
-            'imageCreate.max' => 'Billedfilen må ikke være større end 50MB',
         ]);
 
         try {
@@ -63,8 +62,9 @@ class ModelController extends Controller
             $model->description = $request->input('descriptionCreate');
             $model->model_path = $modelPath;
             $model->image_path = $imagePath;
+            $model->user_id = auth()->id(); // Get the authenticated user's ID
             $model->created_at = now();
-            $model->user_id = 1; // Temporarily hardcoded
+
 
             if ($model->save()) {
                 // Attach the selected educations to the model

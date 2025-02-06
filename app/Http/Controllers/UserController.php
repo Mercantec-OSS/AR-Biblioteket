@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
@@ -88,5 +89,10 @@ class UserController extends Controller
         } else {
             return 'User not found';
         }
+    }
+
+    public function me()
+    {
+        return response()->json(auth()->user());
     }
 }

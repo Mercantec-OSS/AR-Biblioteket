@@ -45,6 +45,6 @@ class VRModels extends Model
      */
     public function educations()
     {
-        return $this->belongsToMany(Education::class, 'education_vrmodel', 'vrmodel_id', 'education_id');
+        return $this->belongsToMany(Educations::class, 'education_vrmodel', 'vrmodel_id', 'education_id');
     }
 }

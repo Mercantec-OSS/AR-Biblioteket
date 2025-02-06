@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\VRModels;
-use App\Models\Education; // Import the Education model
+use App\Models\Educations;
 use Illuminate\Support\Facades\Storage;
 
 class ModelController extends Controller
@@ -25,62 +25,64 @@ class ModelController extends Controller
 
     // Create a new model
     public function store(Request $request)
-    {
-        // Validate file types and other inputs
-        $request->validate([
-            'modelCreate' => [
-                'required',
-                'file',
-                'mimes:glb',
-                'max:50000'
-            ],
-            'imageCreate' => [
-                'required',
-                'file',
-                'mimes:jpeg,png,jpg',
-                'max:50000'
-            ],
-            'titleCreate' => 'required|string|max:255',
-            'educationCreate' => 'required|array', // Array of education IDs
-            'educationCreate.*' => 'exists:educations,id', // Validate each education ID
-            'descriptionCreate' => 'required|string'
-        ], [
-            'modelCreate.mimes' => 'Modelfilen skal være i GLB-format',
-            'modelCreate.max' => 'Modelfilen må ikke være større end 50MB',
-            'imageCreate.mimes' => 'Billedfilen skal være i JPEG, PNG eller JPG format',
-            'imageCreate.max' => 'Billedfilen må ikke være større end 50MB',
-        ]);
+{
+    // Validate the request
+    $request->validate([
+        'modelCreate' => 'required|file|mimes:glb|max:50000',
+        'imageCreate' => 'required|file|mimes:jpeg,png,jpg|max:50000',
+        'titleCreate' => 'required|string|max:255',
+        'educationCreate' => 'required|array', // Allow multiple education IDs
+        'educationCreate.*' => 'exists:educations,id', // Ensure valid education IDs
+        'descriptionCreate' => 'required|string'
+    ]);
 
-        try {
-            // Store files in public storage
+    try {
+        // File upload handling
+        if ($request->hasFile('modelCreate') && $request->file('modelCreate')->isValid()) {
             $modelPath = $request->file('modelCreate')->store('models', 'public');
-            $imagePath = $request->file('imageCreate')->store('images', 'public');
-
-            // Create and save the model
-            $model = new VRModels();
-            $model->title = $request->input('titleCreate');
-            $model->education = $request->input('educationCreate'); // This field will be handled via pivot table now
-            $model->description = $request->input('descriptionCreate');
-            $model->model_path = $modelPath;
-            $model->image_path = $imagePath;
-            $model->created_at = now();
-            $model->user_id = 1; // Temporarily hardcoded
-
-            if ($model->save()) {
-                // Attach the selected educations to the model
-                $model->educations()->attach($request->input('educationCreate'));
-
-                // Redirect to select base object page with model ID and path
-                return redirect()->route('select.base.object', [
-                    'modelId' => $model->id,
-                    'modelPath' => $modelPath
-                ]);
-            }
-        } catch (\Exception $e) {
-            \Log::error('Model creation failed: ' . $e->getMessage());
-            return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
+        } else {
+            throw new \Exception('3D model file not uploaded or invalid');
         }
+
+        if ($request->hasFile('imageCreate') && $request->file('imageCreate')->isValid()) {
+            $imagePath = $request->file('imageCreate')->store('images', 'public');
+        } else {
+            throw new \Exception('Image file not uploaded or invalid');
+        }
+
+        // Create new model
+        $model = new VRModels();
+        $model->title = $request->input('titleCreate');
+        $model->description = $request->input('descriptionCreate');
+        $model->model_path = $modelPath;
+        $model->image_path = $imagePath;
+        $model->user_id = 1; // Temporarily hardcoded
+
+        // Save the model and handle success
+        if ($model->save()) {
+            // Attach education using the pivot table
+            $model->educations()->attach($request->input('educationCreate')); // Handle multiple educations
+            return redirect()->route('select.base.object', [
+                'modelId' => $model->id,
+                'modelPath' => $modelPath
+            ]);
+        } else {
+            throw new \Exception('Failed to save model');
+        }
+        
+    } catch (\Exception $e) {
+        \Log::error('Model creation failed: ' . $e->getMessage());
+        return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
     }
+}
+
+
+
+public function showAddModelForm()
+{
+    $educations = Educations::all(); // Fetch all educations from the database
+    return view('add_model', compact('educations')); // Pass the data to the view
+}
 
     // Edit model by ID
     public function update(Request $request, $id)

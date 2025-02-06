@@ -26,24 +26,13 @@
             
             <div class="form-group">
                 <label for="education">Uddannelse</label>
-                <select id="education" name="educationCreate" required>
+                <select id="education" name="educationCreate[]" multiple required>
                     <option value="">Vælg uddannelse</option>
-                    <option value="Auto">Auto</option>
-                    <option value="Automatik">Automatik</option>
-                    <option value="Business">Business</option>
-                    <option value="Data">Data</option>
-                    <option value="Elektriker">Elektriker</option>
-                    <option value="Elektronik">Elektronik</option>
-                    <option value="Gastronomi">Gastronomi</option>
-                    <option value="Industriteknik">Industriteknik</option>
-                    <option value="Operatør">Operatør</option>
-                    <option value="Produktør">Produktør</option>
-                    <option value="Smed">Smed</option>
-                    <option value="Struktør">Struktør</option>
-                    <option value="Tømrer">Tømrer</option>
-                    <option value="VVS">VVS</option>
+                    @foreach($educations as $education)
+                        <option value="{{ $education->id }}">{{ $education->title }}</option>
+                    @endforeach
                 </select>
-            </div>
+            </div>                              
             
             <div class="form-group">
                 <label for="description">Beskrivelse</label>

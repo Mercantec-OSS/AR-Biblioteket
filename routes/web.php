@@ -12,9 +12,7 @@ Route::get('/', function () {
 });
 
 // Add model page
-Route::get('/add_model', function () {
-    return view('add_model');
-});
+Route::get('/add_model', [ModelController::class, 'showAddModelForm'])->name('add.model.form');
 
 // Edit model page
 Route::get('/edit_model', function () {

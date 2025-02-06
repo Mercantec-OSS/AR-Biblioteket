@@ -8,7 +8,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class JWTAuthMiddleware
+class JWTMiddleware
 {
     public function handle(Request $request, Closure $next)
     {

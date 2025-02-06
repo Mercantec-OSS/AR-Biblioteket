@@ -26,15 +26,18 @@
                 <nav class="dropdown-menu">
                     <a href="/">Forside</a>
 
-                    @auth
+                    @if ($isAuthenticated)
                         <a href="/add_model">Tilføj Model</a>
-                        <a href="{{ route('api.logout') }}" class="logout-link">Log ud</a>
-                    @endauth
-
-                    @guest
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="logout-link" style="background:none; border:none; color:white; cursor:pointer;">
+                                Log ud
+                            </button>
+                        </form>
+                    @else
                         <a href="/login">Log Ind</a>
                         <a href="/createUser">Opret Konto</a>
-                    @endguest
+                    @endif
                 </nav>
             </div>
 
@@ -50,14 +53,12 @@
             const dropdownToggle = document.querySelector('.dropdown-toggle');
             const dropdownMenu = document.querySelector('.dropdown-menu');
 
-            // Toggle dropdown menu on click
             dropdownToggle.addEventListener('click', function() {
                 dropdownMenu.classList.toggle('active');
                 const isExpanded = dropdownToggle.getAttribute('aria-expanded') === 'true' || false;
                 dropdownToggle.setAttribute('aria-expanded', !isExpanded);
             });
 
-            // Close the dropdown if clicked outside
             window.addEventListener('click', function(event) {
                 if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
                     dropdownMenu.classList.remove('active');

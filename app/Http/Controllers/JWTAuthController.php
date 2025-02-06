@@ -69,15 +69,11 @@ class JWTAuthController extends Controller
     public function logout()
     {
         try {
-            JWTAuth::invalidate(JWTAuth::getToken());
-            
-            // Remove the cookie
-            $cookie = cookie()->forget('jwt_token');
-            
-            return response()->json(['message' => 'Successfully logged out'])
-                ->withCookie($cookie);
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Failed to logout'], 500);
+            auth()->logout();
+            return response()->json(['message' => 'Logged out successfully'])
+                             ->cookie('jwt_token', '', -1); // Expire the cookie
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Could not log out'], 500);
         }
     }
 
@@ -85,13 +81,15 @@ class JWTAuthController extends Controller
     {
         try {
             $token = $request->cookie('jwt_token');
+
             if (!$token) {
-                return false;
+                return false; // No token present
             }
+
             JWTAuth::setToken($token);
             return JWTAuth::check();
         } catch (JWTException $e) {
-            return false;
+            return false; // Invalid or expired token
         }
     }
 

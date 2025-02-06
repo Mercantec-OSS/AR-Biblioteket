@@ -28,12 +28,12 @@
 
                     @if ($isAuthenticated)
                         <a href="/add_model">Tilføj Model</a>
-                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="logout-link" style="background:none; border:none; color:white; cursor:pointer;">
-                                Log ud
-                            </button>
-                        </form>
+                        <div class="logout-container">
+                            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                                @csrf
+                                <a href="#" onclick="event.preventDefault(); this.closest('form').submit();">Log ud</a>
+                            </form>
+                        </div>
                     @else
                         <a href="/login">Log Ind</a>
                         <a href="/createUser">Opret Konto</a>

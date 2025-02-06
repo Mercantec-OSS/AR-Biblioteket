@@ -20,12 +20,12 @@ class JWTAuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6', // Removed the confirmed rule
-            'department' => 'required|string|max:255', // Department validation remains
+            'password' => 'required|string|min:6',
+            'department' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+            return back()->withErrors($validator->errors())->withInput();
         }
 
         $user = User::create([
@@ -36,9 +36,7 @@ class JWTAuthController extends Controller
             'loggedIn' => '0'
         ]);
 
-        $token = JWTAuth::fromUser($user);
-
-        return response()->json(compact('user', 'token'), 201);
+        return redirect('/login')->with('success', 'Konto oprettet succesfuldt. Log venligst ind.');
     }
 
     // User login
@@ -53,27 +51,34 @@ class JWTAuthController extends Controller
             $token = JWTAuth::fromUser($user);
 
             // Log the generated token and the JWT secret
-            Log::debug('Generated Token: ' . $token);  // Log the token
-            Log::debug('JWT_SECRET: ' . env('JWT_SECRET'));  // Log the secret being used
+            Log::debug('Generated Token: ' . $token);
+            Log::debug('JWT_SECRET: ' . env('JWT_SECRET'));
 
-            // Set token in a cookie and return the response
-            return response()->json(['message' => 'Login successful'])->cookie(
-                'jwt_token', $token, 60, null, null, true, true // Secure cookie
+            // Redirect to home page with cookie
+            return redirect('/')->withCookie(
+                'jwt_token', 
+                $token, 
+                60, 
+                null, 
+                null, 
+                true, 
+                true
             );
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return back()->withErrors(['error' => 'Invalid credentials']);
     }
 
     // User logout
     public function logout()
     {
         try {
+            JWTAuth::invalidate(JWTAuth::getToken());
             auth()->logout();
-            return response()->json(['message' => 'Logged out successfully'])
-                             ->cookie('jwt_token', '', -1); // Expire the cookie
+            
+            return redirect('/')->withCookie(Cookie::forget('jwt_token'));
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Could not log out'], 500);
+            return redirect('/')->with('error', 'Could not log out');
         }
     }
 

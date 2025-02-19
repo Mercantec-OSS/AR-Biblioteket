@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\VRModels;
+use App\Models\Educations;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ModelController;
 use App\Http\Controllers\JWTAuthController;
@@ -11,10 +12,12 @@ use Illuminate\Http\Request;
 
 // Home route
 Route::get('/', function (JWTAuthController $authController) {
-    $models = VRModels::all();
+    $models = VRModels::with('educations')->get();
+    $educations = Educations::orderBy('title')->get();
     $isAuthenticated = $authController->isAuthenticated(request());
     return view('home', [
         'models' => $models,
+        'educations' => $educations,
         'isAuthenticated' => $isAuthenticated
     ]);
 })->name('home');
@@ -55,9 +58,11 @@ Route::get('/edit_model/{id}', function ($id, JWTAuthController $authController)
     if (!$isAuthenticated) {
         return redirect('/login')->withErrors(['message' => 'Unauthorized access. Please log in.']);
     }
-    $model = VRModels::find($id);
+    $model = VRModels::with('educations')->find($id);
+    $educations = Educations::orderBy('title')->get();
     return view('edit_model', [
         'model' => $model,
+        'educations' => $educations,
         'isAuthenticated' => $isAuthenticated
     ]);
 })->name('edit_model_with_id');

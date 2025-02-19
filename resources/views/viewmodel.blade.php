@@ -6,7 +6,14 @@
 <div class="model-viewer-container">
     <div class="page-header">
         <h1>{{ $model->title }}</h1>
-        <p class="education-tag">{{ $model->education }}</p>
+        <div class="education-tags">
+            @foreach($model->educations as $education)
+                <span class="education-tag">{{ $education->title }}</span>
+                @if(!$loop->last)
+                    <span class="education-separator">&bull;</span>
+                @endif
+            @endforeach
+        </div>
         <p class="description">{{ $model->description }}</p>
     </div>
 
@@ -35,6 +42,35 @@
         </model-viewer>
     </div>
 </div>
+
+<style>
+.education-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.education-tag {
+    display: inline-block;
+    background-color: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    color: #475569;
+}
+
+.education-separator {
+    color: #94a3b8;
+    margin: 0 0.25rem;
+}
+
+.description {
+    margin-top: 1rem;
+    color: #475569;
+    line-height: 1.5;
+}
+</style>
 
 <script>
     const modelViewer = document.querySelector('#model-viewer');

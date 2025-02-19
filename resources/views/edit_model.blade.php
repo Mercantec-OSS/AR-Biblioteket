@@ -27,22 +27,14 @@
             
             <div class="form-group">
                 <label for="education">Uddannelse</label>
-                <select id="education" name="educationCreate" required>
+                <select id="education" name="educationCreate[]" multiple required>
                     <option value="">Vælg uddannelse</option>
-                    <option value="Auto" {{ $model->education == 'Auto' ? 'selected' : '' }}>Auto</option>
-                    <option value="Automatik" {{ $model->education == 'Automatik' ? 'selected' : '' }}>Automatik</option>
-                    <option value="Business" {{ $model->education == 'Business' ? 'selected' : '' }}>Business</option>
-                    <option value="Data" {{ $model->education == 'Data' ? 'selected' : '' }}>Data</option>
-                    <option value="Elektriker" {{ $model->education == 'Elektriker' ? 'selected' : '' }}>Elektriker</option>
-                    <option value="Elektronik" {{ $model->education == 'Elektronik' ? 'selected' : '' }}>Elektronik</option>
-                    <option value="Gastronomi" {{ $model->education == 'Gastronomi' ? 'selected' : '' }}>Gastronomi</option>
-                    <option value="Industriteknik" {{ $model->education == 'Industriteknik' ? 'selected' : '' }}>Industriteknik</option>
-                    <option value="Operatør" {{ $model->education == 'Operatør' ? 'selected' : '' }}>Operatør</option>
-                    <option value="Produktør" {{ $model->education == 'Produktør' ? 'selected' : '' }}>Produktør</option>
-                    <option value="Smed" {{ $model->education == 'Smed' ? 'selected' : '' }}>Smed</option>
-                    <option value="Struktør" {{ $model->education == 'Struktør' ? 'selected' : '' }}>Struktør</option>
-                    <option value="Tømrer" {{ $model->education == 'Tømrer' ? 'selected' : '' }}>Tømrer</option>
-                    <option value="VVS" {{ $model->education == 'VVS' ? 'selected' : '' }}>VVS</option>
+                    @foreach($educations as $education)
+                        <option value="{{ $education->id }}" 
+                            {{ in_array($education->id, $model->educations->pluck('id')->toArray()) ? 'selected' : '' }}>
+                            {{ $education->title }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
             

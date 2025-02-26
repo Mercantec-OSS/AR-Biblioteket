@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\VRModels;
+use App\Http\Controllers\VRModelsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ModelController;
 use App\Http\Controllers\JWTAuthController;

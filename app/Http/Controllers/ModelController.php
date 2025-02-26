@@ -29,64 +29,68 @@ class ModelController extends Controller
 
     // Create a new model
     public function store(Request $request)
-{
-    // Validate the request
-    $request->validate([
-        'modelCreate' => 'required|file|mimes:glb|max:50000',
-        'imageCreate' => 'required|file|mimes:jpeg,png,jpg|max:50000',
-        'titleCreate' => 'required|string|max:255',
-        'educationCreate' => 'required|array', // Allow multiple education IDs
-        'educationCreate.*' => 'exists:educations,id', // Ensure valid education IDs
-        'descriptionCreate' => 'required|string'
-    ]);
+    {
+        // Validate the request
+        $request->validate([
+            'modelCreate' => 'required|file|mimes:glb|max:50000',
+            'imageCreate' => 'required|file|mimes:jpeg,png,jpg|max:50000',
+            'titleCreate' => 'required|string|max:255',
+            'educationCreate' => 'required|array', // Allow multiple education IDs
+            'educationCreate.*' => 'exists:educations,id', // Ensure valid education IDs
+            'descriptionCreate' => 'required|string'
+        ]);
 
-    try {
-        // File upload handling
-        if ($request->hasFile('modelCreate') && $request->file('modelCreate')->isValid()) {
-            $modelPath = $request->file('modelCreate')->store('models', 'public');
-        } else {
-            throw new \Exception('3D model file not uploaded or invalid');
+        try {
+            // File upload handling
+            if ($request->hasFile('modelCreate') && $request->file('modelCreate')->isValid()) {
+                $modelPath = $request->file('modelCreate')->store('models', 'public');
+            } else {
+                throw new \Exception('3D model file not uploaded or invalid');
+            }
+
+            if ($request->hasFile('imageCreate') && $request->file('imageCreate')->isValid()) {
+                $imagePath = $request->file('imageCreate')->store('images', 'public');
+            } else {
+                throw new \Exception('Image file not uploaded or invalid');
+            }
+
+            // Get authenticated user's ID
+            $user = auth()->user();
+            if (!$user) {
+                throw new \Exception('User not authenticated');
+            }
+
+            // Create new model
+            $model = new VRModels();
+            $model->title = $request->input('titleCreate');
+            $model->description = $request->input('descriptionCreate');
+            $model->model_path = $modelPath;
+            $model->image_path = $imagePath;
+            $model->user_id = $user->id; // Use authenticated user's ID
+
+            // Save the model and handle success
+            if ($model->save()) {
+                // Attach education using the pivot table
+                $model->educations()->attach($request->input('educationCreate')); // Handle multiple educations
+                return redirect()->route('select.base.object', [
+                    'modelId' => $model->id,
+                    'modelPath' => $modelPath
+                ]);
+            } else {
+                throw new \Exception('Failed to save model');
+            }
+            
+        } catch (\Exception $e) {
+            \Log::error('Model creation failed: ' . $e->getMessage());
+            return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
         }
-
-        if ($request->hasFile('imageCreate') && $request->file('imageCreate')->isValid()) {
-            $imagePath = $request->file('imageCreate')->store('images', 'public');
-        } else {
-            throw new \Exception('Image file not uploaded or invalid');
-        }
-
-        // Create new model
-        $model = new VRModels();
-        $model->title = $request->input('titleCreate');
-        $model->description = $request->input('descriptionCreate');
-        $model->model_path = $modelPath;
-        $model->image_path = $imagePath;
-        $model->user_id = 1; // Temporarily hardcoded
-
-        // Save the model and handle success
-        if ($model->save()) {
-            // Attach education using the pivot table
-            $model->educations()->attach($request->input('educationCreate')); // Handle multiple educations
-            return redirect()->route('select.base.object', [
-                'modelId' => $model->id,
-                'modelPath' => $modelPath
-            ]);
-        } else {
-            throw new \Exception('Failed to save model');
-        }
-        
-    } catch (\Exception $e) {
-        \Log::error('Model creation failed: ' . $e->getMessage());
-        return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
     }
-}
 
-
-
-public function showAddModelForm()
-{
-    $educations = Educations::all(); // Fetch all educations from the database
-    return view('add_model', compact('educations')); // Pass the data to the view
-}
+    public function showAddModelForm()
+    {
+        $educations = Educations::all(); // Fetch all educations from the database
+        return view('add_model', compact('educations')); // Pass the data to the view
+    }
 
     // Edit model by ID
     public function update(Request $request, $id)
@@ -97,8 +101,8 @@ public function showAddModelForm()
             // Validate the request
             $validationRules = [
                 'titleCreate' => 'required|string|max:255',
-                'educationCreate' => 'required|array', // Array of education IDs
-                'educationCreate.*' => 'exists:educations,id', // Validate each education ID
+                'educationCreate' => 'required|array',
+                'educationCreate.*' => 'exists:educations,id',
                 'descriptionCreate' => 'required|string'
             ];
 
@@ -114,18 +118,15 @@ public function showAddModelForm()
 
             try {
                 $model->title = $request->input('titleCreate');
-                $model->education = $request->input('educationCreate'); // Handle education changes via pivot
                 $model->description = $request->input('descriptionCreate');
 
-                // Check if a new 3D model was uploaded
-                $modelUpdated = false;
+                // Handle file uploads if present
                 if ($request->hasFile('modelCreate')) {
                     Storage::disk('public')->delete($model->model_path);
                     $model->model_path = $request->file('modelCreate')->store('models', 'public');
                     $modelUpdated = true;
                 }
 
-                // Handle image update
                 if ($request->hasFile('imageCreate')) {
                     Storage::disk('public')->delete($model->image_path);
                     $model->image_path = $request->file('imageCreate')->store('images', 'public');
@@ -133,20 +134,17 @@ public function showAddModelForm()
 
                 $model->save();
 
-                // Sync educations to the VR model (attach if new, remove old if any)
-                if ($request->has('educationCreate')) {
-                    $model->educations()->sync($request->input('educationCreate')); // Sync educations
-                }
+                // Sync educations
+                $model->educations()->sync($request->input('educationCreate'));
 
-                // If 3D model was updated, redirect to select base object page
-                if ($modelUpdated) {
+                // Redirect based on whether model was updated
+                if (isset($modelUpdated) && $modelUpdated) {
                     return redirect()->route('select.base.object', [
                         'modelId' => $model->id,
                         'modelPath' => $model->model_path
                     ]);
                 }
 
-                // Otherwise, redirect to home page
                 return redirect('/')->with('success', 'Model opdateret succesfuldt');
 
             } catch (\Exception $e) {

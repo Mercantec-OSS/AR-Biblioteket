@@ -7,18 +7,15 @@
     background-color: #f4f4f4;
 }
 
-
 .form-container {
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     padding: 2rem;
     width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
+    max-width: 720px;
+    margin: 2rem auto;
     border: 1px solid rgba(229, 233, 239, 0.7);
-    box-sizing: border-box;
-    position: relative;
 }
 
 .page-title {
@@ -30,118 +27,245 @@
 }
 
 .form-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+    position: relative;
 }
 
 .form-group label {
     display: block;
     color: #374151;
     font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 0.5rem;
+    letter-spacing: 0.01em;
 }
 
 .form-group input[type="text"],
+.form-group input[type="file"],
 .form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 0.875rem;
-    border: 1px solid #D1D5DB;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #E5E7EB;
     border-radius: 8px;
     background-color: white;
-    font-size: 1rem;
-    transition: border-color 0.15s ease-in-out;
-    -webkit-appearance: none;
-    appearance: none;
+    font-size: 0.95rem;
+    color: #1F2937;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .form-group select {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 0.5rem center;
-    background-repeat: no-repeat;
-    background-size: 1.5em 1.5em;
-    padding-right: 2.5rem;
+    appearance: none;
+    background-color: white;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    color: #1F2937;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.form-group textarea {
-    min-height: 100px;
-    resize: vertical;
+.form-group select[multiple] {
+    min-height: 160px;
+    padding: 0.5rem;
+    overflow-y: auto;
+    background-image: none;
+    border: 1.5px solid #E5E7EB;
 }
 
-.form-group input[type="text"]:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.form-group select[multiple] option {
+    margin: 0.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    background-color: white;
+    color: #374151;
+    transition: all 0.15s ease;
+    cursor: pointer;
+    position: relative;
+    line-height: 1.4;
+}
+
+.form-group select[multiple] option:hover {
+    background-color: #F8FAFC;
+}
+
+.form-group select[multiple] option:checked {
+    background-color: #EEF2FF !important;
+    color: #0E38AB;
+    font-weight: 500;
+    padding-left: 2.5rem;
+}
+
+.form-group select[multiple]::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-group select[multiple]::-webkit-scrollbar-track {
+    background: #F1F5F9;
+    border-radius: 4px;
+}
+
+.form-group select[multiple]::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+    border: 2px solid #F1F5F9;
+}
+
+.form-group select[multiple]::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+.form-group select:focus {
     outline: none;
     border-color: #0E38AB;
     box-shadow: 0 0 0 3px rgba(14, 56, 171, 0.1);
 }
 
+.form-group select:not([multiple]) {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25em 1.25em;
+    padding-right: 2.5rem;
+}
+
+.form-group .select-helper {
+    display: block;
+    color: #6B7280;
+    font-size: 0.75rem;
+    margin-top: 0.375rem;
+}
+
+.file-input-container {
+    width: 100%;
+    position: relative;
+}
+
 .file-input-wrapper {
-    background-color: #F3F4F6;
-    border: 2px dashed #D1D5DB;
+    position: relative;
+    width: 100%;
+    min-height: 120px;
+    border: 2px dashed #E5E7EB;
     border-radius: 8px;
-    padding: 1.25rem 1rem;
-    text-align: center;
-    transition: border-color 0.15s ease-in-out;
+    background-color: #F9FAFB;
+    transition: all 0.2s ease;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .file-input-wrapper:hover {
     border-color: #0E38AB;
+    background-color: #F5F7FF;
 }
 
-input[type="file"] {
+.file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.file-input-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    z-index: 1;
+}
+
+.file-input-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.upload-icon {
+    width: 2rem;
+    height: 2rem;
+    color: #6B7280;
+    transition: color 0.2s ease;
+}
+
+.file-input-wrapper:hover .upload-icon {
+    color: #0E38AB;
+}
+
+.file-input-prompt {
+    color: #374151;
+    font-size: 0.95rem;
+}
+
+.file-input-formats {
+    display: block;
+    color: #6B7280;
     font-size: 0.875rem;
 }
 
-input[type="file"]::file-selector-button {
-    background-color: white;
-    color: #0E38AB;
-    border: 1px solid #0E38AB;
-    border-radius: 6px;
-    padding: 0.5rem 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s ease-in-out;
-    margin-right: 1rem;
+/* Drag and drop states */
+.file-input-wrapper.dragover {
+    border-color: #0E38AB;
+    background-color: #EEF2FF;
 }
 
-input[type="file"]::file-selector-button:hover {
-    background-color: #0E38AB;
-    color: white;
+.file-input-container.has-file .file-input-wrapper {
+    border-color: #0E38AB;
+    background-color: #F5F7FF;
+}
+
+.file-input-container.has-file .upload-icon {
+    color: #0E38AB;
+}
+
+/* Error state */
+.file-input-container.has-error .file-input-wrapper {
+    border-color: #DC2626;
+    background-color: #FEF2F2;
+}
+
+.file-input-container.has-error .upload-icon {
+    color: #DC2626;
 }
 
 .form-actions {
     margin-top: 2rem;
 }
 
-button[type="submit"] {
+.form-actions button {
     width: 100%;
+    padding: 0.875rem 1.5rem;
     background-color: #0E38AB;
     color: white;
     border: none;
     border-radius: 8px;
-    padding: 0.875rem;
-    font-weight: 500;
     font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.15s ease-in-out;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(14, 56, 171, 0.1);
 }
 
-button[type="submit"]:hover {
-    background-color: #0c2d8a;
+.form-actions button:hover {
+    background-color: #0C2D8A;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(14, 56, 171, 0.15);
 }
 
-/* Active states for touch devices */
-@media (hover: none) {
-    button[type="submit"]:active {
-        transform: scale(0.98);
-    }
-
-    input[type="file"]::file-selector-button:active {
-        transform: scale(0.98);
-    }
+.form-actions button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(14, 56, 171, 0.1);
 }
 
 /* Tablet styles */
@@ -175,7 +299,7 @@ button[type="submit"]:hover {
         margin-bottom: 2rem;
     }
 
-    button[type="submit"] {
+    .form-actions button {
         width: auto;
         min-width: 200px;
         padding: 1rem 2rem;
@@ -358,22 +482,20 @@ button[type="submit"]:hover {
 }
 
 .bin-button {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 55px;
-    height: 55px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     background-color: rgb(255, 95, 95);
     cursor: pointer;
     border: 2px solid rgb(255, 201, 201);
     transition-duration: 0.3s;
+    position: relative;
     overflow: hidden;
-    z-index: 10;
+    padding: 0;
 }
 
 .bin-bottom {
@@ -441,4 +563,347 @@ button[type="submit"]:hover {
     .garbage {
         width: 11px;
     }
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        padding: 1.5rem;
+        margin: 1rem auto;
+        border-radius: 12px;
+    }
+    
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-group select[multiple] {
+        min-height: 140px;
+    }
+
+    .form-group select[multiple] option {
+        padding: 0.625rem 0.875rem;
+    }
+}
+
+/* Disabled state */
+.form-group select:disabled {
+    background-color: #F3F4F6;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Error state */
+.form-group.has-error select {
+    border-color: #DC2626;
+}
+
+.form-group.has-error .select-helper {
+    color: #DC2626;
+}
+
+/* Opdateret select styling */
+.custom-select {
+    position: relative;
+    width: 100%;
+}
+
+.custom-select select {
+    appearance: none;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: white;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    color: #1F2937;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.select-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #6B7280;
+}
+
+/* Selected educations container */
+.selected-educations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    min-height: 2rem;
+}
+
+/* Education tags */
+.education-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #EEF2FF;
+    color: #0E38AB;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    gap: 0.5rem;
+    border: 1px solid #E0E7FF;
+    transition: all 0.2s ease;
+}
+
+.education-tag:hover {
+    background-color: #E0E7FF;
+}
+
+/* Remove tag button */
+.remove-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #4F46E5;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 50%;
+}
+
+.remove-tag:hover {
+    background-color: #C7D2FE;
+    color: #3730A3;
+}
+
+.remove-tag svg {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+/* Dropdown styling */
+.custom-select select[multiple] {
+    padding: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.custom-select select[multiple] option {
+    padding: 0.625rem 1rem;
+    margin: 0.25rem;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+
+.custom-select select[multiple] option:checked {
+    background-color: #EEF2FF !important;
+    color: #0E38AB;
+    font-weight: 500;
+}
+
+.custom-select select[multiple] option:hover {
+    background-color: #F8FAFC;
+}
+
+/* Scrollbar styling */
+.custom-select select::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-select select::-webkit-scrollbar-track {
+    background: #F1F5F9;
+    border-radius: 4px;
+}
+
+.custom-select select::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+    border: 2px solid #F1F5F9;
+}
+
+.custom-select select::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* Focus states */
+.custom-select select:focus {
+    outline: none;
+    border-color: #0E38AB;
+    box-shadow: 0 0 0 3px rgba(14, 56, 171, 0.1);
+}
+
+/* Education selection styling */
+.education-selection-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.education-tags-container {
+    min-height: 44px;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 0.5rem;
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.tags-placeholder {
+    color: #94A3B8;
+    font-size: 0.875rem;
+}
+
+/* Dropdown styling */
+.education-dropdown-container {
+    position: relative;
+}
+
+.dropdown-trigger {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: white;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: #1F2937;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-trigger svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #6B7280;
+    transition: transform 0.2s ease;
+}
+
+.dropdown-trigger.active {
+    border-color: #0E38AB;
+}
+
+.dropdown-trigger.active svg {
+    transform: rotate(180deg);
+}
+
+.education-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: none;
+    z-index: 10;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.education-dropdown.active {
+    display: block;
+}
+
+.dropdown-options {
+    padding: 0.5rem;
+}
+
+.dropdown-option {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    color: #1F2937;
+    transition: all 0.15s ease;
+}
+
+.dropdown-option:hover {
+    background-color: #F8FAFC;
+}
+
+.dropdown-option.selected {
+    background-color: #EEF2FF;
+    color: #0E38AB;
+    font-weight: 500;
+}
+
+/* Education tags */
+.education-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #EEF2FF;
+    color: #0E38AB;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    gap: 0.5rem;
+    border: 1px solid #E0E7FF;
+}
+
+.remove-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #4F46E5;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 50%;
+}
+
+.remove-tag:hover {
+    background-color: #C7D2FE;
+    color: #3730A3;
+}
+
+.remove-tag svg {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+/* Scrollbar styling */
+.education-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.education-dropdown::-webkit-scrollbar-track {
+    background: #F1F5F9;
+    border-radius: 4px;
+}
+
+.education-dropdown::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+    border: 2px solid #F1F5F9;
+}
+
+.education-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* Tilføj dette til dine eksisterende styles */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.page-header .page-title {
+    margin-bottom: 0;
 } 

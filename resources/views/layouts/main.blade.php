@@ -26,7 +26,7 @@
                 <nav class="dropdown-menu">
                     <a href="/">Forside</a>
 
-                    @if ($isAuthenticated)
+                    @if (auth()->check())
                         <a href="/add_model">Tilføj Model</a>
                         <div class="logout-container">
                             <form action="{{ route('logout') }}" method="POST" style="display:inline;">
@@ -67,5 +67,7 @@
             });
         });
     </script>
+
+    @stack('scripts')
 </body>
 </html>

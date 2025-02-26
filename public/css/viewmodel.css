@@ -7,10 +7,13 @@
     margin: 0 auto;
     width: 100%;
     gap: 2rem;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 /* Header styles */
 .page-header {
+    display: block;
     width: 100%;
     padding: 1rem;
     background: white;
@@ -23,7 +26,14 @@
 .page-header h1 {
     color: #1e293b;
     font-size: clamp(1.5rem, 4vw, 2rem);
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    word-wrap: break-word;
+}
+
+.description {
+    color: #475569;
+    line-height: 1.6;
+    max-width: 100%;
     word-wrap: break-word;
 }
 
@@ -37,11 +47,11 @@
     margin-bottom: 1rem;
 }
 
-.description {
-    color: #475569;
-    line-height: 1.6;
-    max-width: 100%;
-    word-wrap: break-word;
+.education-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 /* Model content styles */
@@ -51,6 +61,8 @@
     border-radius: 12px;
     padding: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .controls {
@@ -82,6 +94,7 @@ model-viewer {
     max-height: 700px;
     background-color: #f8fafc;
     border-radius: 0.5rem;
+    max-width: 100%;
 }
 
 .ar-button {
@@ -104,6 +117,7 @@ model-viewer {
     .model-viewer-container {
         padding: 0.5rem;
         gap: 1rem;
+        width: 100vw;
     }
 
     .page-header {

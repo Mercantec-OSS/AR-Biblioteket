@@ -26,6 +26,9 @@ class Kernel extends HttpKernel
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Http\Middleware\EncryptCookies::class,
+        \App\Http\Middleware\HttpsProtocol::class,
+        \App\Http\Middleware\IncreaseUploadLimits::class,
+
     ];
 
     /**

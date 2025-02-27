@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\VRModels;
 use App\Http\Controllers\VRModelsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Api\VRModelsController;
 use App\Http\Controllers\ModelController;
 use App\Http\Controllers\JWTAuthController;
 use App\Http\Middleware\JwtMiddleware;
@@ -104,11 +105,25 @@ Route::post('/logout', [JWTAuthController::class, 'logout'])->name('logout');
 // Model-related routes
 Route::get('/models', [ModelController::class, 'getAllModels']);
 Route::delete('/model/{id}', [ModelController::class, 'deleteModelByID']);
-Route::get('/select-base-object/{modelId}', [ModelController::class, 'showSelectBaseObject'])
-    ->name('select.base.object');
-Route::post('/complete-model/{modelId}', [ModelController::class, 'completeModelUpload'])
-    ->name('complete.model.upload');
+Route::get('/select-base-object/{modelId}', function (Request $request, $modelId, JWTAuthController $authController, ModelController $modelController) {
+    $isAuthenticated = $authController->isAuthenticated($request);
+    if (!$isAuthenticated) {
+        return redirect('/login')->withErrors(['message' => 'Unauthorized access. Please log in.']);
+    }
+    return $modelController->showSelectBaseObject($modelId);
+})->name('select.base.object');
+
+Route::post('/complete-model/{modelId}', function (Request $request, $modelId, JWTAuthController $authController, ModelController $modelController) {
+    $isAuthenticated = $authController->isAuthenticated($request);
+    if (!$isAuthenticated) {
+        return redirect('/login')->withErrors(['message' => 'Unauthorized access. Please log in.']);
+    }
+    return $modelController->completeModelUpload($request, $modelId);
+})->name('complete.model.upload');
 
 // API routes
 Route::get('/api/models', [VRModelsController::class, 'index']);
+Route::get('/api/models/{id}/download', [VRModelsController::class, 'downloadModel']);
+
+Route::put('/models/{id}', [ModelController::class, 'update'])->name('models.update');
 

@@ -20,9 +20,5 @@ class DatabaseSeeder extends Seeder
             'department' => 'test', // Optional: Add a department if needed
             'loggedIn' => false, // Optional: Set loggedIn status
         ]);
-
-        $this->call([
-            EducationSeeder::class
-        ]);
     }
 }

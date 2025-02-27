@@ -26,7 +26,7 @@
 
         <model-viewer
             id="model-viewer"
-            src="{{ asset('storage/' . $model->model_path) }}"
+            src="{{ secure_asset('storage/' . $model->model_path) }}"
             alt="{{ $model->title }}"
             ar
             ar-modes="webxr scene-viewer quick-look"

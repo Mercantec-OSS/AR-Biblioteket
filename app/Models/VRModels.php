@@ -25,6 +25,7 @@ class VRModels extends Model
         'user_id',
         'model_path',
         'image_path',
+        'base_object',
     ];
 
     /**

@@ -65,7 +65,7 @@
                 <label for="model">3D Model</label>
                 <div class="file-input-container">
                     <div class="file-input-wrapper">
-                        <input id="model" name="modelCreate" type="file" required class="file-input" accept=".glb,.gltf"/>
+                        <input id="model" name="modelCreate" type="file" required class="file-input" accept=".glb,.gltf,.obj,.stl,.fbx,.ply,.3ds"/>
                         <div class="file-input-content">
                             <div class="file-input-text">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="upload-icon">
@@ -73,7 +73,7 @@
                                 </svg>
                                 <span class="file-input-prompt" id="modelPrompt">Vælg 3D model eller træk fil hertil</span>
                             </div>
-                            <span class="file-input-formats">.glb, .gltf</span>
+                            <span class="file-input-formats">.glb, .gltf, .obj, .stl, .fbx, .ply, .3ds</span>
                         </div>
                     </div>
                 </div>
@@ -101,6 +101,48 @@
                 <button type="submit">Tilføj</button>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- Conversion Progress Modal -->
+<div id="conversionModal" class="modal">
+    <div class="modal-content conversion-modal">
+        <div class="modal-header">
+            <div class="modal-title">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2>Konvertering i Gang</h2>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-indicator"></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="conversion-info">
+                <div class="file-type">
+                    <span class="label">Fil Type:</span>
+                    <span id="fileTypeText" class="value"></span>
+                </div>
+                <div class="conversion-status">
+                    <div class="status-icon">
+                        <div class="spinner"></div>
+                    </div>
+                    <div class="status-text">
+                        <p class="primary-text">Konverterer til GLB format</p>
+                        <p class="secondary-text">Dette kan tage et øjeblik...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="warning-container">
+                <svg class="warning-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <p>Luk ikke siden ned før konverteringen er færdig</p>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -222,6 +264,189 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Move this outside of DOMContentLoaded
+document.querySelector('.model-form').addEventListener('submit', function(e) {
+    const modelInput = document.getElementById('model');
+    const file = modelInput.files[0];
+    
+    if (file) {
+        const extension = file.name.split('.').pop().toLowerCase();
+        if (extension !== 'glb') {
+            e.preventDefault(); // Prevent form submission
+            
+            const modal = document.getElementById('conversionModal');
+            const fileTypeText = document.getElementById('fileTypeText');
+            fileTypeText.textContent = extension.toUpperCase();
+            
+            modal.classList.add('show');
+            modal.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+
+            // Submit the form after showing the modal
+            setTimeout(() => {
+                this.submit();
+            }, 500);
+        }
+    }
+});
 </script>
+@endpush
+
+@push('styles')
+<style>
+/* Modern Conversion Modal Styles */
+.conversion-modal {
+    max-width: 500px;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.conversion-modal .modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-title h2 {
+    font-size: 1.5rem;
+    color: #111827;
+    font-weight: 600;
+    margin: 0;
+}
+
+.progress-container {
+    margin-top: 1rem;
+}
+
+.progress-bar {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-indicator {
+    height: 100%;
+    width: 30%;
+    background: #0E38AB;
+    border-radius: 3px;
+    animation: progress 2s infinite;
+    transform-origin: left;
+}
+
+@keyframes progress {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.conversion-info {
+    background: #f3f4f6;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.file-type {
+    margin-bottom: 1rem;
+}
+
+.file-type .label {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.file-type .value {
+    font-weight: 600;
+    color: #111827;
+    margin-left: 0.5rem;
+}
+
+.conversion-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.status-icon .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e5e7eb;
+    border-top: 3px solid #0E38AB;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.status-text .primary-text {
+    color: #111827;
+    font-weight: 500;
+    margin: 0;
+}
+
+.status-text .secondary-text {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin: 0.25rem 0 0 0;
+}
+
+.warning-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #fff4ed;
+    border-radius: 8px;
+    color: #9a3412;
+}
+
+.warning-container .warning-icon {
+    width: 20px;
+    height: 20px;
+    color: #ea580c;
+}
+
+.warning-container p {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal.visible {
+    opacity: 1;
+}
+</style>
 @endpush
 @endsection

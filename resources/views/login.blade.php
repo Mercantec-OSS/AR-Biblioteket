@@ -6,7 +6,7 @@
 <title>Login</title>
 <body>
 <div class="login-box">
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ secure_url('/login') }}">
     @csrf
         <h2>Log Ind</h2>
         <div class="user-box">

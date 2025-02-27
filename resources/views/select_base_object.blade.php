@@ -19,14 +19,14 @@
 
         <div class="model-content">
             <div class="controls">
-                <select id="baseObject" name="baseObject" required class="animation-dropdown">
-                    <option value="">Vælg en del</option>
+                <select id="baseObject" name="baseObject" class="animation-dropdown">
+                    <option value="">Ingen base objekt</option>
                 </select>
             </div>
 
             <model-viewer
                 id="model-viewer"
-                src="{{ asset('storage/' . $modelPath) }}"
+                src="{{ secure_asset('storage/' . $modelPath) }}"  
                 camera-controls
                 shadow-intensity="1"
                 auto-rotate
@@ -34,7 +34,8 @@
             ></model-viewer>
         </div>
 
-        <form class="model-form" method="POST" action="{{ route('complete.model.upload', ['modelId' => $modelId]) }}">
+        <form method="POST" action="{{ route('complete.model.upload', ['modelId' => $modelId]) }}">
+ 
             @csrf
             <input type="hidden" id="selectedBaseObject" name="baseObject" value="">
             <div class="form-actions">

@@ -6,14 +6,23 @@ use Illuminate\Http\Request;
 use App\Models\VRModels;
 use App\Models\Educations;
 use Illuminate\Support\Facades\Storage;
+use App\Services\ModelConversionService;
 
 class ModelController extends Controller
 {
+    protected $modelConversionService;
+
+    public function __construct(ModelConversionService $modelConversionService)
+    {
+        $this->modelConversionService = $modelConversionService;
+    }
+
     // Get model by ID  
     public function getModelByID($id, JWTAuthController $authController)
     {
         $model = VRModels::findOrFail($id);
         $isAuthenticated = $authController->isAuthenticated(request());
+
         return view('viewmodel', [
             'model' => $model,
             'isAuthenticated' => $isAuthenticated
@@ -27,171 +36,208 @@ class ModelController extends Controller
         return 'Models: ' . $models->pluck('title')->implode(', ');
     }
 
+    // Show form to add new model
+    public function showAddModelForm()
+    {
+        $educations = Educations::all();
+        return view('add_model', compact('educations'));
+    }
+
     // Create a new model
     public function store(Request $request)
     {
-        // Validate the request
         $request->validate([
-            'modelCreate' => 'required|file|mimes:glb|max:50000',
+            'modelCreate' => [
+                'required',
+                'file',
+                function ($attribute, $value, $fail) {
+                    if (!$value) return;
+                    
+                    $extension = strtolower($value->getClientOriginalExtension());
+                    $modelService = app(ModelConversionService::class);
+                    
+                    if (!$modelService->isSupported($extension)) {
+                        $fail('Filen skal være af typen: ' . implode(', ', $modelService->getSupportedFormats()));
+                    }
+                }
+            ],
             'imageCreate' => 'required|file|mimes:jpeg,png,jpg|max:50000',
             'titleCreate' => 'required|string|max:255',
-            'educationCreate' => 'required|array', // Allow multiple education IDs
-            'educationCreate.*' => 'exists:educations,id', // Ensure valid education IDs
-            'descriptionCreate' => 'required|string'
+            'educationCreate' => 'required|array',
+            'educationCreate.*' => 'exists:educations,id',
+            'descriptionCreate' => 'required|string',
         ]);
 
         try {
-            // File upload handling
-            if ($request->hasFile('modelCreate') && $request->file('modelCreate')->isValid()) {
-                $modelPath = $request->file('modelCreate')->store('models', 'public');
-            } else {
-                throw new \Exception('3D model file not uploaded or invalid');
-            }
+            \Log::debug('Starting model conversion process', [
+                'original_file' => $request->file('modelCreate')->getClientOriginalName(),
+                'extension' => $request->file('modelCreate')->getClientOriginalExtension()
+            ]);
+            
+            // Convert the model to GLB format
+            $convertedModel = $this->modelConversionService->convertToGlb($request->file('modelCreate'));
+            
+            \Log::debug('Model conversion completed', [
+                'converted_file' => $convertedModel->getClientOriginalName()
+            ]);
+            
+            // Store the converted model
+            $modelPath = $convertedModel->store('models', 'public');
+            $imagePath = $request->file('imageCreate')->store('images', 'public');
 
-            if ($request->hasFile('imageCreate') && $request->file('imageCreate')->isValid()) {
-                $imagePath = $request->file('imageCreate')->store('images', 'public');
-            } else {
-                throw new \Exception('Image file not uploaded or invalid');
-            }
+            // Create the model record
+            $model = VRModels::create([
+                'title' => $request->input('titleCreate'),
+                'description' => $request->input('descriptionCreate'),
+                'model_path' => $modelPath,
+                'image_path' => $imagePath,
+                'user_id' => 1, // Midlertidigt hardcoded
+            ]);
 
-            // Get authenticated user's ID
-            $user = auth()->user();
-            if (!$user) {
-                throw new \Exception('User not authenticated');
-            }
+            $model->educations()->attach($request->input('educationCreate'));
 
-            // Create new model
-            $model = new VRModels();
-            $model->title = $request->input('titleCreate');
-            $model->description = $request->input('descriptionCreate');
-            $model->model_path = $modelPath;
-            $model->image_path = $imagePath;
-            $model->user_id = $user->id; // Use authenticated user's ID
-
-            // Save the model and handle success
-            if ($model->save()) {
-                // Attach education using the pivot table
-                $model->educations()->attach($request->input('educationCreate')); // Handle multiple educations
-                return redirect()->route('select.base.object', [
-                    'modelId' => $model->id,
-                    'modelPath' => $modelPath
-                ]);
-            } else {
-                throw new \Exception('Failed to save model');
-            }
+            return redirect()->route('select.base.object', [
+                'modelId' => $model->id,
+                'modelPath' => $modelPath
+            ])->with('success', '3D Model oprettet succesfuldt');
             
         } catch (\Exception $e) {
-            \Log::error('Model creation failed: ' . $e->getMessage());
-            return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
+            \Log::error('Model creation failed', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return back()->with('error', 'Der opstod en fejl under konvertering: ' . $e->getMessage());
         }
-    }
-
-    public function showAddModelForm()
-    {
-        $educations = Educations::all(); // Fetch all educations from the database
-        return view('add_model', compact('educations')); // Pass the data to the view
     }
 
     // Edit model by ID
     public function update(Request $request, $id)
     {
-        $model = VRModels::find($id);
+        $request->validate([
+            'titleCreate' => 'required|string|max:255',
+            'descriptionCreate' => 'required|string',
+            'educationCreate' => 'required|array',
+            'educationCreate.*' => 'exists:educations,id',
+            'modelCreate' => 'nullable|file',
+            'imageCreate' => 'nullable|file|mimes:jpeg,png,jpg|max:50000',
+        ]);
 
-        if ($model) {
-            // Validate the request
-            $validationRules = [
-                'titleCreate' => 'required|string|max:255',
-                'educationCreate' => 'required|array',
-                'educationCreate.*' => 'exists:educations,id',
-                'descriptionCreate' => 'required|string'
-            ];
+        try {
+            $model = VRModels::findOrFail($id);
 
-            // Add file validation rules only if files are being uploaded
+            // Update basic information
+            $model->title = $request->input('titleCreate');
+            $model->description = $request->input('descriptionCreate');
+
+            // Handle new model file upload if provided
             if ($request->hasFile('modelCreate')) {
-                $validationRules['modelCreate'] = 'file|mimes:glb|max:50000';
+                \Log::debug('Starting model update conversion process', [
+                    'original_file' => $request->file('modelCreate')->getClientOriginalName(),
+                    'extension' => $request->file('modelCreate')->getClientOriginalExtension()
+                ]);
+                
+                // Delete the old model file
+                Storage::disk('public')->delete($model->model_path);
+                
+                // Convert the new model to GLB format if needed
+                $convertedModel = app(ModelConversionService::class)->convertToGlb($request->file('modelCreate'));
+                
+                // Store the converted model
+                $modelPath = $convertedModel->store('models', 'public');
+                $model->model_path = $modelPath;
             }
+
+            // Handle new image file upload if provided
             if ($request->hasFile('imageCreate')) {
-                $validationRules['imageCreate'] = 'file|mimes:jpeg,png,jpg|max:50000';
+                // Delete the old image
+                Storage::disk('public')->delete($model->image_path);
+                
+                // Store the new image
+                $imagePath = $request->file('imageCreate')->store('images', 'public');
+                $model->image_path = $imagePath;
             }
 
-            $request->validate($validationRules);
+            $model->save();
 
-            try {
-                $model->title = $request->input('titleCreate');
-                $model->description = $request->input('descriptionCreate');
+            // Update education relationships
+            $model->educations()->sync($request->input('educationCreate'));
 
-                // Handle file uploads if present
-                if ($request->hasFile('modelCreate')) {
-                    Storage::disk('public')->delete($model->model_path);
-                    $model->model_path = $request->file('modelCreate')->store('models', 'public');
-                    $modelUpdated = true;
-                }
-
-                if ($request->hasFile('imageCreate')) {
-                    Storage::disk('public')->delete($model->image_path);
-                    $model->image_path = $request->file('imageCreate')->store('images', 'public');
-                }
-
-                $model->save();
-
-                // Sync educations
-                $model->educations()->sync($request->input('educationCreate'));
-
-                // Redirect based on whether model was updated
-                if (isset($modelUpdated) && $modelUpdated) {
-                    return redirect()->route('select.base.object', [
-                        'modelId' => $model->id,
-                        'modelPath' => $model->model_path
-                    ]);
-                }
-
-                return redirect('/')->with('success', 'Model opdateret succesfuldt');
-
-            } catch (\Exception $e) {
-                \Log::error('Model update failed: ' . $e->getMessage());
-                return back()->with('error', 'Der opstod en fejl: ' . $e->getMessage());
-            }
+            return redirect()->route('select.base.object', [
+                'modelId' => $model->id,
+                'modelPath' => $model->model_path
+            ])->with('success', '3D Model opdateret succesfuldt');
+            
+        } catch (\Exception $e) {
+            \Log::error('Model update failed', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return back()->with('error', 'Der opstod en fejl under opdatering: ' . $e->getMessage());
         }
-
-        return back()->with('error', 'Model ikke fundet');
     }
 
     // Delete model by ID
     public function deleteModelByID($id)
     {
         $model = VRModels::find($id);
-        if ($model) {
-            // Delete associated files
-            Storage::disk('public')->delete($model->model_path);
-            Storage::disk('public')->delete($model->image_path);
-            
-            $model->delete();
-            return redirect('/')->with('success', 'Model slettet succesfuldt');
+
+        if (!$model) {
+            return redirect('/')->with('error', 'Model ikke fundet');
         }
-        return redirect('/')->with('error', 'Model ikke fundet');
+
+        try {
+            // Slet tilknyttede filer
+            Storage::disk('public')->delete([$model->model_path, $model->image_path]);
+
+            // Frakobl relaterede uddannelser
+            $model->educations()->detach();
+
+            $model->delete();
+
+            return redirect('/')->with('success', 'Model slettet succesfuldt');
+        } catch (\Exception $e) {
+            \Log::error('Model deletion failed: ' . $e->getMessage());
+            return redirect('/')->with('error', 'Der opstod en fejl: ' . $e->getMessage());
+        }
     }
 
+    // Show select base object page
     public function showSelectBaseObject($modelId)
     {
         $model = VRModels::findOrFail($modelId);
+
         return view('select_base_object', [
             'modelId' => $modelId,
             'modelPath' => $model->model_path
         ]);
     }
 
+    // Complete model upload
     public function completeModelUpload(Request $request, $modelId)
     {
-        $model = VRModels::findOrFail($modelId);
-        
-        // Get the selected base object and remove "Action" from it
-        $baseObject = $request->input('baseObject');
-        $cleanBaseObject = str_replace('Action', '', $baseObject);
-        
-        // Save the cleaned base object name
-        $model->base_object = trim($cleanBaseObject);
-        $model->save();
-        
-        return redirect('/')->with('success', 'Model tilføjet succesfuldt');
+        try {
+            $model = VRModels::findOrFail($modelId);
+            $baseObject = $request->input('baseObject');
+            
+            // Clean the base object name if one is selected
+            $cleanBaseObject = $baseObject ? str_replace('Action', '', $baseObject) : null;
+            
+            $model->update([
+                'base_object' => $cleanBaseObject ? trim($cleanBaseObject) : null
+            ]);
+
+            return redirect()->route('home')->with('success', 'Model blev opdateret succesfuldt');
+        } catch (\Exception $e) {
+            \Log::error('Failed to update base object', [
+                'error' => $e->getMessage(),
+                'modelId' => $modelId,
+                'baseObject' => $baseObject ?? null
+            ]);
+            return redirect()->back()->with('error', 'Der opstod en fejl ved opdatering af base objekt');
+        }
     }
 }

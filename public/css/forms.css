@@ -1,3 +1,260 @@
+/* Base styles - Mobile First (Small phones) */
+.page-container {
+    min-height: calc(100vh - 4rem);
+    padding: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+}
+
+.form-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0.5rem auto;
+    border: 1px solid rgba(229, 233, 239, 0.7);
+    box-sizing: border-box;
+}
+
+.page-title {
+    color: #0E38AB;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+}
+
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea {
+    padding: 0.625rem;
+    font-size: 0.875rem;
+}
+
+.file-input-wrapper {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 120px;
+    border: none;
+    border-radius: 8px;
+    background-color: transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.file-input-wrapper:hover {
+    background-color: #F5F7FF;
+}
+
+.education-tags-container {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 44px;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem;
+    background-color: transparent;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.education-tag {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+.form-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.form-actions button {
+    width: auto;
+    min-width: 160px;
+    max-width: 200px;
+    padding: 0.875rem 1.5rem;
+    background-color: #0E38AB;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(14, 56, 171, 0.1);
+}
+
+/* Small phones and up (320px and up) */
+@media (min-width: 320px) {
+    .page-container {
+        padding: 0.75rem;
+    }
+
+    .form-container {
+        padding: 1.25rem;
+        margin: 0.75rem auto;
+    }
+
+    .form-actions button {
+        min-width: 140px;
+        padding: 0.75rem 1.25rem;
+    }
+}
+
+/* Medium phones and up (375px and up) */
+@media (min-width: 375px) {
+    .page-container {
+        padding: 1rem;
+    }
+
+    .form-container {
+        padding: 1.5rem;
+        margin: 1rem auto;
+    }
+
+    .page-title {
+        font-size: 1.375rem;
+    }
+
+    .form-actions button {
+        min-width: 160px;
+        padding: 0.875rem 1.5rem;
+    }
+}
+
+/* Large phones and up (425px and up) */
+@media (min-width: 425px) {
+    .form-container {
+        max-width: 95%;
+    }
+
+    .form-group input[type="text"],
+    .form-group select,
+    .form-group textarea {
+        padding: 0.75rem;
+        font-size: 0.9375rem;
+    }
+}
+
+/* Small tablets and up (600px and up) */
+@media (min-width: 600px) {
+    .page-container {
+        padding: 1.5rem;
+    }
+
+    .form-container {
+        max-width: 90%;
+        padding: 2rem;
+        margin: 1.5rem auto;
+        border-radius: 16px;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .file-input-wrapper {
+        min-height: 120px;
+    }
+}
+
+/* Tablets and up (768px and up) */
+@media (min-width: 768px) {
+    .form-container {
+        max-width: 720px;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+    }
+
+    .form-group label {
+        font-size: 1rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group select,
+    .form-group textarea {
+        font-size: 1rem;
+    }
+
+    .education-tag {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .form-actions button {
+        min-width: 180px;
+    }
+}
+
+/* Small laptops and up (1024px and up) */
+@media (min-width: 1024px) {
+    .page-container {
+        padding: 2rem;
+    }
+
+    .form-container {
+        max-width: 800px;
+        padding: 2.5rem;
+    }
+
+    .form-actions button {
+        min-width: 200px;
+        padding: 1rem 2rem;
+    }
+}
+
+/* Large laptops and up (1440px and up) */
+@media (min-width: 1440px) {
+    .form-container {
+        max-width: 900px;
+    }
+}
+
+/* 4K and up (2560px and up) */
+@media (min-width: 2560px) {
+    .form-container {
+        max-width: 1200px;
+    }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .form-group label {
+        font-size: 1.125rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group select,
+    .form-group textarea {
+        padding: 1rem;
+        font-size: 1.125rem;
+    }
+}
+
 /* Base styles - Mobile First */
 .page-container {
     min-height: calc(100vh - 4rem);
@@ -30,6 +287,8 @@
     margin-bottom: 1.25rem;
     width: 100%;
     position: relative;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .form-group label {
@@ -58,6 +317,9 @@
     color: #1F2937;
     transition: all 0.2s ease;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
 }
 
 .form-group select {
@@ -150,24 +412,6 @@
     position: relative;
 }
 
-.file-input-wrapper {
-    position: relative;
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 120px;
-    border: 2px dashed #E5E7EB;
-    border-radius: 8px;
-    background-color: #F9FAFB;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    overflow: hidden;
-}
-
-.file-input-wrapper:hover {
-    border-color: #0E38AB;
-    background-color: #F5F7FF;
-}
-
 .file-input {
     position: absolute;
     top: 0;
@@ -212,12 +456,26 @@
 .file-input-prompt {
     color: #374151;
     font-size: 0.95rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    padding: 0 1rem;
 }
 
 .file-input-formats {
     display: block;
     color: #6B7280;
     font-size: 0.875rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    padding: 0 1rem;
 }
 
 /* Drag and drop states */
@@ -243,75 +501,6 @@
 
 .file-input-container.has-error .upload-icon {
     color: #DC2626;
-}
-
-.form-actions {
-    margin-top: 2rem;
-}
-
-.form-actions button {
-    width: 100%;
-    padding: 0.875rem 1.5rem;
-    background-color: #0E38AB;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(14, 56, 171, 0.1);
-}
-
-.form-actions button:hover {
-    background-color: #0C2D8A;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(14, 56, 171, 0.15);
-}
-
-.form-actions button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(14, 56, 171, 0.1);
-}
-
-/* Tablet styles */
-@media (min-width: 640px) {
-    .page-container {
-        padding: 1.5rem;
-    }
-
-    .form-container {
-        padding: 1.5rem;
-    }
-
-    .page-title {
-        font-size: 1.75rem;
-    }
-}
-
-/* Desktop styles */
-@media (min-width: 1024px) {
-    .page-container {
-        padding: 2rem;
-    }
-
-    .form-container {
-        padding: 2rem;
-        max-width: 800px;
-    }
-
-    .page-title {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-    }
-
-    .form-actions button {
-        width: auto;
-        min-width: 200px;
-        padding: 1rem 2rem;
-        margin: 0 auto;
-        display: block;
-    }
 }
 
 .alert {
@@ -748,20 +937,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-}
-
-.education-tags-container {
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 44px;
-    border: 1.5px solid #E5E7EB;
-    border-radius: 8px;
-    padding: 0.5rem;
-    background-color: white;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    align-items: center;
 }
 
 .tags-placeholder {
@@ -1209,4 +1384,64 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 1rem;
+}
+
+/* File name display styles */
+.file-name-display {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+/* Add this to handle long text in form inputs */
+.form-group {
+    margin-bottom: 1.25rem;
+    width: 100%;
+    position: relative;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.form-group input[type="text"] {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+/* Ensure file input text doesn't overflow */
+.file-input-prompt {
+    color: #374151;
+    font-size: 0.95rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    padding: 0 1rem;
+}
+
+.file-input-formats {
+    display: block;
+    color: #6B7280;
+    font-size: 0.875rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    padding: 0 1rem;
+}
+
+/* Ensure modal content handles long text properly */
+.modal-content p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
 }

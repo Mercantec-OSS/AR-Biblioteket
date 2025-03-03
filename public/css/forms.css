@@ -27,7 +27,8 @@
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
+    width: 100%;
     position: relative;
 }
 
@@ -43,8 +44,12 @@
 .form-group input[type="text"],
 .form-group input[type="file"],
 .form-group select,
-.form-group textarea {
+.form-group textarea,
+.education-selection-container,
+.file-input-container {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     padding: 0.75rem 1rem;
     border: 1.5px solid #E5E7EB;
     border-radius: 8px;
@@ -148,6 +153,7 @@
 .file-input-wrapper {
     position: relative;
     width: 100%;
+    box-sizing: border-box;
     min-height: 120px;
     border: 2px dashed #E5E7EB;
     border-radius: 8px;
@@ -745,6 +751,8 @@
 }
 
 .education-tags-container {
+    width: 100%;
+    box-sizing: border-box;
     min-height: 44px;
     border: 1.5px solid #E5E7EB;
     border-radius: 8px;
@@ -906,4 +914,299 @@
 
 .page-header .page-title {
     margin-bottom: 0;
-} 
+}
+
+/* Conversion Modal Styles */
+.conversion-modal {
+    max-width: 500px;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.conversion-modal .modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-title h2 {
+    font-size: 1.5rem;
+    color: #111827;
+    font-weight: 600;
+    margin: 0;
+}
+
+.info-icon {
+    width: 2rem;
+    height: 2rem;
+    color: #0E38AB;
+    margin-right: 0.5rem;
+}
+
+.progress-container {
+    margin-top: 1rem;
+}
+
+.progress-bar {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-indicator {
+    height: 100%;
+    width: 30%;
+    background: #0E38AB;
+    border-radius: 3px;
+    animation: progress 2s infinite;
+    transform-origin: left;
+}
+
+@keyframes progress {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.conversion-info {
+    background: #f3f4f6;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.file-type {
+    margin-bottom: 1rem;
+}
+
+.file-type .label {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.file-type .value {
+    font-weight: 600;
+    color: #111827;
+    margin-left: 0.5rem;
+}
+
+.conversion-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.status-icon .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e5e7eb;
+    border-top: 3px solid #0E38AB;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.status-text .primary-text {
+    color: #111827;
+    font-weight: 500;
+    margin: 0;
+}
+
+.status-text .secondary-text {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin: 0.25rem 0 0 0;
+}
+
+.warning-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #fff4ed;
+    border-radius: 8px;
+    color: #9a3412;
+}
+
+.warning-container .warning-icon {
+    width: 20px;
+    height: 20px;
+    color: #ea580c;
+}
+
+.warning-container p {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Page Header Styles */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #E5E7EB;
+    position: relative;
+}
+
+.page-header .page-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #0E38AB;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: auto;
+}
+
+.page-header::before {
+    content: "";
+    width: 55px;
+    height: 55px;
+    visibility: hidden;
+}
+
+/* Responsive Styles */
+@media (max-width: 640px) {
+    .bin-button {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .bin-bottom {
+        width: 12px;
+    }
+    
+    .bin-top {
+        width: 14px;
+    }
+    
+    .garbage {
+        width: 11px;
+    }
+
+    .modal-content {
+        width: 85%;
+        max-width: 320px;
+        padding: 1.5rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .modal-header .warning-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .modal p {
+        font-size: 0.9rem;
+    }
+
+    .modal-actions {
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .cancel-button, .confirm-delete-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Delete Modal Styles */
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 400px;
+    transform: scale(0.95) translateY(20px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal.visible .modal-content {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.warning-icon {
+    width: 2rem;
+    height: 2rem;
+    color: #dc2626;
+}
+
+.warning-text {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.cancel-button, .confirm-delete-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cancel-button {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+.cancel-button:hover {
+    background-color: #d1d5db;
+}
+
+.confirm-delete-button {
+    background-color: #dc2626;
+    color: white;
+}
+
+.confirm-delete-button:hover {
+    background-color: #b91c1c;
+}
+
+/* Delete Button Container */
+.delete-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}

@@ -20,9 +20,10 @@
             <div class="navbar">
                 <span class="title"><a href="/" class="secure-link">AR Biblioteket</a></span>
                 <button class="dropdown-toggle" aria-expanded="false">
-                    <!-- Hamburger Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24">
-                        <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
                 </button>
                 <nav class="dropdown-menu">

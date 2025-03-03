@@ -5,6 +5,12 @@
 
     RewriteEngine On
 
+    # Allow HTTP methods
+    <LimitExcept GET POST HEAD>
+        Order deny,allow
+        Deny from all
+    </LimitExcept>
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -20,8 +26,32 @@
     RewriteRule ^ index.php [L]
 </IfModule>
 
-php_value upload_max_filesize 500M
-php_value post_max_size 500M
-php_value memory_limit 512M
-php_value max_execution_time 300
-php_value max_input_time 300
+# PHP Values
+<IfModule mod_php.c>
+    php_value upload_max_filesize 500M
+    php_value post_max_size 500M
+    php_value memory_limit 512M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+
+# Alternate PHP Values (if mod_php is not used)
+<IfModule mod_fcgid.c>
+    FcgidMaxRequestLen 524288000
+</IfModule>
+
+# Enable Cross-Origin Resource Sharing (CORS)
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Protect files and directories
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

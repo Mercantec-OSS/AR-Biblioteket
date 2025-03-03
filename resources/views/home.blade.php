@@ -6,7 +6,7 @@
 <div class="container">
     <div class="sidebar">
         <div class="filter-section">
-            <h3>Filtrer Modeller</h3>
+            <h3><i class="fas fa-filter"></i> Filtrer Modeller</h3>
             <div class="filter-content">
                 <select id="educationFilter" class="filter-select">
                     <option value="">Alle uddannelser</option>
@@ -69,34 +69,76 @@
 </div>
 
 @push('styles')
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-    .arrow-icon {
-        display: inline-block;
-        margin-left: 8px;
-        font-size: 16px;
-        transition: transform 0.3s ease;
-        color: #333; /* Adjust color as needed */
+    /* Generelle stilarter */
+    * {
+        font-family: 'Roboto', sans-serif;
     }
 
-    /* Rotate arrow on hover */
-    .model-link:hover .arrow-icon {
-        transform: translateX(4px);
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #F5F5F5;
+        display: flex;
+        gap: 20px;
     }
 
-    /* Make sure arrow is visible on all devices */
-    @media (max-width: 768px) {
-        .arrow-icon {
-            display: inline-block;
-        }
+    .sidebar {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .content {
+        flex: 3;
+    }
+
+    /* Filter-sektion */
+    .filter-section {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-section h3 {
+        color: #1E90FF;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .filter-select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    /* Model-liste med Grid */
+    .model-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 0;
     }
 
     .model-item {
         list-style: none;
-        margin-bottom: 20px;
-        padding: 10px;
+        padding: 15px;
+        background: #fff;
         border: 1px solid #ddd;
         border-radius: 8px;
-        cursor: pointer; /* Add cursor to indicate clickability */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+    }
+
+    .model-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .model-link {
@@ -104,7 +146,7 @@
         justify-content: space-between;
         align-items: center;
         text-decoration: none;
-        color: inherit;
+        color: #333;
     }
 
     .model-thumbnail {
@@ -119,12 +161,19 @@
         flex-grow: 1;
     }
 
+    .model-title {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #1E90FF;
+    }
+
     .education-tags-wrapper {
         margin-top: 6px;
     }
 
     .education-tag {
-        background-color: #f1f1f1;
+        background-color: #1E90FF;
+        color: #fff;
         padding: 4px 8px;
         border-radius: 4px;
         font-size: 12px;
@@ -132,8 +181,49 @@
         display: inline-block;
     }
 
+    /* Knapper og ikoner */
+    .edit-button {
+        padding: 6px;
+        border-radius: 4px;
+        background: #1E90FF;
+        color: #fff;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .edit-button:hover {
+        background: #1677D9; /* Lidt mørkere blå */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
     .edit-button svg {
-        stroke: #555;
+        stroke: #fff;
+    }
+
+    .arrow-icon {
+        display: inline-block;
+        margin-left: 8px;
+        font-size: 16px;
+        color: #FFA500;
+        transition: transform 0.3s ease;
+    }
+
+    .model-link:hover .arrow-icon {
+        transform: translateX(4px);
+    }
+
+    /* Responsivitet */
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .model-list {
+            grid-template-columns: 1fr;
+        }
+
+        .arrow-icon {
+            display: inline-block;
+        }
     }
 </style>
 @endpush
@@ -141,11 +231,10 @@
 @push('scripts')
 <script src="{{ secure_asset('js/filter.js') }}"></script>
 <script>
-    // JavaScript to make the entire model-item clickable
     document.querySelectorAll('.model-item').forEach(function(item) {
         item.addEventListener('click', function() {
             const url = item.getAttribute('data-url');
-            window.location.href = url; // Navigate to the model's page
+            window.location.href = url;
         });
     });
 </script>

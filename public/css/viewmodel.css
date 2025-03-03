@@ -15,12 +15,12 @@
 .page-header {
     display: block;
     width: 100%;
-    padding: 1rem;
     background: white;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 1rem;
     order: -1; /* Ensures header is always first */
+    position: relative;
 }
 
 .page-header h1 {
@@ -28,13 +28,17 @@
     font-size: clamp(1.5rem, 4vw, 2rem);
     margin-bottom: 1rem;
     word-wrap: break-word;
+    padding-left: 1rem;
+    font-weight: 700;
+    max-width: 100%;
 }
 
-.description {
-    color: #475569;
-    line-height: 1.6;
-    max-width: 100%;
-    word-wrap: break-word;
+.education-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
 }
 
 .education-tag {
@@ -47,11 +51,19 @@
     margin-bottom: 1rem;
 }
 
-.education-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+.education-separator {
+    color: #94a3b8;
+    margin: 0 0.25rem;
+    align-self: center;
+}
+
+.description {
+    color: #475569;
+    line-height: 1.6;
+    max-width: 100%;
+    word-wrap: break-word;
+    padding-left: 1rem;
+    font-size: 1.125rem;
 }
 
 /* Model content styles */
@@ -63,10 +75,12 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     overflow: hidden;
+    position: relative;
 }
 
 .controls {
     margin-bottom: 1rem;
+    width: 100%;
 }
 
 .animation-dropdown {
@@ -106,6 +120,9 @@ model-viewer {
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
 }
 
 .ar-button:hover {
@@ -118,10 +135,6 @@ model-viewer {
         padding: 0.5rem;
         gap: 1rem;
         width: 100vw;
-    }
-
-    .page-header {
-        padding: 0.5rem;
     }
 
     model-viewer {
@@ -142,4 +155,4 @@ model-viewer {
         padding: 0.375rem 0.75rem;
         font-size: 0.875rem;
     }
-} 
+}

@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@section('head')
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+@endsection
+
 @section('title', 'Opret Konto')
 
 @section('content')
@@ -20,15 +24,25 @@
         </div>
     @endif
 
-    <form action="{{ route('register') }}" method="post">
+    @if ($errors->any() && !$errors->has('token'))
+        <div class="alert alert-error">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ secure_url(route('register')) }}" method="POST" id="registerForm">
         @csrf
         <h2>Opret Konto</h2>
         <div class="user-box">
-            <input required type="text" name="name" id="name" placeholder="">
+            <input required type="text" name="name" id="name" value="{{ old('name') }}" placeholder="">
             <label for="name">Navn</label>
         </div>
         <div class="user-box">
-            <input required type="text" name="email" id="email" placeholder="">
+            <input required type="text" name="email" id="email" value="{{ old('email') }}" placeholder="">
             <label for="email">Email</label>
         </div>
         <div class="user-box">
@@ -36,11 +50,11 @@
             <label for="password">Adgangskode</label>
         </div>
         <div class="user-box">
-            <input required type="text" name="department" id="department" placeholder="">
+            <input required type="text" name="department" id="department" value="{{ old('department') }}" placeholder="">
             <label for="department">Afdeling</label>
         </div>
         <div class="user-box">
-            <input required type="text" name="token" id="token" placeholder="">
+            <input required type="text" name="token" id="token" value="{{ old('token') }}" placeholder="">
             <label for="token">Token</label>
             <small class="token-info">Kontakt Kasper Holm Bonde Christiansen for at få din token</small>
         </div>
@@ -53,6 +67,19 @@
         </button>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registerForm');
+    console.log('Form action:', form.action); // Debug: Tjek hvilken URL der genereres
+    
+    form.addEventListener('submit', function(e) {
+        // Tving HTTPS i action lige før indsendelse som ekstra sikkerhed
+        form.action = 'https://arbibliotek.socdata.dk/register';
+        console.log('Submitting to:', form.action); // Debug: Bekræft URL ved indsendelse
+    });
+});
+</script>
 
 <style>
 .login-box {
@@ -109,6 +136,11 @@
         max-height: calc(100vh - 60px);
         padding: 20px;
     }
+}
+
+/* Tilføjet for at sikre Token label er centreret */
+.user-box label[for="token"] {
+    top: 30px;
 }
 </style>
 @endsection

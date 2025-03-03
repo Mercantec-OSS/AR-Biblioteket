@@ -4,6 +4,7 @@
 
 @push('styles')
 <style>
+/* Din eksisterende CSS forbliver uændret */
 .bin-button {
     display: flex;
     flex-direction: column;
@@ -69,7 +70,6 @@
     }
 }
 
-/* Tilføj media queries for responsivitet */
 @media (max-width: 640px) {
     .bin-button {
         width: 45px;
@@ -111,15 +111,13 @@
     width: auto;
 }
 
-/* Tilføj en usynlig placeholder for at bevare flex layout */
 .page-header::before {
     content: "";
-    width: 55px; /* Samme bredde som bin-button */
+    width: 55px;
     height: 55px;
     visibility: hidden;
 }
 
-/* Modern Conversion Modal Styles */
 .conversion-modal {
     max-width: 500px;
     border-radius: 16px;
@@ -294,7 +292,7 @@
             </div>
         @endif
 
-        <form class="model-form" method="POST" action="{{ route('models.update', $model->id) }}" enctype="multipart/form-data">
+        <form class="model-form" method="POST" action="{{ secure_url(route('models.update', $model->id)) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-group">
@@ -306,7 +304,6 @@
                 <label for="education">Uddannelse</label>
                 <div class="education-selection-container">
                     <div class="education-tags-container" id="selectedEducations">
-                        <!-- Selected tags will appear here -->
                         <div class="tags-placeholder">Vælg uddannelser</div>
                     </div>
                     <div class="education-dropdown-container">
@@ -380,7 +377,7 @@
             </div>
             
             <div class="form-actions">
-                <button type="submit">Gem Ændringer</button>
+                <button type="submit" id="submitButton">Gem Ændringer</button>
             </div>
         </form>
     </div>
@@ -399,7 +396,7 @@
         <p class="warning-text">Dette kan ikke fortrydes.</p>
         <div class="modal-actions">
             <button onclick="cancelDelete()" class="cancel-button">Annuller</button>
-            <form action="/model/{{ $model->id }}" method="POST" style="display: inline;">
+            <form action="{{ secure_url('/model/' . $model->id) }}" method="POST" style="display: inline;">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="confirm-delete-button">Slet</button>
@@ -470,7 +467,6 @@ function cancelDelete() {
     });
 }
 
-// Close modal when clicking outside
 document.getElementById('deleteModal').addEventListener('click', function(e) {
     if (e.target === this) {
         cancelDelete();
@@ -488,12 +484,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedContainer = document.getElementById('selectedEducations');
     const tagsPlaceholder = selectedContainer.querySelector('.tags-placeholder');
     
-    // Initialize selected options
-    document.querySelectorAll('.dropdown-option[data-selected="true"]').forEach(option => {
-        option.classList.add('selected');
-    });
-    
-    // Rest of the education dropdown logic (same as add_model.blade.php)
     function updateSelectedEducations() {
         const selectedOptions = Array.from(select.selectedOptions);
         selectedContainer.innerHTML = '';
@@ -517,10 +507,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Initialize education tags
+    // Initialize selected options and tags
+    document.querySelectorAll('.dropdown-option[data-selected="true"]').forEach(option => {
+        option.classList.add('selected');
+    });
     updateSelectedEducations();
 
-    // Add the same event listeners as in add_model.blade.php
     dropdownTrigger.addEventListener('click', function(e) {
         dropdown.classList.toggle('active');
         dropdownTrigger.classList.toggle('active');
@@ -571,7 +563,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Drag and drop handling
         container.addEventListener('dragover', function(e) {
             e.preventDefault();
             container.classList.add('dragover');
@@ -585,7 +576,6 @@ document.addEventListener('DOMContentLoaded', function() {
         container.addEventListener('drop', function(e) {
             e.preventDefault();
             container.classList.remove('dragover');
-            
             const files = e.dataTransfer.files;
             if (files.length) {
                 input.files = files;
@@ -594,33 +584,37 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
 
-// Form submission handling for conversion
-document.querySelector('.model-form').addEventListener('submit', function(e) {
-    const modelInput = document.getElementById('model');
-    const file = modelInput.files[0];
-    
-    if (file) {
-        const extension = file.name.split('.').pop().toLowerCase();
-        if (extension !== 'glb') {
-            e.preventDefault(); // Prevent form submission
-            
-            const modal = document.getElementById('conversionModal');
-            const fileTypeText = document.getElementById('fileTypeText');
-            fileTypeText.textContent = extension.toUpperCase();
-            
-            modal.classList.add('show');
-            modal.classList.add('visible');
-            document.body.style.overflow = 'hidden';
+    // Form submission with HTTPS enforcement
+    const form = document.querySelector('.model-form');
+    form.addEventListener('submit', function(e) {
+        const modelInput = document.getElementById('model');
+        const file = modelInput.files[0];
+        
+        if (file) {
+            const extension = file.name.split('.').pop().toLowerCase();
+            if (extension !== 'glb') {
+                e.preventDefault(); // Forhindr standardindsendelse
+                
+                const modal = document.getElementById('conversionModal');
+                const fileTypeText = document.getElementById('fileTypeText');
+                fileTypeText.textContent = extension.toUpperCase();
+                
+                modal.classList.add('show');
+                modal.classList.add('visible');
+                document.body.style.overflow = 'hidden';
 
-            // Submit the form after showing the modal
-            setTimeout(() => {
-                this.submit();
-            }, 500);
+                // Send formularen som POST med PUT-metode efter en kort forsinkelse
+                setTimeout(() => {
+                    form.action = 'https://arbibliotek.socdata.dk/models/{{ $model->id }}'; // Tving HTTPS
+                    form.submit(); // Udfør standardindsendelse
+                }, 500);
+            }
         }
-    }
+        // Hvis ingen fil er valgt, fortsæt med standardindsendelse, men tving HTTPS
+        form.action = 'https://arbibliotek.socdata.dk/models/{{ $model->id }}';
+    });
 });
 </script>
 @endpush
-@endsection 
+@endsection

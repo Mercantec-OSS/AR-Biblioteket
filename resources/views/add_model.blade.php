@@ -17,18 +17,23 @@
             </div>
         @endif
 
-        <form class="model-form" method="post" enctype="multipart/form-data" action="/add_model">
+        @if (session('error'))
+            <div class="alert alert-error">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <form class="model-form" method="POST" action="{{ secure_url('/add_model') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="title">Titel</label>
-                <input id="title" name="titleCreate" type="text" placeholder="Indtast titel" required/>
+                <input id="title" name="titleCreate" type="text" value="{{ old('titleCreate') }}" placeholder="Indtast titel" required/>
             </div>
             
             <div class="form-group">
                 <label for="education">Uddannelse</label>
                 <div class="education-selection-container">
                     <div class="education-tags-container" id="selectedEducations">
-                        <!-- Selected tags will appear here -->
                         <div class="tags-placeholder">Vælg uddannelser</div>
                     </div>
                     <div class="education-dropdown-container">
@@ -58,7 +63,7 @@
             
             <div class="form-group">
                 <label for="description">Beskrivelse</label>
-                <textarea id="description" name="descriptionCreate" placeholder="Indtast beskrivelse" rows="4" required></textarea>
+                <textarea id="description" name="descriptionCreate" placeholder="Indtast beskrivelse" rows="4" required>{{ old('descriptionCreate') }}</textarea>
             </div>
             
             <div class="form-group">
@@ -154,7 +159,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const select = document.getElementById('education');
     const selectedContainer = document.getElementById('selectedEducations');
     const tagsPlaceholder = selectedContainer.querySelector('.tags-placeholder');
-    
+    const form = document.querySelector('.model-form');
+    const modal = document.getElementById('conversionModal');
+    const fileTypeText = document.getElementById('fileTypeText');
+
     function updateSelectedEducations() {
         const selectedOptions = Array.from(select.selectedOptions);
         selectedContainer.innerHTML = '';
@@ -178,14 +186,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Toggle dropdown
     dropdownTrigger.addEventListener('click', function(e) {
         dropdown.classList.toggle('active');
         dropdownTrigger.classList.toggle('active');
         e.stopPropagation();
     });
 
-    // Handle option selection
     dropdown.addEventListener('click', function(e) {
         const option = e.target.closest('.dropdown-option');
         if (option) {
@@ -197,7 +203,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle tag removal
     selectedContainer.addEventListener('click', function(e) {
         const removeButton = e.target.closest('.remove-tag');
         if (removeButton) {
@@ -210,7 +215,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Close dropdown when clicking outside
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.education-dropdown-container')) {
             dropdown.classList.remove('active');
@@ -218,10 +222,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Initial update
     updateSelectedEducations();
 
-    // File input handling for both model and image
     ['model', 'image'].forEach(inputId => {
         const input = document.getElementById(inputId);
         const prompt = document.getElementById(`${inputId}Prompt`);
@@ -240,7 +242,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Drag and drop handling
         container.addEventListener('dragover', function(e) {
             e.preventDefault();
             container.classList.add('dragover');
@@ -254,7 +255,6 @@ document.addEventListener('DOMContentLoaded', function() {
         container.addEventListener('drop', function(e) {
             e.preventDefault();
             container.classList.remove('dragover');
-            
             const files = e.dataTransfer.files;
             if (files.length) {
                 input.files = files;
@@ -263,32 +263,34 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
 
-// Move this outside of DOMContentLoaded
-document.querySelector('.model-form').addEventListener('submit', function(e) {
-    const modelInput = document.getElementById('model');
-    const file = modelInput.files[0];
-    
-    if (file) {
+    // Håndter formularindsendelse uden AJAX
+    form.addEventListener('submit', function(e) {
+        const modelInput = document.getElementById('model');
+        const file = modelInput.files[0];
+
+        if (!file) {
+            e.preventDefault();
+            alert('Vælg venligst en model-fil');
+            return;
+        }
+
         const extension = file.name.split('.').pop().toLowerCase();
         if (extension !== 'glb') {
-            e.preventDefault(); // Prevent form submission
-            
-            const modal = document.getElementById('conversionModal');
-            const fileTypeText = document.getElementById('fileTypeText');
+            e.preventDefault();
             fileTypeText.textContent = extension.toUpperCase();
-            
             modal.classList.add('show');
             modal.classList.add('visible');
             document.body.style.overflow = 'hidden';
 
-            // Submit the form after showing the modal
+            // Send formularen efter en kort forsinkelse for at vise modalen
             setTimeout(() => {
-                this.submit();
+                form.action = 'https://arbibliotek.socdata.dk/add_model'; // Sikr HTTPS
+                form.submit();
             }, 500);
         }
-    }
+        // Hvis filen er GLB, lader vi standardindsendelsen fortsætte
+    });
 });
 </script>
 @endpush

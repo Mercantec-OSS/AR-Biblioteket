@@ -7,6 +7,7 @@
     <div class="form-container">
         <h1 class="page-title">Vælg Base Objekt</h1>
         
+        <!-- Viser fejlmeddelelser, hvis der er nogen -->
         @if ($errors->any())
             <div class="alert alert-error">
                 <ul>
@@ -19,14 +20,16 @@
 
         <div class="model-content">
             <div class="controls">
-                <select id="baseObject" name="baseObject" class="animation-dropdown">
-                    <option value="">Ingen base objekt</option>
+                <!-- Dropdown til valg af base objekt -->
+                <select id="baseObject" name="baseObject" required class="animation-dropdown">
+                    <option value="">Vælg en del</option>
                 </select>
             </div>
 
+            <!-- Model-viewer til at vise 3D-modellen -->
             <model-viewer
                 id="model-viewer"
-                src="{{ secure_asset('storage/' . $modelPath) }}"  
+                src="{{ secure_asset('storage/' . $modelPath) }}"
                 camera-controls
                 shadow-intensity="1"
                 auto-rotate
@@ -34,8 +37,8 @@
             ></model-viewer>
         </div>
 
-        <form method="POST" action="{{ route('complete.model.upload', ['modelId' => $modelId]) }}">
- 
+        <!-- Formular til at færdiggøre upload -->
+        <form id="completeModelForm" method="POST" action="{{ secure_url(route('complete.model.upload', ['modelId' => $modelId])) }}">
             @csrf
             <input type="hidden" id="selectedBaseObject" name="baseObject" value="">
             <div class="form-actions">
@@ -49,17 +52,18 @@
     const modelViewer = document.querySelector('#model-viewer');
     const baseObjectSelect = document.querySelector('#baseObject');
     const selectedBaseObjectInput = document.querySelector('#selectedBaseObject');
+    const form = document.querySelector('#completeModelForm');
 
-    // When the model is loaded, populate the animation dropdown
+    // Når modellen er indlæst, udfyld dropdown med animationer
     modelViewer.addEventListener('load', () => {
         const animationNames = modelViewer.availableAnimations;
         
-        // Clear existing options (except the default)
+        // Ryd eksisterende muligheder (undtagen standard)
         while (baseObjectSelect.options.length > 1) {
             baseObjectSelect.remove(1);
         }
 
-        // Add animations as options, removing "Action" text
+        // Tilføj animationer som valgmuligheder og fjern "Action" fra navnet
         animationNames.forEach((name) => {
             const cleanName = name.replace('Action', '').trim();
             const option = document.createElement('option');
@@ -69,15 +73,55 @@
         });
     });
 
-    // When a base object is selected, update the hidden input
+    // Når et base objekt vælges, opdater det skjulte input og afspil animationen
     baseObjectSelect.addEventListener('change', (event) => {
         selectedBaseObjectInput.value = event.target.value;
         
-        // Play the selected animation to visualize the part
+        // Afspil den valgte animation for at visualisere delen
         modelViewer.animationName = event.target.value;
         if (event.target.value) {
             modelViewer.play();
         }
+    });
+
+    // Håndter formularindsendelse med AJAX og korrekt HTTPS-URL
+    form.addEventListener('submit', (event) => {
+        event.preventDefault(); // Forhindr standardindsendelse
+
+        const formData = new FormData(form);
+
+        // Brug kun stien og tilføj HTTPS-domænet korrekt
+        const basePath = '{{ route('complete.model.upload', ['modelId' => $modelId]) }}';
+        const url = basePath.startsWith('http') 
+            ? basePath.replace('http://', 'https://') 
+            : 'https://arbibliotek.socdata.dk' + basePath;
+        console.log('Sending to:', url); // Log URL'en for debugging
+
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server returnerede status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                window.location.href = data.redirect; // Omdiriger til hjemmesiden
+            } else {
+                alert('Fejl: ' + data.error); // Vis serverens fejlmeddelelse
+            }
+        })
+        .catch(error => {
+            console.error('Fejl ved indsendelse:', error);
+            alert('Der opstod en fejl: ' + error.message);
+        });
     });
 </script>
 @endsection

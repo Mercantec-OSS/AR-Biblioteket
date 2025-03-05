@@ -100,6 +100,20 @@
                         </div>
                     </div>
                 </div>
+                <div id="mtlFileContainer" class="file-input-container" style="display: none; margin-top: 10px;">
+                    <div class="file-input-wrapper">
+                        <input id="mtlFile" name="mtlFile" type="file" class="file-input" accept=".mtl"/>
+                        <div class="file-input-content">
+                            <div class="file-input-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="upload-icon">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                </svg>
+                                <span class="file-input-prompt" id="mtlPrompt">Vælg MTL fil eller træk fil hertil</span>
+                            </div>
+                            <span class="file-input-formats">.mtl</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="form-group">
@@ -294,16 +308,53 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // File input handling
-    ['model', 'image'].forEach(inputId => {
-        const input = document.getElementById(inputId);
-        const prompt = document.getElementById(`${inputId}Prompt`);
+    const modelInput = document.getElementById('model');
+    const mtlFileContainer = document.getElementById('mtlFileContainer');
+    const mtlInput = document.getElementById('mtlFile');
+    const mtlPrompt = document.getElementById('mtlPrompt');
+    const form = document.querySelector('.model-form');
+
+    // Vis/skjul MTL input baseret på valgt filtype
+    modelInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const extension = file.name.split('.').pop().toLowerCase();
+            if (extension === 'obj') {
+                mtlFileContainer.style.display = 'block';
+            } else {
+                mtlFileContainer.style.display = 'none';
+            }
+        }
+    });
+
+    // Håndter fil inputs
+    const fileInputs = [
+        { id: 'model', prompt: document.getElementById('modelPrompt') },
+        { id: 'image', prompt: document.getElementById('imagePrompt') },
+        { id: 'mtlFile', prompt: mtlPrompt }
+    ];
+
+    fileInputs.forEach(({ id, prompt }) => {
+        const input = document.getElementById(id);
         const container = input.closest('.file-input-container');
+
+        if (!input || !prompt || !container) {
+            console.error(`Missing elements for ${id}`);
+            return;
+        }
 
         input.addEventListener('change', function(e) {
             const fileName = e.target.files[0]?.name;
             if (fileName) {
                 prompt.textContent = fileName;
                 container.classList.add('has-file');
+            } else {
+                prompt.textContent = id === 'model' 
+                    ? 'Vælg 3D model eller træk fil hertil'
+                    : id === 'mtlFile'
+                        ? 'Vælg MTL fil eller træk fil hertil'
+                        : 'Vælg billede eller træk fil hertil';
+                container.classList.remove('has-file');
             }
         });
 
@@ -329,17 +380,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Form submission with HTTPS enforcement
-    const form = document.querySelector('.model-form');
+    // Håndter formularindsendelse
     form.addEventListener('submit', function(e) {
-        const modelInput = document.getElementById('model');
-        const file = modelInput.files[0];
-        
-        if (file) {
-            const extension = file.name.split('.').pop().toLowerCase();
+        const modelFile = modelInput.files[0];
+        const mtlFile = mtlInput.files[0];
+
+        if (modelFile) {
+            const extension = modelFile.name.split('.').pop().toLowerCase();
+            if (extension === 'obj' && !mtlFile) {
+                e.preventDefault();
+                alert('For OBJ filer skal du også uploade en MTL fil');
+                return;
+            }
+
             if (extension !== 'glb') {
-                e.preventDefault(); // Forhindr standardindsendelse
-                
+                e.preventDefault();
                 const modal = document.getElementById('conversionModal');
                 const fileTypeText = document.getElementById('fileTypeText');
                 fileTypeText.textContent = extension.toUpperCase();
@@ -348,10 +403,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 modal.classList.add('visible');
                 document.body.style.overflow = 'hidden';
 
-                // Send formularen som POST med PUT-metode efter en kort forsinkelse
                 setTimeout(() => {
-                    form.action = 'https://ar-biblioteket.test/models/{{ $model->id }}'; // Tving HTTPS
-                    form.submit(); // Udfør standardindsendelse
+                    form.action = 'https://ar-biblioteket.test/models/{{ $model->id }}';
+                    form.submit();
                 }, 500);
             }
         }

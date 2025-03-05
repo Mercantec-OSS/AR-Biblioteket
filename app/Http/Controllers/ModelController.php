@@ -163,10 +163,14 @@ class ModelController extends Controller
                 Storage::disk('public')->delete($model->model_path);
                 
                 // Convert the new model to GLB format if needed
-                $convertedModel = app(ModelConversionService::class)->convertToGlb($request->file('modelCreate'));
+                $convertedModel = app(ModelConversionService::class)->convertToGlb(
+                    $request->file('modelCreate'),
+                    $request->file('mtlFile')
+                );
                 
-                // Store the converted model
-                $modelPath = $convertedModel->store('models', 'public');
+                // Store the converted model with original filename
+                $originalName = pathinfo($request->file('modelCreate')->getClientOriginalName(), PATHINFO_FILENAME);
+                $modelPath = $convertedModel->storeAs('models', $originalName . '.glb', 'public');
                 $model->model_path = $modelPath;
             }
 
@@ -175,8 +179,10 @@ class ModelController extends Controller
                 // Delete the old image
                 Storage::disk('public')->delete($model->image_path);
                 
-                // Store the new image
-                $imagePath = $request->file('imageCreate')->store('images', 'public');
+                // Store the new image with original filename
+                $originalName = pathinfo($request->file('imageCreate')->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $request->file('imageCreate')->getClientOriginalExtension();
+                $imagePath = $request->file('imageCreate')->storeAs('images', $originalName . '.' . $extension, 'public');
                 $model->image_path = $imagePath;
             }
 
@@ -185,10 +191,16 @@ class ModelController extends Controller
             // Update education relationships
             $model->educations()->sync($request->input('educationCreate'));
 
-            return redirect()->route('select.base.object', [
-                'modelId' => $model->id,
-                'modelPath' => $model->model_path
-            ])->with('success', '3D Model opdateret succesfuldt');
+            // Only redirect to base object selection if the model file was changed
+            if ($request->hasFile('modelCreate')) {
+                return redirect()->route('select.base.object', [
+                    'modelId' => $model->id,
+                    'modelPath' => $model->model_path
+                ])->with('success', '3D Model opdateret succesfuldt');
+            }
+
+            // Otherwise redirect back to home
+            return redirect()->route('home')->with('success', '3D Model opdateret succesfuldt');
             
         } catch (\Exception $e) {
             \Log::error('Model update failed', [

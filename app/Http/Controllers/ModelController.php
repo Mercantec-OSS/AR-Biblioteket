@@ -61,6 +61,23 @@ class ModelController extends Controller
                     }
                 }
             ],
+            'mtlFile' => [
+                'nullable',
+                'file',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!$value) return;
+                    
+                    $modelExtension = strtolower($request->file('modelCreate')->getClientOriginalExtension());
+                    if ($modelExtension !== 'obj') {
+                        $fail('MTL filer kan kun bruges sammen med OBJ filer');
+                    }
+                    
+                    $extension = strtolower($value->getClientOriginalExtension());
+                    if ($extension !== 'mtl') {
+                        $fail('MTL filen skal være af typen .mtl');
+                    }
+                }
+            ],
             'imageCreate' => 'required|file|mimes:jpeg,png,jpg|max:50000',
             'titleCreate' => 'required|string|max:255',
             'educationCreate' => 'required|array',
@@ -71,11 +88,15 @@ class ModelController extends Controller
         try {
             \Log::debug('Starting model conversion process', [
                 'original_file' => $request->file('modelCreate')->getClientOriginalName(),
-                'extension' => $request->file('modelCreate')->getClientOriginalExtension()
+                'extension' => $request->file('modelCreate')->getClientOriginalExtension(),
+                'has_mtl' => $request->hasFile('mtlFile')
             ]);
             
             // Convert the model to GLB format
-            $convertedModel = $this->modelConversionService->convertToGlb($request->file('modelCreate'));
+            $convertedModel = $this->modelConversionService->convertToGlb(
+                $request->file('modelCreate'),
+                $request->file('mtlFile')
+            );
             
             \Log::debug('Model conversion completed', [
                 'converted_file' => $convertedModel->getClientOriginalName()
@@ -218,35 +239,35 @@ class ModelController extends Controller
 
     // Complete model upload
     public function completeModelUpload(Request $request, $modelId)
-{
-    try {
-        // Ensure JSON is always returned
-        if (!$request->expectsJson()) {
-            return response()->json(['success' => false, 'error' => 'Invalid request type'], 400);
+    {
+        try {
+            // Ensure JSON is always returned
+            if (!$request->expectsJson()) {
+                return response()->json(['success' => false, 'error' => 'Invalid request type'], 400);
+            }
+
+            $model = VRModels::findOrFail($modelId);
+            $baseObject = $request->input('baseObject');
+
+            $cleanBaseObject = $baseObject ? str_replace('Action', '', $baseObject) : null;
+
+            $model->update([
+                'base_object' => $cleanBaseObject ? trim($cleanBaseObject) : null
+            ]);
+
+            return response()->json(['success' => true, 'redirect' => route('home')]);
+
+        } catch (\Exception $e) {
+            \Log::error('Failed to update base object', [
+                'error' => $e->getMessage(),
+                'modelId' => $modelId,
+                'baseObject' => $baseObject ?? null
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'error' => 'Der opstod en fejl ved opdatering af base objekt'
+            ], 500);
         }
-
-        $model = VRModels::findOrFail($modelId);
-        $baseObject = $request->input('baseObject');
-
-        $cleanBaseObject = $baseObject ? str_replace('Action', '', $baseObject) : null;
-
-        $model->update([
-            'base_object' => $cleanBaseObject ? trim($cleanBaseObject) : null
-        ]);
-
-        return response()->json(['success' => true, 'redirect' => route('home')]);
-
-    } catch (\Exception $e) {
-        \Log::error('Failed to update base object', [
-            'error' => $e->getMessage(),
-            'modelId' => $modelId,
-            'baseObject' => $baseObject ?? null
-        ]);
-
-        return response()->json([
-            'success' => false,
-            'error' => 'Der opstod en fejl ved opdatering af base objekt'
-        ], 500);
     }
-}
 }

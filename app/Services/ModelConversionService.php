@@ -27,7 +27,7 @@ class ModelConversionService
         return self::$npmGlobalPath;
     }
 
-    public function convertToGlb($uploadedFile)
+    public function convertToGlb($uploadedFile, $mtlFile = null)
     {
         $tempDir = storage_path('app/temp/' . Str::random(10));
         
@@ -43,6 +43,11 @@ class ModelConversionService
             // Save uploaded file to temp directory
             $uploadedFile->move($tempDir, 'original.' . $originalExtension);
             $originalPath = $tempDir . '/original.' . $originalExtension;
+            
+            // Hvis der er en MTL fil, gem den også
+            if ($mtlFile) {
+                $mtlFile->move($tempDir, 'original.mtl');
+            }
             
             // Output path for converted file
             $outputPath = $tempDir . '/converted.glb';
@@ -99,10 +104,16 @@ class ModelConversionService
                         throw new \RuntimeException('obj2gltf not found at: ' . $obj2gltfPath);
                     }
 
+                    // Tjek om der er en MTL fil i samme mappe
+                    $mtlPath = dirname($inputPath) . '/original.mtl';
+                    $hasMtl = file_exists($mtlPath);
+
                     \Log::debug('Starting obj2gltf conversion', [
                         'obj2gltf_path' => $obj2gltfPath,
                         'input' => $inputPath,
-                        'output' => $outputPath
+                        'output' => $outputPath,
+                        'has_mtl' => $hasMtl,
+                        'mtl_path' => $mtlPath
                     ]);
 
                     $process = new Process([
@@ -134,7 +145,8 @@ class ModelConversionService
                             'exit_code' => $process->getExitCode(),
                             'working_directory' => getcwd(),
                             'file_exists' => file_exists($inputPath),
-                            'file_permissions' => fileperms($inputPath)
+                            'file_permissions' => fileperms($inputPath),
+                            'mtl_exists' => file_exists($mtlPath)
                         ]);
                         throw new \RuntimeException('Failed to convert to GLTF: ' . $process->getErrorOutput());
                     }

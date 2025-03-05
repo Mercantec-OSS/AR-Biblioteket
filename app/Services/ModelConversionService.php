@@ -44,9 +44,14 @@ class ModelConversionService
             $uploadedFile->move($tempDir, 'original.' . $originalExtension);
             $originalPath = $tempDir . '/original.' . $originalExtension;
             
-            // Hvis der er en MTL fil, gem den også
+            // Hvis der er en MTL fil, gem den også med samme navn som OBJ filen
             if ($mtlFile) {
                 $mtlFile->move($tempDir, 'original.mtl');
+                // Rename MTL file to match OBJ filename
+                rename(
+                    $tempDir . '/original.mtl',
+                    $tempDir . '/' . pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME) . '.mtl'
+                );
             }
             
             // Output path for converted file
@@ -113,10 +118,12 @@ class ModelConversionService
                         'input' => $inputPath,
                         'output' => $outputPath,
                         'has_mtl' => $hasMtl,
-                        'mtl_path' => $mtlPath
+                        'mtl_path' => $mtlPath,
+                        'mtl_contents' => $hasMtl ? file_get_contents($mtlPath) : null
                     ]);
 
-                    $process = new Process([
+                    // Build command array
+                    $command = [
                         'node',
                         $obj2gltfPath,
                         '-i', basename($inputPath),
@@ -125,7 +132,15 @@ class ModelConversionService
                         '--separate',
                         '--optimize',
                         '--cesium'
-                    ]);
+                    ];
+
+                    // Add MTL file if it exists
+                    if ($hasMtl) {
+                        $command[] = '--mtlFile=original.mtl';
+                        $command[] = '--includeMaterials=true';
+                    }
+
+                    $process = new Process($command);
                     
                     $process->setWorkingDirectory(dirname($inputPath));
                     $process->setTimeout(600);

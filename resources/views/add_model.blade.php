@@ -70,7 +70,7 @@
                 <label for="model">3D Model</label>
                 <div class="file-input-container">
                     <div class="file-input-wrapper">
-                        <input id="model" name="modelCreate" type="file" required class="file-input" accept=".glb,.gltf,.obj,.stl,.fbx,.ply,.3ds,.mtl"/>
+                        <input id="model" name="modelCreate" type="file" required class="file-input" accept=".glb,.gltf,.obj,.stl,.fbx,.ply,.3ds"/>
                         <div class="file-input-content">
                             <div class="file-input-text">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="upload-icon">
@@ -78,7 +78,7 @@
                                 </svg>
                                 <span class="file-input-prompt" id="modelPrompt">Vælg 3D model eller træk fil hertil</span>
                             </div>
-                            <span class="file-input-formats">.glb, .gltf, .obj, .stl, .fbx, .ply, .3ds, .mtl</span>
+                            <span class="file-input-formats">.glb, .gltf, .obj, .stl, .fbx, .ply, .3ds</span>
                         </div>
                     </div>
                 </div>

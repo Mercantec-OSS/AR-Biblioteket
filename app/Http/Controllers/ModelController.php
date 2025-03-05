@@ -269,5 +269,29 @@ class ModelController extends Controller
                 'error' => 'Der opstod en fejl ved opdatering af base objekt'
             ], 500);
         }
+
+        $model = VRModels::findOrFail($modelId);
+        $baseObject = $request->input('baseObject');
+
+        $cleanBaseObject = $baseObject ? str_replace('Action', '', $baseObject) : null;
+
+        $model->update([
+            'base_object' => $cleanBaseObject ? trim($cleanBaseObject) : null
+        ]);
+
+        return response()->json(['success' => true, 'redirect' => route('home')]);
+
+    } catch (\Exception $e) {
+        \Log::error('Failed to update base object', [
+            'error' => $e->getMessage(),
+            'modelId' => $modelId,
+            'baseObject' => $baseObject ?? null
+        ]);
+
+        return response()->json([
+            'success' => false,
+            'error' => 'Der opstod en fejl ved opdatering af base objekt'
+        ], 500);
     }
+}
 }

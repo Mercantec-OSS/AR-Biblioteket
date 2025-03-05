@@ -2,12 +2,14 @@
 
 @section('title', 'Log Ind')
 
+@section('head')
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+@endsection
+
 @section('content')
-<title>Login</title>
-<body>
 <div class="login-box">
     <form method="POST" action="{{ secure_url('/login') }}">
-    @csrf
+        @csrf
         <h2>Log Ind</h2>
         <div class="user-box">
             <input required type="text" name="email" id="email" placeholder="">
@@ -18,14 +20,9 @@
             <label for="password">Adgangskode</label>
         </div>
         <button type="submit">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
             Log Ind
         </button>
     </form>
     <p>Har du ikke en konto? <a href="/createUser" class="signup-link">Opret konto her!</a></p>
 </div>
-</body>
 @endsection

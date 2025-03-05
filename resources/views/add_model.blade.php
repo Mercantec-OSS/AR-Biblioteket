@@ -17,18 +17,23 @@
             </div>
         @endif
 
-        <form class="model-form" method="post" enctype="multipart/form-data" action="/add_model">
+        @if (session('error'))
+            <div class="alert alert-error">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <form class="model-form" method="POST" action="{{ secure_url('/add_model') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="title">Titel</label>
-                <input id="title" name="titleCreate" type="text" placeholder="Indtast titel" required/>
+                <input id="title" name="titleCreate" type="text" value="{{ old('titleCreate') }}" placeholder="Indtast titel" required/>
             </div>
             
             <div class="form-group">
                 <label for="education">Uddannelse</label>
                 <div class="education-selection-container">
                     <div class="education-tags-container" id="selectedEducations">
-                        <!-- Selected tags will appear here -->
                         <div class="tags-placeholder">Vælg uddannelser</div>
                     </div>
                     <div class="education-dropdown-container">
@@ -58,7 +63,7 @@
             
             <div class="form-group">
                 <label for="description">Beskrivelse</label>
-                <textarea id="description" name="descriptionCreate" placeholder="Indtast beskrivelse" rows="4" required></textarea>
+                <textarea id="description" name="descriptionCreate" placeholder="Indtast beskrivelse" rows="4" required>{{ old('descriptionCreate') }}</textarea>
             </div>
             
             <div class="form-group">
@@ -187,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('mtlPrompt element not found');
         return;
     }
+
     function updateSelectedEducations() {
         const selectedOptions = Array.from(select.selectedOptions);
         selectedContainer.innerHTML = '';
@@ -210,14 +216,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Toggle dropdown
     dropdownTrigger.addEventListener('click', function(e) {
         dropdown.classList.toggle('active');
         dropdownTrigger.classList.toggle('active');
         e.stopPropagation();
     });
 
-    // Handle option selection
     dropdown.addEventListener('click', function(e) {
         const option = e.target.closest('.dropdown-option');
         if (option) {
@@ -229,7 +233,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle tag removal
     selectedContainer.addEventListener('click', function(e) {
         const removeButton = e.target.closest('.remove-tag');
         if (removeButton) {
@@ -242,7 +245,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Close dropdown when clicking outside
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.education-dropdown-container')) {
             dropdown.classList.remove('active');
@@ -250,7 +252,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Initial update
     updateSelectedEducations();
 
     // Håndter fil inputs
@@ -262,6 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fileInputs.forEach(({ id, prompt }) => {
         const input = document.getElementById(id);
+
         const container = input.closest('.file-input-container');
 
         if (!input || !prompt || !container) {
@@ -284,7 +286,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Drag and drop handling
         container.addEventListener('dragover', function(e) {
             e.preventDefault();
             container.classList.add('dragover');
@@ -298,7 +299,6 @@ document.addEventListener('DOMContentLoaded', function() {
         container.addEventListener('drop', function(e) {
             e.preventDefault();
             container.classList.remove('dragover');
-            
             const files = e.dataTransfer.files;
             if (files.length) {
                 input.files = files;
@@ -307,7 +307,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
 
     // Vis/skjul MTL input baseret på valgt filtype
     modelInput.addEventListener('change', function(e) {
@@ -332,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Vælg venligst en model-fil');
             return;
         }
-
         const extension = modelFile.name.split('.').pop().toLowerCase();
         if (extension === 'obj' && !mtlFile) {
             e.preventDefault();
@@ -347,12 +345,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (extension !== 'glb') {
-            e.preventDefault(); // Prevent form submission
-            
-            const modal = document.getElementById('conversionModal');
-            const fileTypeText = document.getElementById('fileTypeText');
+            e.preventDefault();
             fileTypeText.textContent = extension.toUpperCase();
-            
             modal.classList.add('show');
             modal.classList.add('visible');
             document.body.style.overflow = 'hidden';
@@ -366,160 +360,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 @endpush
 
-@push('styles')
-<style>
-/* Modern Conversion Modal Styles */
-.conversion-modal {
-    max-width: 500px;
-    border-radius: 16px;
-    background: #ffffff;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
-
-.conversion-modal .modal-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.modal-title {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-}
-
-.modal-title h2 {
-    font-size: 1.5rem;
-    color: #111827;
-    font-weight: 600;
-    margin: 0;
-}
-
-.progress-container {
-    margin-top: 1rem;
-}
-
-.progress-bar {
-    height: 6px;
-    background: #e5e7eb;
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.progress-indicator {
-    height: 100%;
-    width: 30%;
-    background: #0E38AB;
-    border-radius: 3px;
-    animation: progress 2s infinite;
-    transform-origin: left;
-}
-
-@keyframes progress {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(400%); }
-}
-
-.modal-body {
-    padding: 1.5rem;
-}
-
-.conversion-info {
-    background: #f3f4f6;
-    border-radius: 12px;
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
-}
-
-.file-type {
-    margin-bottom: 1rem;
-}
-
-.file-type .label {
-    color: #6b7280;
-    font-size: 0.875rem;
-}
-
-.file-type .value {
-    font-weight: 600;
-    color: #111827;
-    margin-left: 0.5rem;
-}
-
-.conversion-status {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.status-icon .spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid #e5e7eb;
-    border-top: 3px solid #0E38AB;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-.status-text .primary-text {
-    color: #111827;
-    font-weight: 500;
-    margin: 0;
-}
-
-.status-text .secondary-text {
-    color: #6b7280;
-    font-size: 0.875rem;
-    margin: 0.25rem 0 0 0;
-}
-
-.warning-container {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem;
-    background: #fff4ed;
-    border-radius: 8px;
-    color: #9a3412;
-}
-
-.warning-container .warning-icon {
-    width: 20px;
-    height: 20px;
-    color: #ea580c;
-}
-
-.warning-container p {
-    margin: 0;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal.show {
-    display: flex;
-}
-
-.modal.visible {
-    opacity: 1;
-}
-</style>
-@endpush
 @endsection

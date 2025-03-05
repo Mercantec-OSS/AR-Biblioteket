@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('department');
             $table->boolean('loggedIn');
+            $table->boolean('admin')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

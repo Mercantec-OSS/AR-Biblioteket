@@ -7,6 +7,7 @@
     <div class="form-container">
         <h1 class="page-title">Vælg Base Objekt</h1>
         
+        <!-- Viser fejlmeddelelser, hvis der er nogen -->
         @if ($errors->any())
             <div class="alert alert-error">
                 <ul>
@@ -19,14 +20,16 @@
 
         <div class="model-content">
             <div class="controls">
-                <select id="baseObject" name="baseObject" class="animation-dropdown">
-                    <option value="">Ingen base objekt</option>
+                <!-- Dropdown til valg af base objekt -->
+                <select id="baseObject" name="baseObject" required class="animation-dropdown">
+                    <option value="">Vælg en del</option>
                 </select>
             </div>
 
+            <!-- Model-viewer til at vise 3D-modellen -->
             <model-viewer
                 id="model-viewer"
-                src="{{ secure_asset('storage/' . $modelPath) }}"  
+                src="{{ secure_asset('storage/' . $modelPath) }}"
                 camera-controls
                 shadow-intensity="1"
                 auto-rotate
@@ -34,8 +37,8 @@
             ></model-viewer>
         </div>
 
-        <form method="POST" action="{{ route('complete.model.upload', ['modelId' => $modelId]) }}">
- 
+        <!-- Formular til at færdiggøre upload -->
+        <form id="completeModelForm" method="POST" action="{{ route('complete.model.upload', ['modelId' => $modelId]) }}">
             @csrf
             <input type="hidden" id="selectedBaseObject" name="baseObject" value="">
             <div class="form-actions">
@@ -49,6 +52,7 @@
     const modelViewer = document.querySelector('#model-viewer');
     const baseObjectSelect = document.querySelector('#baseObject');
     const selectedBaseObjectInput = document.querySelector('#selectedBaseObject');
+    const form = document.querySelector('#completeModelForm');
 
     // Funktion til at parse GLB fil
     function parseGLB(arrayBuffer) {
@@ -172,7 +176,7 @@
         }
     });
 
-    // Når et base objekt vælges, opdater det skjulte input og afspil animationer
+    // Når et base objekt vælges, opdater det skjulte input og afspil animationen
     baseObjectSelect.addEventListener('change', (event) => {
         const selectedNodeName = event.target.value;
         selectedBaseObjectInput.value = selectedNodeName;
@@ -342,5 +346,41 @@
             console.log('No GLTF data available');
         }
     });
+
+    // Håndter formularindsendelse med AJAX og korrekt HTTPS-URL
+    form.addEventListener('submit', (event) => {
+    event.preventDefault(); // Forhindr standardindsendelse
+
+    const formData = new FormData(form);
+    const url = form.getAttribute('action'); // Hent URL fra formularens action-attribut
+    
+    console.log('Sending to:', url); // Debugging
+
+    fetch(url, {
+    method: 'POST',
+    body: formData,
+    headers: {
+        'Accept': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+    }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not OK');
+        return response.json();
+    })
+    .then(data => {
+        console.log('Parsed JSON:', data);
+    
+        if (data.success && data.redirect) {
+           window.location.href = data.redirect; // Manually redirect
+    }   else {
+           alert('Fejl: ' + data.error);
+        }
+    })
+    .catch(error => {
+           console.error('Fejl ved indsendelse:', error);
+           alert('Der opstod en fejl: ' + error.message);
+    });
+});
 </script>
 @endsection

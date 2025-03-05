@@ -218,26 +218,35 @@ class ModelController extends Controller
 
     // Complete model upload
     public function completeModelUpload(Request $request, $modelId)
-    {
-        try {
-            $model = VRModels::findOrFail($modelId);
-            $baseObject = $request->input('baseObject');
-            
-            // Clean the base object name if one is selected
-            $cleanBaseObject = $baseObject ? str_replace('Action', '', $baseObject) : null;
-            
-            $model->update([
-                'base_object' => $cleanBaseObject ? trim($cleanBaseObject) : null
-            ]);
-
-            return redirect()->route('home')->with('success', 'Model blev opdateret succesfuldt');
-        } catch (\Exception $e) {
-            \Log::error('Failed to update base object', [
-                'error' => $e->getMessage(),
-                'modelId' => $modelId,
-                'baseObject' => $baseObject ?? null
-            ]);
-            return redirect()->back()->with('error', 'Der opstod en fejl ved opdatering af base objekt');
+{
+    try {
+        // Ensure JSON is always returned
+        if (!$request->expectsJson()) {
+            return response()->json(['success' => false, 'error' => 'Invalid request type'], 400);
         }
+
+        $model = VRModels::findOrFail($modelId);
+        $baseObject = $request->input('baseObject');
+
+        $cleanBaseObject = $baseObject ? str_replace('Action', '', $baseObject) : null;
+
+        $model->update([
+            'base_object' => $cleanBaseObject ? trim($cleanBaseObject) : null
+        ]);
+
+        return response()->json(['success' => true, 'redirect' => route('home')]);
+
+    } catch (\Exception $e) {
+        \Log::error('Failed to update base object', [
+            'error' => $e->getMessage(),
+            'modelId' => $modelId,
+            'baseObject' => $baseObject ?? null
+        ]);
+
+        return response()->json([
+            'success' => false,
+            'error' => 'Der opstod en fejl ved opdatering af base objekt'
+        ], 500);
     }
+}
 }

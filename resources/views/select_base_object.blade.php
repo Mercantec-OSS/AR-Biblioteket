@@ -38,7 +38,7 @@
         </div>
 
         <!-- Formular til at færdiggøre upload -->
-        <form id="completeModelForm" method="POST" action="{{ secure_url(route('complete.model.upload', ['modelId' => $modelId])) }}">
+        <form id="completeModelForm" method="POST" action="{{ route('complete.model.upload', ['modelId' => $modelId]) }}">
             @csrf
             <input type="hidden" id="selectedBaseObject" name="baseObject" value="">
             <div class="form-actions">
@@ -86,42 +86,38 @@
 
     // Håndter formularindsendelse med AJAX og korrekt HTTPS-URL
     form.addEventListener('submit', (event) => {
-        event.preventDefault(); // Forhindr standardindsendelse
+    event.preventDefault(); // Forhindr standardindsendelse
 
-        const formData = new FormData(form);
+    const formData = new FormData(form);
+    const url = form.getAttribute('action'); // Hent URL fra formularens action-attribut
+    
+    console.log('Sending to:', url); // Debugging
 
-        // Brug kun stien og tilføj HTTPS-domænet korrekt
-        const basePath = '{{ route('complete.model.upload', ['modelId' => $modelId]) }}';
-        const url = basePath.startsWith('http') 
-            ? basePath.replace('http://', 'https://') 
-            : 'https://arbibliotek.socdata.dk' + basePath;
-        console.log('Sending to:', url); // Log URL'en for debugging
-
-        fetch(url, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Server returnerede status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                window.location.href = data.redirect; // Omdiriger til hjemmesiden
-            } else {
-                alert('Fejl: ' + data.error); // Vis serverens fejlmeddelelse
-            }
-        })
-        .catch(error => {
-            console.error('Fejl ved indsendelse:', error);
-            alert('Der opstod en fejl: ' + error.message);
-        });
+    fetch(url, {
+    method: 'POST',
+    body: formData,
+    headers: {
+        'Accept': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+    }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not OK');
+        return response.json();
+    })
+    .then(data => {
+        console.log('Parsed JSON:', data);
+    
+        if (data.success && data.redirect) {
+           window.location.href = data.redirect; // Manually redirect
+    }   else {
+           alert('Fejl: ' + data.error);
+        }
+    })
+    .catch(error => {
+           console.error('Fejl ved indsendelse:', error);
+           alert('Der opstod en fejl: ' + error.message);
     });
+});
 </script>
 @endsection

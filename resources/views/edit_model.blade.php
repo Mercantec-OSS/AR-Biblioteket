@@ -350,13 +350,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Send formularen som POST med PUT-metode efter en kort forsinkelse
                 setTimeout(() => {
-                    form.action = 'https://arbibliotek.socdata.dk/models/{{ $model->id }}'; // Tving HTTPS
+                    form.action = 'https://ar-biblioteket.test/models/{{ $model->id }}'; // Tving HTTPS
                     form.submit(); // Udfør standardindsendelse
                 }, 500);
             }
         }
         // Hvis ingen fil er valgt, fortsæt med standardindsendelse, men tving HTTPS
-        form.action = 'https://arbibliotek.socdata.dk/models/{{ $model->id }}';
+        form.action = 'https://ar-biblioteket.test/models/{{ $model->id }}';
     });
 });
 </script>

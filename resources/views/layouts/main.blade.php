@@ -32,7 +32,7 @@
                     @if (auth()->check())
                         <a href="/add_model" class="secure-link"><i class="fas fa-plus-circle"></i> Tilføj Model</a>
                         <div class="logout-container">
-                            <form action="https://arbibliotek.socdata.dk/logout" method="POST" style="display:inline;">
+                            <form action="https://ar-biblioteket.test/logout" method="POST" style="display:inline;">
                                 @csrf
                                 <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="secure-link"><i class="fas fa-sign-out-alt"></i> Log ud</a>
                             </form>

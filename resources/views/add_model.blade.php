@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Send formularen efter en kort forsinkelse for at vise modalen
             setTimeout(() => {
-                form.action = 'https://arbibliotek.socdata.dk/add_model'; // Sikr HTTPS
+                form.action = 'https://ar-biblioteket.test/add_model'; // Sikr HTTPS
                 form.submit();
             }, 500);
         }

@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     form.addEventListener('submit', function(e) {
         // Tving HTTPS i action lige før indsendelse som ekstra sikkerhed
-        form.action = 'https://arbibliotek.socdata.dk/register';
+        form.action = 'https://ar-biblioteket.test/register';
         console.log('Submitting to:', form.action); // Debug: Bekræft URL ved indsendelse
     });
 });

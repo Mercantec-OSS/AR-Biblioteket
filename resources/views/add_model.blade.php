@@ -181,6 +181,12 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('mtlPrompt element not found');
         return;
     }
+
+    // Tjek om alle nødvendige elementer er tilgængelige
+    if (!mtlPrompt) {
+        console.error('mtlPrompt element not found');
+        return;
+    }
     function updateSelectedEducations() {
         const selectedOptions = Array.from(select.selectedOptions);
         selectedContainer.innerHTML = '';
@@ -329,6 +335,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const extension = modelFile.name.split('.').pop().toLowerCase();
         if (extension === 'obj' && !mtlFile) {
+            e.preventDefault();
+            alert('For OBJ filer skal du også uploade en MTL fil');
+            return;
+        }
+
+        if (extension !== 'glb') {
             e.preventDefault();
             alert('For OBJ filer skal du også uploade en MTL fil');
             return;

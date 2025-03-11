@@ -112,7 +112,7 @@ class ModelController extends Controller
                 'description' => $request->input('descriptionCreate'),
                 'model_path' => $modelPath,
                 'image_path' => $imagePath,
-                'user_id' => 1, // Midlertidigt hardcoded
+                'user_id' => auth()->id(),
             ]);
 
             $model->educations()->attach($request->input('educationCreate'));

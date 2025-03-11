@@ -54,13 +54,20 @@ Route::get('/edit_model', function (JWTAuthController $authController) {
 })->name('edit_model');
 
 // Edit model with ID
-Route::get('/edit_model/{id}', function ($id, JWTAuthController $authController) {
-    $isAuthenticated = $authController->isAuthenticated(request());
+Route::get('/edit_model/{id}', function ($id, JWTAuthController $authController, Request $request) {
+    $isAuthenticated = $authController->isAuthenticated($request);
+
     if (!$isAuthenticated) {
         return redirect('/login')->withErrors(['message' => 'Unauthorized access. Please log in.']);
     }
-    $model = VRModels::with('educations')->find($id);
+
+    $user = auth()->user();
+    $model = VRModels::with('educations')->findOrFail($id);
+    if ($user->id !== $model->user_id && !$user->admin) {
+        return redirect('/')->withErrors(['message' => 'You are not authorized to edit this model.']);
+    }
     $educations = Educations::orderBy('title')->get();
+
     return view('edit_model', [
         'model' => $model,
         'educations' => $educations,

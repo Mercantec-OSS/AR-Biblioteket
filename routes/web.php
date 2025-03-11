@@ -137,3 +137,23 @@ Route::get('/api/models', [VRModelsController::class, 'index']);
 Route::get('/api/models/{id}/download', [VRModelsController::class, 'downloadModel']);
 
 Route::put('/models/{id}', [ModelController::class, 'update'])->name('models.update');
+
+Route::get('/admin', function () {
+    $jwtAuthController = new JWTAuthController();
+    
+    if (!$jwtAuthController->isAuthenticated(request())) {
+        return redirect('/login')->withErrors(['message' => 'Unauthorized access. Please log in.']);
+    }
+
+    $user = JWTAuth::authenticate(request()->cookie('jwt_token'));
+    
+    if (!$user->admin) {
+        return redirect('/')->withErrors(['message' => 'You are not authorized to use the admin panel.']);
+    }
+
+    $users = \App\Models\User::all();
+    return view('adminPanel', ['users' => $users]);
+})->name('admin.panel');
+
+Route::put('/admin/user/{id}', [UserController::class, 'editUserByID'])->name('admin.updateUser');
+Route::delete('/admin/user/{id}', [UserController::class, 'deleteUserByID'])->name('admin.deleteUser');

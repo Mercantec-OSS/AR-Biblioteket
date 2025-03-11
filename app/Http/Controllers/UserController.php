@@ -70,12 +70,17 @@ class UserController extends Controller
             $user->name = $request->input('name', $user->name);
             $user->email = $request->input('email', $user->email);
             $user->department = $request->input('department', $user->department);
-            $user->password = $request->input('password', $user->password);
             $user->loggedIn = $request->input('loggedIn', $user->loggedIn);
+
+            // Hash password if provided
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->input('password'));
+            }
+
             $user->save();
-            return 'User updated successfully';
+            return redirect()->back()->with('message', 'User updated successfully');
         } else {
-            return 'User not found';
+            return redirect()->back()->withErrors(['message' => 'User not found']);
         }
     }
 
@@ -85,9 +90,9 @@ class UserController extends Controller
         $user = User::find($id);
         if ($user) {
             $user->delete();
-            return 'User deleted successfully';
+            return redirect()->back()->with('message', 'User deleted successfully');
         } else {
-            return 'User not found';
+            return redirect()->back()->withErrors(['message' => 'User not found']);
         }
     }
 

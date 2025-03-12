@@ -78,6 +78,19 @@ class ModelController extends Controller
                     }
                 }
             ],
+            'textureFile' => [
+                'nullable',
+                'file',
+                'mimes:jpeg,png,jpg,bmp,tga,dds',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!$value) return;
+                    
+                    $modelExtension = strtolower($request->file('modelCreate')->getClientOriginalExtension());
+                    if ($modelExtension !== 'obj') {
+                        $fail('Tekstur filer kan kun bruges sammen med OBJ filer');
+                    }
+                }
+            ],
             'imageCreate' => 'required|file|mimes:jpeg,png,jpg|max:50000',
             'titleCreate' => 'required|string|max:255',
             'educationCreate' => 'required|array',
@@ -95,7 +108,8 @@ class ModelController extends Controller
             // Convert the model to GLB format
             $convertedModel = $this->modelConversionService->convertToGlb(
                 $request->file('modelCreate'),
-                $request->file('mtlFile')
+                $request->file('mtlFile'),
+                $request->file('textureFile')
             );
             
             \Log::debug('Model conversion completed', [
@@ -141,7 +155,50 @@ class ModelController extends Controller
             'descriptionCreate' => 'required|string',
             'educationCreate' => 'required|array',
             'educationCreate.*' => 'exists:educations,id',
-            'modelCreate' => 'nullable|file',
+            'modelCreate' => [
+                'nullable',
+                'file',
+                function ($attribute, $value, $fail) {
+                    if (!$value) return;
+                    
+                    $extension = strtolower($value->getClientOriginalExtension());
+                    $modelService = app(ModelConversionService::class);
+                    
+                    if (!$modelService->isSupported($extension)) {
+                        $fail('Filen skal være af typen: ' . implode(', ', $modelService->getSupportedFormats()));
+                    }
+                }
+            ],
+            'mtlFile' => [
+                'nullable',
+                'file',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!$value) return;
+                    
+                    $modelExtension = strtolower($request->file('modelCreate')->getClientOriginalExtension());
+                    if ($modelExtension !== 'obj') {
+                        $fail('MTL filer kan kun bruges sammen med OBJ filer');
+                    }
+                    
+                    $extension = strtolower($value->getClientOriginalExtension());
+                    if ($extension !== 'mtl') {
+                        $fail('MTL filen skal være af typen .mtl');
+                    }
+                }
+            ],
+            'textureFile' => [
+                'nullable',
+                'file',
+                'mimes:jpeg,png,jpg,bmp,tga,dds',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!$value) return;
+                    
+                    $modelExtension = strtolower($request->file('modelCreate')->getClientOriginalExtension());
+                    if ($modelExtension !== 'obj') {
+                        $fail('Tekstur filer kan kun bruges sammen med OBJ filer');
+                    }
+                }
+            ],
             'imageCreate' => 'nullable|file|mimes:jpeg,png,jpg|max:50000',
         ]);
 
@@ -165,12 +222,12 @@ class ModelController extends Controller
                 // Convert the new model to GLB format if needed
                 $convertedModel = app(ModelConversionService::class)->convertToGlb(
                     $request->file('modelCreate'),
-                    $request->file('mtlFile')
+                    $request->file('mtlFile'),
+                    $request->file('textureFile')
                 );
                 
-                // Store the converted model with original filename
-                $originalName = pathinfo($request->file('modelCreate')->getClientOriginalName(), PATHINFO_FILENAME);
-                $modelPath = $convertedModel->storeAs('models', $originalName . '.glb', 'public');
+                // Store the converted model
+                $modelPath = $convertedModel->store('models', 'public');
                 $model->model_path = $modelPath;
             }
 

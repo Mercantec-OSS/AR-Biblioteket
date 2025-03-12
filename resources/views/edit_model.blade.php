@@ -114,6 +114,20 @@
                         </div>
                     </div>
                 </div>
+                <div id="textureFileContainer" class="file-input-container" style="display: none; margin-top: 10px;">
+                    <div class="file-input-wrapper">
+                        <input id="textureFile" name="textureFile" type="file" class="file-input" accept=".png,.jpg,.jpeg,.bmp,.tga,.dds"/>
+                        <div class="file-input-content">
+                            <div class="file-input-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="upload-icon">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                </svg>
+                                <span class="file-input-prompt" id="texturePrompt">Vælg tekstur fil eller træk fil hertil (valgfri)</span>
+                            </div>
+                            <span class="file-input-formats">.png, .jpg, .jpeg, .bmp, .tga, .dds</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="form-group">
@@ -312,26 +326,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const mtlFileContainer = document.getElementById('mtlFileContainer');
     const mtlInput = document.getElementById('mtlFile');
     const mtlPrompt = document.getElementById('mtlPrompt');
+    const textureFileContainer = document.getElementById('textureFileContainer');
     const form = document.querySelector('.model-form');
 
-    // Vis/skjul MTL input baseret på valgt filtype
+    // Vis/skjul MTL og tekstur input baseret på valgt filtype
     modelInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
             const extension = file.name.split('.').pop().toLowerCase();
             if (extension === 'obj') {
                 mtlFileContainer.style.display = 'block';
+                textureFileContainer.style.display = 'block';
             } else {
                 mtlFileContainer.style.display = 'none';
+                textureFileContainer.style.display = 'none';
             }
         }
     });
 
-    // Håndter fil inputs
+    // Opdater fileInputs array
     const fileInputs = [
         { id: 'model', prompt: document.getElementById('modelPrompt') },
         { id: 'image', prompt: document.getElementById('imagePrompt') },
-        { id: 'mtlFile', prompt: mtlPrompt }
+        { id: 'mtlFile', prompt: mtlPrompt },
+        { id: 'textureFile', prompt: document.getElementById('texturePrompt') }
     ];
 
     fileInputs.forEach(({ id, prompt }) => {
@@ -353,7 +371,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     ? 'Vælg 3D model eller træk fil hertil'
                     : id === 'mtlFile'
                         ? 'Vælg MTL fil eller træk fil hertil'
-                        : 'Vælg billede eller træk fil hertil';
+                        : id === 'textureFile'
+                            ? 'Vælg tekstur fil eller træk fil hertil'
+                            : 'Vælg billede eller træk fil hertil';
                 container.classList.remove('has-file');
             }
         });
@@ -384,6 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(e) {
         const modelFile = modelInput.files[0];
         const mtlFile = mtlInput.files[0];
+        const textureFile = document.getElementById('textureFile').files[0];
 
         if (modelFile) {
             const extension = modelFile.name.split('.').pop().toLowerCase();

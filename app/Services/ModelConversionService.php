@@ -27,7 +27,7 @@ class ModelConversionService
         return self::$npmGlobalPath;
     }
 
-    public function convertToGlb($uploadedFile, $mtlFile = null)
+    public function convertToGlb($uploadedFile, $mtlFile = null, $textureFile = null)
     {
         $tempDir = storage_path('app/temp/' . Str::random(10));
         
@@ -40,18 +40,40 @@ class ModelConversionService
                 return $uploadedFile;
             }
 
-            // Save uploaded file to temp directory
-            $uploadedFile->move($tempDir, 'original.' . $originalExtension);
-            $originalPath = $tempDir . '/original.' . $originalExtension;
+            // Bevar de originale filnavne
+            $objFileName = $uploadedFile->getClientOriginalName();
+            $uploadedFile->move($tempDir, $objFileName);
+            $originalPath = $tempDir . '/' . $objFileName;
             
-            // Hvis der er en MTL fil, gem den også med samme navn som OBJ filen
+            // Hvis der er en MTL fil, bevar dens originale navn
             if ($mtlFile) {
-                $mtlFile->move($tempDir, 'original.mtl');
-                // Rename MTL file to match OBJ filename
-                rename(
-                    $tempDir . '/original.mtl',
-                    $tempDir . '/' . pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME) . '.mtl'
-                );
+                $mtlFileName = pathinfo($objFileName, PATHINFO_FILENAME) . '.mtl';
+                $mtlFile->move($tempDir, $mtlFileName);
+                
+                // Hvis der er en teksturfil
+                if ($textureFile) {
+                    // Læs MTL filen for at finde det forventede teksturnavn
+                    $mtlContent = file_get_contents($tempDir . '/' . $mtlFileName);
+                    
+                    // Find tekstur reference i MTL filen
+                    if (preg_match('/map_Kd\s+(.+\.(bmp|png|jpg|jpeg|tga|dds))/i', $mtlContent, $matches)) {
+                        $textureFileName = basename($matches[1]);
+                        // Gem teksturfilen med det navn som MTL filen forventer
+                        $textureFile->move($tempDir, $textureFileName);
+                    } else {
+                        // Hvis ingen reference findes, brug original filnavn
+                        $textureFileName = $textureFile->getClientOriginalName();
+                        $textureFile->move($tempDir, $textureFileName);
+                        
+                        // Opdater MTL filen med det korrekte teksturnavn
+                        $mtlContent = preg_replace(
+                            '/(map_Kd\s+)(.+\.(bmp|png|jpg|jpeg|tga|dds))/i',
+                            '$1' . $textureFileName,
+                            $mtlContent
+                        );
+                        file_put_contents($tempDir . '/' . $mtlFileName, $mtlContent);
+                    }
+                }
             }
             
             // Output path for converted file
@@ -113,16 +135,18 @@ class ModelConversionService
                     $mtlPath = dirname($inputPath) . '/original.mtl';
                     $hasMtl = file_exists($mtlPath);
 
-                    \Log::debug('Starting obj2gltf conversion', [
-                        'obj2gltf_path' => $obj2gltfPath,
-                        'input' => $inputPath,
-                        'output' => $outputPath,
-                        'has_mtl' => $hasMtl,
-                        'mtl_path' => $mtlPath,
-                        'mtl_contents' => $hasMtl ? file_get_contents($mtlPath) : null
-                    ]);
+                    // Find teksturfilen hvis den eksisterer
+                    $textureFiles = glob(dirname($inputPath) . '/*.*');
+                    $textureFile = null;
+                    foreach ($textureFiles as $file) {
+                        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                        if (in_array($ext, ['png', 'jpg', 'jpeg', 'bmp', 'tga', 'dds'])) {
+                            $textureFile = basename($file);
+                            break;
+                        }
+                    }
 
-                    // Build command array
+                    // Build command array med forbedret teksturhåndtering
                     $command = [
                         'node',
                         $obj2gltfPath,
@@ -130,21 +154,23 @@ class ModelConversionService
                         '-o', basename($outputPath),
                         '--checkTransparency',
                         '--separate',
-                        '--optimize',
-                        '--cesium'
+                        '--embedTextures',
+                        '--checkMaterials',
+                        '--secure=false'
                     ];
 
-                    // Add MTL file if it exists
-                    if ($hasMtl) {
+                    // Hvis vi har både MTL og teksturfil
+                    if ($hasMtl && $textureFile) {
                         $command[] = '--mtlFile=original.mtl';
-                        $command[] = '--includeMaterials=true';
+                        $command[] = '--texturesPath=' . dirname($inputPath);
+                        $command[] = '--packOcclusion';  // Hjælper med at bevare teksturdetaljer
                     }
 
                     $process = new Process($command);
-                    
                     $process->setWorkingDirectory(dirname($inputPath));
                     $process->setTimeout(600);
                     
+                    // Tilføj mere detaljeret logging
                     $process->run(function ($type, $buffer) {
                         if (Process::ERR === $type) {
                             \Log::error('obj2gltf Error: ' . $buffer);
@@ -157,11 +183,9 @@ class ModelConversionService
                         \Log::error('Conversion failed', [
                             'error' => $process->getErrorOutput(),
                             'output' => $process->getOutput(),
-                            'exit_code' => $process->getExitCode(),
-                            'working_directory' => getcwd(),
-                            'file_exists' => file_exists($inputPath),
-                            'file_permissions' => fileperms($inputPath),
-                            'mtl_exists' => file_exists($mtlPath)
+                            'command' => $process->getCommandLine(),
+                            'working_directory' => dirname($inputPath),
+                            'files_present' => scandir(dirname($inputPath))
                         ]);
                         throw new \RuntimeException('Failed to convert to GLTF: ' . $process->getErrorOutput());
                     }

@@ -31,6 +31,9 @@
 
                     @if (auth()->check())
                         <a href="/add_model" class="secure-link"><i class="fas fa-plus-circle"></i> Tilføj Model</a>
+                        @if(auth()->user()->admin)
+                            <a href="/admin" class="secure-link"><i class="fas fa-user-shield"></i> Admin</a>
+                        @endif
                         <div class="logout-container">
                             <form action="https://ar-biblioteket.test/logout" method="POST" style="display:inline;">
                                 @csrf

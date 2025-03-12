@@ -157,3 +157,9 @@ Route::get('/admin', function () {
 
 Route::put('/admin/user/{id}', [UserController::class, 'editUserByID'])->name('admin.updateUser');
 Route::delete('/admin/user/{id}', [UserController::class, 'deleteUserByID'])->name('admin.deleteUser');
+
+// Update user route
+Route::put('/admin/updateUser/{id}', [UserController::class, 'editUserByID'])->name('admin.updateUser');
+
+// Delete user route
+Route::delete('/admin/users/{id}', [UserController::class, 'deleteUserByID'])->name('admin.deleteUser');

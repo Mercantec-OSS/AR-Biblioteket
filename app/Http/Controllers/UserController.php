@@ -77,11 +77,24 @@ class UserController extends Controller
                 $user->password = Hash::make($request->input('password'));
             }
 
-            $user->save();
-            return redirect()->back()->with('message', 'User updated successfully');
-        } else {
-            return redirect()->back()->withErrors(['message' => 'User not found']);
+            if ($user->save()) {
+                if ($request->ajax()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'User updated successfully'
+                    ]);
+                }
+                return redirect()->back()->with('message', 'User updated successfully');
+            }
         }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found or could not be updated'
+            ]);
+        }
+        return redirect()->back()->withErrors(['message' => 'User not found']);
     }
 
     // Delete user by ID
@@ -89,11 +102,24 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if ($user) {
-            $user->delete();
-            return redirect()->back()->with('message', 'User deleted successfully');
-        } else {
-            return redirect()->back()->withErrors(['message' => 'User not found']);
+            if ($user->delete()) {
+                if (request()->ajax()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'User deleted successfully'
+                    ]);
+                }
+                return redirect()->back()->with('message', 'User deleted successfully');
+            }
         }
+
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found or could not be deleted'
+            ]);
+        }
+        return redirect()->back()->withErrors(['message' => 'User not found']);
     }
 
     public function me()

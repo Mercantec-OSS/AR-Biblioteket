@@ -9,7 +9,13 @@
 @section('content')
 <div class="model-viewer-container">
     <div class="page-header">
-        <h1>{{ $model->title }}</h1>
+        <div class="header-top">
+            <h1>{{ $model->title }}</h1>
+            <button class="qr-button" onclick="toggleQRModal()">
+                <i class="fas fa-qrcode"></i>
+                <span>Vis QR-kode</span>
+            </button>
+        </div>
         @if($model->educations->isNotEmpty())
             <div class="education-tags">
                 @foreach($model->educations as $education)
@@ -49,6 +55,22 @@
     </div>
 </div>
 
+<!-- Tilføj modal i bunden af model-viewer-container -->
+<div id="qrModal" class="qr-modal">
+    <div class="qr-modal-content">
+        <div class="qr-modal-header">
+            <h3>Scan QR-kode</h3>
+            <button class="close-button" onclick="toggleQRModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="qr-modal-body">
+            <p>Scan denne QR-kode for at dele eller tilgå denne model på en anden enhed</p>
+            <div id="qrcode"></div>
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const modelViewer = document.querySelector('#model-viewer');
@@ -80,6 +102,48 @@ document.addEventListener('DOMContentLoaded', () => {
             modelViewer.stop();
         }
     });
+
+    // Generate QR Code
+    const currentUrl = window.location.href;
+    new QRCode(document.getElementById("qrcode"), {
+        text: currentUrl,
+        width: 128,
+        height: 128,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+});
+
+function toggleQRModal() {
+    const modal = document.getElementById('qrModal');
+    modal.classList.toggle('active');
+    
+    // Generer QR kode første gang modalen åbnes
+    if (modal.classList.contains('active') && !document.querySelector('#qrcode canvas')) {
+        const currentUrl = window.location.href;
+        new QRCode(document.getElementById("qrcode"), {
+            text: currentUrl,
+            width: 160,
+            height: 160,
+            colorDark: "#1e293b",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+}
+
+// Luk modal når der klikkes udenfor
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('qrModal');
+    const modalContent = document.querySelector('.qr-modal-content');
+    const qrButton = document.querySelector('.qr-button');
+    
+    if (modal.classList.contains('active') && 
+        !modalContent.contains(event.target) && 
+        !qrButton.contains(event.target)) {
+        modal.classList.remove('active');
+    }
 });
 </script>
 @endsection

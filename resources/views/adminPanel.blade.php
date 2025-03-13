@@ -1,49 +1,56 @@
 @extends('layouts.main')
  
  @section('content')
- <div class="container">
-     <h2>Admin Panel</h2>
+ <div class="container admin-panel">
+    <div class="panel-header">
+        <h2>Admin Panel</h2>
+        <p class="panel-subtitle">Styr brugerne her</p>
+    </div>
  
      @if(session('message'))
          <div class="alert alert-success">{{ session('message') }}</div>
      @endif
  
      @if(auth()->user())
-         <table class="table">
+     <div class="table-container">
+        <div class="table-responsive">
+            <table class="table admin-table">
              <thead>
                  <tr>
-                     <th>Name</th>
+                     <th>Navn</th>
                      <th>Email</th>
-                     <th>Department</th>
-                     <th>Password</th>
-                     <th>Actions</th>
+                     <th>Afdeling</th>
+                     <th>Kodeord</th>
+                     <th>Handlinger</th>
                  </tr>
              </thead>
              <tbody>
                  @foreach($users as $user)
                      <tr>
-                         <form action="{{ route('admin.updateUser', $user->id) }}" method="POST">
+                         <form class="user-form" action="{{ route('admin.updateUser', $user->id) }}" method="POST">
                              @csrf
                              @method('PUT')
-                             <td><input type="text" name="name" value="{{ $user->name }}" class="form-control"></td>
-                             <td><input type="email" name="email" value="{{ $user->email }}" class="form-control"></td>
-                             <td><input type="text" name="department" value="{{ $user->department }}" class="form-control"></td>
-                             <td><input type="password" name="password" placeholder="New Password" class="form-control"></td>
-                             <td>
-                                 <button type="submit" class="btn btn-primary">Update</button>
+                             <td><input type="text" name="name" value="{{ $user->name }}" class="form-input"></td>
+                             <td><input type="email" name="email" value="{{ $user->email }}" class="form-input"></td>
+                             <td><input type="text" name="department" value="{{ $user->department }}" class="form-input"></td>
+                             <td><input type="password" name="password" placeholder="Nyt Kodeord" class="form-input"></td>
+                             <td class="action-buttons">
+                                 <button type="submit" class="btn btn-update">Opdater</button>
                              </td>
                          </form>
                          <td>
-                             <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                             <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" onsubmit="return confirm('Er du sikker på at du vil slette denne user?')">
                                  @csrf
                                  @method('DELETE')
-                                 <button type="submit" class="btn btn-danger">Delete</button>
+                                 <button type="submit" class="btn btn-delete">Slet</button>
                              </form>
                          </td>
                      </tr>
                  @endforeach
              </tbody>
          </table>
+        </div>
+    </div>
      @else
          <p>You must be logged in to access the admin panel.</p>
      @endif
@@ -276,7 +283,7 @@
      pointer-events: none;
  }
  
- /* Gør X knappen usynlig eller fjern den helt */
+ /* G r X knappen usynlig eller fjern den helt */
  .modal-close {
      display: none;
  }

@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\VRModelsController;
 use App\Http\Controllers\ModelController;
 use App\Http\Controllers\JWTAuthController;
+use App\Http\Controllers\InformationController;
 use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Http\Request;
 
@@ -157,3 +158,25 @@ Route::get('/admin', function () {
 
 Route::put('/admin/user/{id}', [UserController::class, 'editUserByID'])->name('admin.updateUser');
 Route::delete('/admin/user/{id}', [UserController::class, 'deleteUserByID'])->name('admin.deleteUser');
+
+Route::get('/information', [InformationController::class, 'index'])->name('info.index');
+Route::post('/information/update', function (Request $request) {
+    $jwtAuthController = new JWTAuthController();
+    
+    if (!$jwtAuthController->isAuthenticated($request)) {
+        return redirect('/login')->withErrors(['message' => 'Unauthorized access. Please log in.']);
+    }
+
+    $user = JWTAuth::authenticate($request->cookie('jwt_token'));
+
+    if (!$user || !$user->admin) {
+        return redirect('/')->withErrors(['message' => 'You are not authorized to perform this action.']);
+    }
+
+    $request->validate([
+        'content' => 'required|string',
+    ]);
+    Storage::put('info.html', $request->content);
+
+    return redirect()->route('info.index')->with('success', 'Information updated successfully!');
+})->name('info.update');

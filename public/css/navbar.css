@@ -33,6 +33,64 @@ main {
     transition: all 0.3s ease;
 }
 
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.navbar-logo {
+    height: 75px;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    position: relative;
+    transform: translateX(-120px);
+    z-index: 0;
+}
+
+.title a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .navbar-logo {
+        height: 60px;
+    }
+    
+    .title {
+        font-size: 1.2rem;
+        transform: translateX(-100px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .navbar-logo {
+        height: 50px;
+    }
+    
+    .title {
+        font-size: 1.1rem;
+        transform: translateX(-75px);
+    }
+}
+
 .navbar .title {
     font-weight: 700;
     font-size: 1.3rem;

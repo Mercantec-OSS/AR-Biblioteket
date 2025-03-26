@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- Tilføjet CSRF-token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}"> 
     <title>@yield('title')</title>
     <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('css/home.css') }}" rel="stylesheet">
@@ -47,7 +47,7 @@
                     @endif
                 </nav>
             </div>
-
+    <!-- Footer -->
             <article class="content">
                 @yield('content')
             </article>
@@ -59,7 +59,8 @@
                     <p><i class="fas fa-envelope"></i> kasc@mercantec.dk</p>
                 </div>
                 <div class="footer-section">
-                    <p>Hjemmesiden er lavet af elever i SocDATA Mercantec Viborg</p>
+                    <h3>Information</h3>
+                    <p>Hjemmesiden er lavet af elever i SOC-Data Mercantec</p>
                 </div>
             </div>
             <div class="footer-bottom">

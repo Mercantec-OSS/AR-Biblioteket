@@ -2,6 +2,7 @@
 
 @section('head')
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 @endsection
 
 @section('title', 'Opret Konto')
@@ -71,22 +72,16 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('registerForm');
-    console.log('Form action:', form.action); // Debug: Tjek hvilken URL der genereres
+    console.log('Form action:', form.action);
     
     form.addEventListener('submit', function(e) {
-        // Tving HTTPS i action lige før indsendelse som ekstra sikkerhed
         form.action = 'https://ar-biblioteket.test/register';
-        console.log('Submitting to:', form.action); // Debug: Bekræft URL ved indsendelse
+        console.log('Submitting to:', form.action);
     });
 });
 </script>
 
 <style>
-.login-box {
-    margin-top: 80px; 
-    padding-bottom: 40px; 
-}
-
 .alert.alert-error {
     background-color: #fee2e2;
     border: 1px solid #ef4444;
@@ -127,15 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
     font-size: 0.8rem;
     margin-top: 0.5rem;
     text-align: left;
-}
-
-@media (max-width: 768px) {
-    .login-box {
-        margin-top: 60px;
-        overflow-y: auto;
-        max-height: calc(100vh - 60px);
-        padding: 20px;
-    }
 }
 
 /* Tilføjet for at sikre Token label er centreret */

@@ -52,6 +52,20 @@
                 @yield('content')
             </article>
         </main>
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kontakt</h3>
+                    <p><i class="fas fa-envelope"></i> kasc@mercantec.dk</p>
+                </div>
+                <div class="footer-section">
+                    <p>Hjemmesiden er lavet af elever i SocDATA Mercantec Viborg</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {{ date('Y') }} AR Biblioteket. Alle rettigheder forbeholdes.</p>
+            </div>
+        </footer>
     </div>
 
     <!-- Optional: Handling the Dropdown Menu -->

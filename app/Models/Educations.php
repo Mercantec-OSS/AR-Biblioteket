@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Educations extends Model
 {
 
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'color'];
 
     public function vrModels()
     {

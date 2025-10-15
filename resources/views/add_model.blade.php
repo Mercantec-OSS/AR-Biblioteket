@@ -114,6 +114,7 @@
             
             <div class="form-group">
                 <label for="image">Billede</label>
+                <p class="background-text">Fjern venligst baggrunden fra billedet inden det uploades</p>
                 <div class="file-input-container">
                     <div class="file-input-wrapper">
                         <input id="image" name="imageCreate" type="file" required class="file-input" accept="image/*"/>
@@ -363,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = 'hidden';
 
             setTimeout(() => {
-                form.action = 'https://ar-biblioteket.test/add_model';
+                form.action = 'https://ar-biblioteket.socdata.dk/add_model';
                 form.submit();
             }, 500);
         }

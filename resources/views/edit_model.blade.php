@@ -132,6 +132,7 @@
             
             <div class="form-group">
                 <label for="image">Billede (Nuværende: {{ basename($model->image_path) }})</label>
+                <p class="background-text">Fjern venligst baggrunden fra billedet inden det uploades</p>
                 <div class="file-input-container">
                     <div class="file-input-wrapper">
                         <input id="image" name="imageCreate" type="file" class="file-input" accept="image/*"/>

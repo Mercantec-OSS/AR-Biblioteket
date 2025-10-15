@@ -1445,3 +1445,11 @@
     overflow-wrap: break-word;
     word-break: break-all;
 }
+
+
+.background-text {
+    font-size: 0.775rem;
+    color: #374151;
+    margin-top: -0.5rem;
+    margin-bottom: 0.7rem;
+}

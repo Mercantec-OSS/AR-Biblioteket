@@ -11,10 +11,23 @@
     <div class="page-header">
         <div class="header-top">
             <h1>{{ $model->title }}</h1>
-            <button class="qr-button" onclick="toggleQRModal()">
-                <i class="fas fa-qrcode"></i>
-                <span>Vis QR-kode</span>
-            </button>
+
+            <div class="buttons-container">
+                <button class="qr-button" onclick="toggleQRModal()">
+                    <i class="fas fa-qrcode"></i>
+                    <span>Vis QR-kode</span>
+                </button>
+
+                <a class="poster-button" href="{{ secure_url('/model/' . $model->id . '/poster') }}" aria-label="Se poster">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4445 5218" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd">
+                        <g>
+                            <path d="M1339 3681c-74 0-134-60-134-134s60-134 134-134h996c74 0 134 60 134 134s-60 134-134 134h-996zm0-1916c-74 0-134-60-134-134s60-134 134-134h1767c74 0 134 60 134 134s-60 134-134 134H1339zM301 0h3843c86 0 164 35 220 91s91 134 91 220v4595c0 86-35 164-91 220s-134 91-220 91H301c-86 0-164-35-220-91S0 4992 0 4906V311c0-86 35-164 91-220S215 0 301 0zm3843 248H301c-12 0-23 5-31 13s-13 19-13 31v4595c0 12 5 23 13 31s19 13 31 13h3843c12 0 23-5 31-13s13-19 13-31V312c0-12-5-23-13-31s-19-13-31-13zM1339 2733c-74 0-134-60-134-134s60-134 134-134h1767c74 0 134 60 134 134s-60 134-134 134H1339z" fill="#0e39aa" fill-rule="nonzero"/>
+                        </g>
+                    </svg>
+                    <span>Se poster</span>
+                </a>
+            </div>
+            
         </div>
         @if($model->educations->isNotEmpty())
             <div class="education-tags">
@@ -145,5 +158,6 @@ document.addEventListener('click', function(event) {
         modal.classList.remove('active');
     }
 });
+
 </script>
 @endsection

@@ -12,6 +12,7 @@ class CreateEducationsTable extends Migration
             $table->id();
             $table->string('title');
             $table->timestamps();
+            $table->string('color');
         });
     }
 

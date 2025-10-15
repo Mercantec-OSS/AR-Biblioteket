@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\VRModelsController;
 use App\Http\Controllers\ModelController;
 use App\Http\Controllers\JWTAuthController;
+use App\Http\Controllers\PdfController;
 use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Http\Request;
 
@@ -157,3 +158,6 @@ Route::get('/admin', function () {
 
 Route::put('/admin/user/{id}', [UserController::class, 'editUserByID'])->name('admin.updateUser');
 Route::delete('/admin/user/{id}', [UserController::class, 'deleteUserByID'])->name('admin.deleteUser');
+
+//pdf routes
+Route::get('model/{model}/poster', [PdfController::class, 'generateModelPoster'])->name('model.pdf');

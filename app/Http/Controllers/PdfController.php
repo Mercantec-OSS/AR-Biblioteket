@@ -20,7 +20,7 @@ class PdfController extends Controller
         // Get the first education associated with this model through the pivot table
         $education = $model->educations()->first();
         $educationTitle = $education ? $education->title : 'Uddannelse ikke fundet.';
-        $educationColor = $education ? $education->color : '#000000'; // Default color if no education found
+        $educationColor = $education ? $education->color : '#000000';
 
         $data = [
             'modelName' => $modelName,

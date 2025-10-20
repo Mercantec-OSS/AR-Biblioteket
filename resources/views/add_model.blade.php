@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = 'hidden';
 
             setTimeout(() => {
-                form.action = 'https://ar-biblioteket.socdata.dk/add_model';
+                form.action = 'https://arbibliotek.socdata.dk/add_model';
                 form.submit();
             }, 500);
         }

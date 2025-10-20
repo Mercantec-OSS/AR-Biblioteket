@@ -39,7 +39,7 @@
                             <a href="/admin" class="secure-link"><i class="fas fa-user-shield"></i> Admin</a>
                         @endif
                         <div class="logout-container">
-                            <form action="https://ar-biblioteket.test/logout" method="POST" style="display:inline;">
+                            <form action="https://arbibliotek.socdata.dk/logout" method="POST" style="display:inline;">
                                 @csrf
                                 <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="secure-link"><i class="fas fa-sign-out-alt"></i> Log ud</a>
                             </form>

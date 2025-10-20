@@ -27,7 +27,7 @@
              <tbody>
                  @foreach($users as $user)
                      <tr>
-                         <form class="user-form" action="{{ route('admin.updateUser', $user->id) }}" method="POST">
+                         <form class="user-form" action="{{ secure_url(route('admin.updateUser', $user->id)) }}" method="POST">
                              @csrf
                              @method('PUT')
                              <td><input type="text" name="name" value="{{ $user->name }}" class="form-input"></td>
@@ -39,7 +39,7 @@
                              </td>
                          </form>
                          <td>
-                             <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" onsubmit="return confirm('Er du sikker på at du vil slette denne user?')">
+                             <form action="{{ secure_url(route('admin.deleteUser', $user->id)) }}" method="POST" onsubmit="return confirm('Er du sikker pï¿½ at du vil slette denne user?')">
                                  @csrf
                                  @method('DELETE')
                                  <button type="submit" class="btn btn-delete">Slet</button>

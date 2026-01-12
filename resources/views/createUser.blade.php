@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Form action:', form.action);
     
     form.addEventListener('submit', function(e) {
-        form.action = 'https://ar-biblioteket.test/register';
+        form.action = 'https://arbibliotek.socdata.dk/register';
         console.log('Submitting to:', form.action);
     });
 });

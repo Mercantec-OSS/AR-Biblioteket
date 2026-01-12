@@ -125,7 +125,7 @@ class ModelConversionService
 
             switch ($inputFormat) {
                 case 'obj':
-                    $obj2gltfPath = $this->getNpmGlobalPath() . '\\obj2gltf\\bin\\obj2gltf.js';
+                    $obj2gltfPath = $this->getNpmGlobalPath() . '/obj2gltf/bin/obj2gltf.js';
                     
                     if (!file_exists($obj2gltfPath)) {
                         throw new \RuntimeException('obj2gltf not found at: ' . $obj2gltfPath);

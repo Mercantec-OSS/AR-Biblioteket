@@ -426,13 +426,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.overflow = 'hidden';
 
                 setTimeout(() => {
-                    form.action = 'https://ar-biblioteket.test/models/{{ $model->id }}';
+                    form.action = 'https://arbibliotek.socdata.dk/models/{{ $model->id }}';
                     form.submit();
                 }, 500);
             }
         }
         // Hvis ingen fil er valgt, fortsæt med standardindsendelse, men tving HTTPS
-        form.action = 'https://ar-biblioteket.test/models/{{ $model->id }}';
+        form.action = 'https://arbibliotek.socdata.dk/models/{{ $model->id }}';
     });
 });
 </script>
